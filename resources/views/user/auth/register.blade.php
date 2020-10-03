@@ -23,7 +23,7 @@
 
                         <div id="first_step">
                             <div class="col-md-4">
-                                <input value="+91" type="text" placeholder="+1" id="country_code" name="country_code" />
+                                <input value="+1" type="text" placeholder="+1" id="country_code" name="country_code" />
                             </div> 
                             
                             <div class="col-md-8">
