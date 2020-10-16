@@ -89,6 +89,7 @@ class UserApiController extends Controller
     public function login(Request $request)
     {
         $tokenRequest = $request->create('/oauth/token', 'POST', $request->all());
+        
         $request->request->add([
            "client_id"     => $request->client_id,
            "client_secret" => $request->client_secret,
@@ -106,7 +107,7 @@ class UserApiController extends Controller
         // $json['status'] = true;
         $response->setContent(json_encode($json));
 
-        $update = User::where('email', $request->username)->update(['device_token' => $request->device_token , 'device_id' => $request->device_id , 'device_type' => $request->device_type]);    
+        $update = User::where('mobile', $request->username)->update(['device_token' => $request->device_token , 'device_id' => $request->device_id , 'device_type' => $request->device_type]);    
 
         return $response;
     }
@@ -411,8 +412,12 @@ class UserApiController extends Controller
 
         /*Log::info('New Request from User: '.Auth::user()->id);
         Log::info('Request Details:', $request->all());*/
+        //dd($ActiveRequests);
+        //$ActiveRequests = UserRequests::PendingRequest(Auth::user()->id)->count();
+        $ActiveRequests = UserRequests::where('user_id', Auth::user()->id)
+                            ->whereNotIn('status' , ['CANCELLED', 'COMPLETED', 'SCHEDULED'])
+                            ->count();
 
-        $ActiveRequests = UserRequests::PendingRequest(Auth::user()->id)->count();
 
         if($ActiveRequests > 0) {
             if($request->ajax()) {
@@ -423,6 +428,7 @@ class UserApiController extends Controller
         }
 
         if($request->has('schedule_date') && $request->has('schedule_time')){
+            dd("inside");   
             $beforeschedule_time = (new Carbon("$request->schedule_date $request->schedule_time"))->subHour(1);
             $afterschedule_time = (new Carbon("$request->schedule_date $request->schedule_time"))->addHour(1);
 
@@ -441,24 +447,34 @@ class UserApiController extends Controller
             }
 
         }
-
+        
         $distance = Setting::get('provider_search_radius', '10');
-       
+        
         $latitude = $request->s_latitude;
         $longitude = $request->s_longitude;
         $service_type = $request->service_type;
 
-        $Providers = Provider::with('service')
+        // $Providers_temp = Provider::with('service')
+        //     ->select(DB::Raw("(6371 * acos( cos( radians('$latitude') ) * cos( radians(latitude) ) * cos( radians(longitude) - radians('$longitude') ) + sin( radians('$latitude') ) * sin( radians(latitude) ) ) ) AS distance"),'id')
+        //     ->where('status', 'approved')
+        //     ->whereRaw("(6371 * acos( cos( radians('$latitude') ) * cos( radians(latitude) ) * cos( radians(longitude) - radians('$longitude') ) + sin( radians('$latitude') ) * sin( radians(latitude) ) ) ) <= $distance")
+        //     ->whereHas('service', function($query) use ($service_type){
+        //                 $query->where('status','active');
+        //                 $query->where('service_type_id',$service_type);
+        //             })
+        //     ->orderBy('distance','asc')
+        //     ->get();
+        $Providers = Provider::with(['service' => function($query) use ($service_type){
+                        $query->where('status','active');
+                        $query->where('service_type_id',$service_type);
+                    }])
             ->select(DB::Raw("(6371 * acos( cos( radians('$latitude') ) * cos( radians(latitude) ) * cos( radians(longitude) - radians('$longitude') ) + sin( radians('$latitude') ) * sin( radians(latitude) ) ) ) AS distance"),'id')
             ->where('status', 'approved')
             ->whereRaw("(6371 * acos( cos( radians('$latitude') ) * cos( radians(latitude) ) * cos( radians(longitude) - radians('$longitude') ) + sin( radians('$latitude') ) * sin( radians(latitude) ) ) ) <= $distance")
-            ->whereHas('service', function($query) use ($service_type){
-                        $query->where('status','active');
-                        $query->where('service_type_id',$service_type);
-                    })
             ->orderBy('distance','asc')
             ->get();
-   //  dd($Providers);
+
+        //dd($Providers_temp);
         // List Providers who are currently busy and add them to the filter list.
 
         if(count($Providers) == 0) {
@@ -470,7 +486,7 @@ class UserApiController extends Controller
             }
         }
 
-        try{
+       try{
 
             $details = "https://maps.googleapis.com/maps/api/directions/json?origin=".$request->s_latitude.",".$request->s_longitude."&destination=".$request->d_latitude.",".$request->d_longitude."&mode=driving&key=".Setting::get('map_key');
 
@@ -567,7 +583,7 @@ class UserApiController extends Controller
                     $Filter->save();
                 }
             }
-
+            //dd("here");
             if($request->ajax()) {
                 return response()->json([
                         'message' => 'New request Created!',
@@ -575,7 +591,7 @@ class UserApiController extends Controller
                         'current_provider' => $UserRequest->current_provider_id,
                     ]);
             }else{
-                return redirect('dashboard');
+                return redirect('dashboard')->with('flash_success', 'New request Created!');
             }
 
         } catch (Exception $e) {  
@@ -851,7 +867,14 @@ class UserApiController extends Controller
     public function trips() {
     
         try{
-            $UserRequests = UserRequests::UserTrips(Auth::user()->id)->get();
+            //$UserRequests = UserRequests::UserTrips(Auth::user()->id)->get();
+            $UserRequests = UserRequests::with(['payment','service_type','provider'])
+                                        ->where('user_id', Auth::user()->id)
+                                        ->where('status','COMPLETED')
+                                        ->orderBy('created_at','desc')
+                                        ->get();
+
+
             if(!empty($UserRequests)){
                 $map_icon = asset('asset/img/marker-start.png');
                 foreach ($UserRequests as $key => $value) {
@@ -1000,11 +1023,19 @@ class UserApiController extends Controller
     public function list_promocode(Request $request){
         try{
 
-        $promo_list =Promocode::where('expiration','>=',date("Y-m-d H:i"))
-                ->whereDoesntHave('promousage', function($query) {
-                            $query->where('user_id',Auth::user()->id);
-                        })
-                ->get(); 
+        // $promo_list =Promocode::where('expiration','>=',date("Y-m-d H:i"))
+        //         ->whereDoesntHave('promousage', function($query) {
+        //                     $query->where('user_id',Auth::user()->id);
+        //                 })
+        //         ->get(); 
+        $promo_list =Promocode::with([
+                                    'promousage' => function($query){
+                                        $query->where('user_id','!=',Auth::user()->id);
+                                    }
+                                ])
+                                ->where('expiration','>=',date("Y-m-d H:i"))
+                                ->get(); 
+        //dd($promo_list);            
         if($request->ajax()){
             return response()->json([
                     'promo_list' => $promo_list
@@ -1109,7 +1140,13 @@ class UserApiController extends Controller
     public function upcoming_trips() {
     
         try{
-            $UserRequests = UserRequests::UserUpcomingTrips(Auth::user()->id)->get();
+            //$UserRequests = UserRequests::UserUpcomingTrips(Auth::user()->id)->get();
+            $UserRequests = UserRequests::with(['service_type','provider'])
+                                        ->where('user_id', Auth::user()->id)
+                                        ->where('status','SCHEDULED')
+                                        ->orderBy('created_at','desc')
+                                        ->get();
+            //$UserRequests = UserRequests::UserUpcomingTrips(Auth::user()->id)->get();
             if(!empty($UserRequests)){
                 $map_icon = asset('asset/img/marker-start.png');
                 foreach ($UserRequests as $key => $value) {

@@ -120,6 +120,10 @@ class UserRequests extends Model
     {
         return $this->belongsTo('App\Provider');
     }
+    public function fleets()
+    {
+        return $this->belongsTo('App\Fleet');
+    }
 
     public function provider_service()
     {

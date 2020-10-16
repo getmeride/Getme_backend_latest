@@ -27,7 +27,7 @@ not be same as old password',
 		'profile_updated' => 'Profile Updated',
 		'provider_not_found' => 'Provider Not Found',
 		'not_approved' => 'You account has not been approved for driving',	
-		'incorrect_email' => 'The email address or password you entered is incorrect',	
+		'incorrect_email' => 'The moblie number or password you entered is incorrect',	
 
 	],
 

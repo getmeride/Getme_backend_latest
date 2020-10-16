@@ -25,14 +25,38 @@
                     </span>
                 @endif
             </div>
+            <div class="col-md-12" style="padding-bottom: 10px;">
+                <div id="recaptcha-container"></div>
+            </div>
 
             <div class="col-md-12" style="padding-bottom: 10px;" id="mobile_verfication">
-                <input type="button" class="log-teal-btn small" onclick="smsLogin();" value="Verify Phone Number"/>
+                <input type="button" class="log-teal-btn small login_button"  value="Verify Phone Number"/>
             </div>
         </div>
 
         {{ csrf_field() }}
-
+        <!-- Modal -->
+        <div class="modal fade" id="verification">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header w-100 floatleft">
+                  <h4 class="modal-title">Verification Code</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body w-100 floatleft">
+                    <div class="col-md-12 mt-3">
+                        <input type="text" class="form-control" id="verificationCode" placeholder="Enter verification code">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-primary verifybtn" onclick="codeverify();">Verify code</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+        </div>
         <div id="second_step" style="display: none;">
             <div>
                 <input id="fname" type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" placeholder="@lang('provider.profile.first_name')" autofocus data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.first_name') can only contain alphanumeric characters and . - spaces">
@@ -129,6 +153,104 @@
 
 @section('scripts')
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+
+
+<script type="text/javascript">
+    window.onload=function () {
+        render();
+    };
+    function render() {
+        window.recaptchaVerifier=new firebase.auth.RecaptchaVerifier('recaptcha-container');
+        recaptchaVerifier.render();
+    }
+</script>
+<script type="text/javascript">
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "{{env('apiKey')}}",
+        authDomain: "{{env('authDomain')}}",
+        databaseURL: "{{env('databaseURL')}}",
+        projectId: "{{env('projectId')}}",
+        storageBucket: "{{env('storageBucket')}}",
+        messagingSenderId: "{{env('messagingSenderId')}}",
+        appId: "{{env('appId')}}"
+      };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    $('.login_button').click(function(){
+        phoneAuth();
+    });
+    function phoneAuth() {
+        var country_code = document.getElementById('country_code').value;
+        var phone_number=document.getElementById('phone_number').value;
+        var number=country_code+''+phone_number;
+        firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
+            window.confirmationResult=confirmationResult;
+            coderesult=confirmationResult;
+            console.log(coderesult);
+            if(coderesult.verificationId){
+                $('#verification').modal('show');
+            }
+        }).catch(function (error) {
+           //swal("Error",error.message,"error");
+            alert(error.message);
+        });
+    }
+    function submitPhoneNumberAuthCode() {
+        console.log("submitPhoneNumberAuthCode");
+        var code = document.getElementById("code").value;
+        confirmationResult
+          .confirm(code)
+          .then(function(result) {
+            var user = result.user;
+        })
+        .catch(function(error) {
+           alert(error.message);
+        });
+    }
+    function codeverify() {
+        console.log("codeverify");
+        var code=document.getElementById('verificationCode').value;
+        coderesult.confirm(code).then(function (result) {
+            var mobile_no=$('#mobile_no').val();
+            $('#verificationCode').val('');
+            $('#verification').modal('hide');
+            $('#first_step').hide();
+            $('#second_step').show();
+            // $.ajax({
+            //     type:"post",
+            //     url:"loginajax.php",
+            //     data:{mobile_no:mobile_no},
+            //     success:function(){
+            //         location.reload();
+            //     }
+            // })
+
+        }).catch(function (error) {
+           alert(error.message);
+        });
+    }
+    function submitPhoneNumberAuth() {
+        var phoneNumber = document.getElementById("phoneNumber").value;
+        var appVerifier = window.recaptchaVerifier;
+        firebase
+          .auth()
+          .signInWithPhoneNumber(phoneNumber, appVerifier)
+          .then(function(confirmationResult) {
+            window.confirmationResult = confirmationResult;
+          })
+          .catch(function(error) {
+            swal("Error",error,'error');
+           
+          });
+    }
+</script>
+
+
+
 <script type="text/javascript">
     $.validate({
         modules : 'security',
@@ -155,62 +277,5 @@
     }
 
 </script>
-<script src="https://sdk.accountkit.com/en_US/sdk.js"></script>
-<script>
-  // initialize Account Kit with CSRF protection
-  AccountKit_OnInteractive = function(){
-    AccountKit.init(
-      {
-        appId: {{Setting::get('fb_app_id')}}, 
-        state:"state", 
-        version: "{{Setting::get('fb_app_version')}}",
-        fbAppEventsEnabled:true
-      }
-    );
-  };
-
-  // login callback
-  function loginCallback(response) {
-    if (response.status === "PARTIALLY_AUTHENTICATED") {
-      var code = response.code;
-      var csrf = response.state;
-      // Send code to server to exchange for access token
-      $('#mobile_verfication').html("<p class='helper'> * Phone Number Verified </p>");
-      $('#phone_number').attr('readonly',true);
-      $('#country_code').attr('readonly',true);
-      $('#second_step').fadeIn(400);
-
-      $.post("{{route('account.kit')}}",{ code : code }, function(data){
-        $('#phone_number').val(data.phone.national_number);
-        $('#country_code').val('+'+data.phone.country_prefix);
-      });
-
-    }
-    else if (response.status === "NOT_AUTHENTICATED") {
-      // handle authentication failure
-      $('#mobile_verfication').html("<p class='helper'> * Authentication Failed </p>");
-    }
-    else if (response.status === "BAD_PARAMS") {
-      // handle bad parameters
-    }
-  }
-
-  // phone form submission handler
-  function smsLogin() {
-    var countryCode = document.getElementById("country_code").value;
-    var phoneNumber = document.getElementById("phone_number").value;
-
-    $('#mobile_verfication').html("<p class='helper'> Please Wait... </p>");
-    $('#phone_number').attr('readonly',true);
-    $('#country_code').attr('readonly',true);
-
-    AccountKit.login(
-      'PHONE', 
-      {countryCode: countryCode, phoneNumber: phoneNumber}, // will use default values if not specified
-      loginCallback
-    );
-  }
-
-</script>
-
 @endsection
+

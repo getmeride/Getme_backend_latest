@@ -108,6 +108,7 @@ class HomeController extends Controller
     public function trips()
     {
         $trips = $this->UserAPI->trips();
+
         return view('user.ride.trips',compact('trips'));
     }
 
@@ -139,8 +140,9 @@ class HomeController extends Controller
         $users=User::all();
 
         if(\Setting::get('braintree') == 1) {
-            $this->UserAPI->set_Braintree();
-        $clientToken = \Braintree_ClientToken::generate();
+            //$this->UserAPI->set_Braintree();
+            //$clientToken = \Braintree_ClientToken::generate();
+            $clientToken = '';
         } else {
             $clientToken = '';
         }

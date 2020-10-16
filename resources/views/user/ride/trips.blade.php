@@ -178,8 +178,12 @@
                                             </div>
 
                                             <div class="trip-user">
+                                                @if($trip->provider)
                                                 <div class="user-img" style="background-image: url({{img($trip->provider->avatar)}});">
                                                 </div>
+                                                @else
+                                                    -
+                                                @endif
                                                 <div class="user-right">
                                                     @if($trip->provider)
                                                         <h5>{{$trip->provider->first_name}} {{$trip->provider->last_name}}</h5>

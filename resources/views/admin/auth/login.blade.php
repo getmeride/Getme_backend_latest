@@ -64,10 +64,10 @@
                             <form id="signup" role="form" method="POST" action="{{ url('/admin/login') }}">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                    <label @if(Setting::get('demo_mode',0) ==1)class="active"@endif>Super Administrator E-mail<span class="req">*</span> </label>
-                                    <input type="email" name="email" class="form-control" id="email" required data-validation-required-message="Please enter your email address." autocomplete="off" @if(Setting::get('demo_mode',0) ==1)value="admin@demo.com"@endif>
-                                    @if ($errors->has('email'))
-                                        <p class="help-block text-danger">{{ $errors->first('email') }}</p>
+                                    <label @if(Setting::get('demo_mode',0) ==1)class="active"@endif>Super Administrator Mobile Number<span class="req">*</span> </label>
+                                    <input type="text" name="mobile" class="form-control" required id="mobile"  value="" data-stripe="number" >
+                                    @if ($errors->has('mobile'))
+                                        <p class="help-block text-danger">{{ $errors->first('mobile') }}</p>
                                     @endif
                                 </div>
                                 <div class="form-group">
@@ -100,10 +100,10 @@
                             <form id="login" role="form" method="POST" action="{{ url('/dispatcher/login') }}">
                              {{ csrf_field() }}
                                 <div class="form-group">
-                                    <label @if(Setting::get('demo_mode',0) ==1)class="active"@endif>Dispatcher Administrator E-mail<span class="req">*</span> </label>
-                                    <input type="email" name="email" class="form-control" id="email" required data-validation-required-message="Please enter your email address." autocomplete="off" @if(Setting::get('demo_mode',0) ==1)value="dispatcher@demo.com"@endif>
-                                    @if ($errors->has('email'))
-                                        <p class="help-block text-danger">{{ $errors->first('email') }}</p>
+                                    <label @if(Setting::get('demo_mode',0) ==1)class="active"@endif>Dispatcher Administrator Mobile Number<span class="req">*</span> </label>
+                                    <input type="text" name="mobile" class="form-control" required id="mobile"  value="" data-stripe="number" >
+                                    @if ($errors->has('mobile'))
+                                        <p class="help-block text-danger">{{ $errors->first('mobile') }}</p>
                                     @endif
                                 </div>
                                 <div class="form-group">
@@ -136,12 +136,12 @@
                             <h2 class="text-uppercase text-center">Sign In</h2>
                             <form id="login" role="form" method="POST" action="{{ url('/fleet/login') }}">
                              {{ csrf_field() }}
-                                <div class="form-group">
-                                    <label @if(Setting::get('demo_mode',0) ==1)class="active"@endif>Fleet Administrator E-mail<span class="req">*</span> </label>
-                                        <input type="email" name="email" class="form-control" id="email" required data-validation-required-message="Please enter your email address." autocomplete="off" @if(Setting::get('demo_mode',0) ==1)value="fleet@demo.com"@endif>
-                                        @if ($errors->has('email'))
-                                            <p class="help-block text-danger">{{ $errors->first('email') }}</p>
-                                        @endif
+                                 <div class="form-group">
+                                    <label @if(Setting::get('demo_mode',0) ==1)class="active"@endif>Fleet Administrator Mobile Number<span class="req">*</span> </label>
+                                    <input type="text" name="mobile" class="form-control" required id="mobile"  value="16493492911" data-stripe="number" >
+                                    @if ($errors->has('mobile'))
+                                        <p class="help-block text-danger">{{ $errors->first('mobile') }}</p>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label @if(Setting::get('demo_mode',0) ==1)class="active"@endif> Password<span class="req">*</span> </label>
@@ -174,12 +174,13 @@
                             <h2 class="text-uppercase text-center">Sign In</h2>
                             <form id="login" role="form" method="POST" action="{{ url('/account/login') }}">
                              {{ csrf_field() }}
+                                
                                 <div class="form-group">
-                                    <label @if(Setting::get('demo_mode',0) ==1)class="active"@endif>Account Administrator E-mail<span class="req">*</span> </label>
-                                        <input type="email" name="email" class="form-control" id="email" required data-validation-required-message="Please enter your email address." autocomplete="off" @if(Setting::get('demo_mode',0) ==1)value="account@demo.com"@endif>
-                                        @if ($errors->has('email'))
-                                            <p class="help-block text-danger">{{ $errors->first('email') }}</p>
-                                        @endif
+                                    <label @if(Setting::get('demo_mode',0) ==1)class="active"@endif>Account Administrator Mobile Number<span class="req">*</span> </label>
+                                    <input type="text" name="mobile" class="form-control" required id="mobile"  value="" data-stripe="number" >
+                                    @if ($errors->has('mobile'))
+                                        <p class="help-block text-danger">{{ $errors->first('mobile') }}</p>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label @if(Setting::get('demo_mode',0) ==1)class="active"@endif> Password<span class="req">*</span> </label>

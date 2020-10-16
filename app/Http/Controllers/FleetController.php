@@ -47,11 +47,11 @@ class FleetController extends Controller
      */
     public function dashboard()
     {
-        try{
+        //try{
 
             $getting_ride = UserRequests::has('user')
                     ->whereHas('provider', function($query) {
-                            $query->where('fleet', Auth::user()->id );
+                            $query->where('fleet', 3 );
                         })
                     ->orderBy('id','desc');
 
@@ -67,10 +67,10 @@ class FleetController extends Controller
             $providers = Provider::where('fleet', Auth::user()->id)->take(10)->orderBy('rating','desc')->get();
 
             return view('fleet.dashboard',compact('providers','service','rides','cancel_rides','revenue'));
-        }
-        catch(Exception $e){
-            return redirect()->route('fleet.user.index')->with('flash_error',trans('admin.something_wrong_dashboard'));
-        }
+        // }
+        // catch(Exception $e){
+        //     return redirect()->back()->with('flash_error',trans('admin.something_wrong_dashboard'));
+        // }
     }
 
     /**

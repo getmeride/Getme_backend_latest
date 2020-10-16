@@ -102,13 +102,13 @@ class TokenController extends Controller
                 'device_id' => 'required',
                 'device_type' => 'required|in:android,ios',
                 'device_token' => 'required',
-                'email' => 'required|email',
+                'mobile' => 'required',
                 'password' => 'required|min:6',
             ]);
 
         Config::set('auth.providers.users.model', 'App\Provider');
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('mobile', 'password');
 
         try {
             if (! $token = JWTAuth::attempt($credentials)) {

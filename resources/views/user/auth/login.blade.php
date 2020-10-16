@@ -20,12 +20,24 @@
                     </div>
                     <form  role="form" method="POST" action="{{ url('/login') }}"> 
                     {{ csrf_field() }}                      
-                        <div class="col-md-12">
+                        {{-- <div class="col-md-12">
                              <input id="email" type="email" class="form-control" placeholder="Email Address" name="email" value="{{ old('email') }}" required autofocus>
 
                             @if ($errors->has('email'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                            @endif
+                        </div> --}}
+                        {{--  <div class="col-md-4">
+                            <input value="+1" type="text" placeholder="+1" id="country_code" name="country_code" required />
+                        </div> 
+                         --}}
+                        <div class="col-md-12">
+                            <input type="text" required id="phone_number" class="form-control" placeholder="Enter Phone Number" name="mobile" value="+1{{ old('phone_number') }}" data-stripe="number"  />
+                            @if ($errors->has('mobile'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('mobile') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -69,4 +81,27 @@
         </div>
     </div>
 </div>
+@endsection
+@section('scripts')
+<script type="text/javascript">
+    function isNumberKey(evt)
+    {
+        var edValue = document.getElementById("phone_number");
+        var s = edValue.value;
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            if(s.length>=10){
+                smsLogin();
+            }
+        }
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        if (charCode != 46 && charCode > 31 
+        && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+</script>
+
+
 @endsection

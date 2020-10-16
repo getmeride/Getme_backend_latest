@@ -53,18 +53,17 @@
                               <div class="modal-content">
                                 <!-- Modal Header -->
                                 <div class="modal-header w-100 floatleft">
-                                  <h4 class="modal-title">Verification </h4>
+                                  <h4 class="modal-title">Verification Code</h4>
                                   <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
                                 <!-- Modal body -->
                                 <div class="modal-body w-100 floatleft">
                                     <div class="col-md-12 mt-3">
-                                        <label>Verification Code</label>
-                                        <input type="text" id="verificationCode" placeholder="Enter verification code">
+                                        <input type="text" class="form-control" id="verificationCode" placeholder="Enter verification code">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                        <button type="button" class="BlueButton verifybtn" onclick="codeverify();">Verify code</button>
+                                        <button type="button" class="btn btn-primary verifybtn" onclick="codeverify();">Verify code</button>
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 </div>
                               </div>
@@ -157,6 +156,10 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+
+
 <script type="text/javascript">
     window.onload=function () {
         render();
@@ -167,83 +170,85 @@
     }
 </script>
 <script type="text/javascript">
-    
-        
-        var firebaseConfig = {
-            apiKey: "AIzaSyBX_41T65qAdjhEQeQPPrQmZg79qFmBa5o",
-            authDomain: "getmeride-1550534729617.firebaseapp.com",
-            databaseURL: "https://getmeride-1550534729617.firebaseio.com",
-            projectId: "getmeride-1550534729617",
-            storageBucket: "getmeride-1550534729617.appspot.com",
-            messagingSenderId: "163407612880",
-            appId: "1:163407612880:web:4424b0d0d10cda205e07d5"
-        };
-        firebase.initializeApp(firebaseConfig);
-       
-       
-        $('.login_button').click(function(){
-            phoneAuth();
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "{{env('apiKey')}}",
+        authDomain: "{{env('authDomain')}}",
+        databaseURL: "{{env('databaseURL')}}",
+        projectId: "{{env('projectId')}}",
+        storageBucket: "{{env('storageBucket')}}",
+        messagingSenderId: "{{env('messagingSenderId')}}",
+        appId: "{{env('appId')}}"
+      };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    $('.login_button').click(function(){
+        phoneAuth();
+    });
+    function phoneAuth() {
+        var country_code = document.getElementById('country_code').value;
+        var phone_number=document.getElementById('phone_number').value;
+        var number=country_code+''+phone_number;
+        firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
+            window.confirmationResult=confirmationResult;
+            coderesult=confirmationResult;
+            console.log(coderesult);
+            if(coderesult.verificationId){
+                $('#verification').modal('show');
+            }
+        }).catch(function (error) {
+           //swal("Error",error.message,"error");
+            alert(error.message);
         });
-        function phoneAuth() {
-            var number=document.getElementById('phone_number').value;
-             var number='+917600894699';
-            firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
-                window.confirmationResult=confirmationResult;
-                coderesult=confirmationResult;
-                console.log(coderesult);
-                if(coderesult.verificationId){
-                    $('#verification').modal('show');
-                }
-            }).catch(function (error) {
-               //swal("Error",error.message,"error");
-                alert(error.message);
-            });
-        }
-        function submitPhoneNumberAuthCode() {
-            console.log("submitPhoneNumberAuthCode");
-            var code = document.getElementById("code").value;
-            confirmationResult
-              .confirm(code)
-              .then(function(result) {
-                var user = result.user;
-            })
-            .catch(function(error) {
-               alert(error.message);
-            });
-        }
-        function codeverify() {
-            console.log("codeverify");
-            var code=document.getElementById('verificationCode').value;
-            coderesult.confirm(code).then(function (result) {
-                var mobile_no=$('#mobile_no').val();
-                $.ajax({
-                    type:"post",
-                    url:"loginajax.php",
-                    data:{mobile_no:mobile_no},
-                    success:function(){
-                        location.reload();
-                    }
-                })
-            }).catch(function (error) {
-               alert(error.message);
-            });
-        }
-        function submitPhoneNumberAuth() {
-            var phoneNumber = document.getElementById("phoneNumber").value;
-            var appVerifier = window.recaptchaVerifier;
-            firebase
-              .auth()
-              .signInWithPhoneNumber(phoneNumber, appVerifier)
-              .then(function(confirmationResult) {
-                window.confirmationResult = confirmationResult;
-              })
-              .catch(function(error) {
-                swal("Error",error,'error');
-               
-              });
-        }
-   
-    
+    }
+    function submitPhoneNumberAuthCode() {
+        console.log("submitPhoneNumberAuthCode");
+        var code = document.getElementById("code").value;
+        confirmationResult
+          .confirm(code)
+          .then(function(result) {
+            var user = result.user;
+        })
+        .catch(function(error) {
+           alert(error.message);
+        });
+    }
+    function codeverify() {
+        console.log("codeverify");
+        var code=document.getElementById('verificationCode').value;
+        coderesult.confirm(code).then(function (result) {
+            var mobile_no=$('#mobile_no').val();
+            $('#verificationCode').val('');
+            $('#verification').modal('hide');
+            $('#first_step').hide();
+            $('#second_step').show();
+            // $.ajax({
+            //     type:"post",
+            //     url:"loginajax.php",
+            //     data:{mobile_no:mobile_no},
+            //     success:function(){
+            //         location.reload();
+            //     }
+            // })
+
+        }).catch(function (error) {
+           alert(error.message);
+        });
+    }
+    function submitPhoneNumberAuth() {
+        var phoneNumber = document.getElementById("phoneNumber").value;
+        var appVerifier = window.recaptchaVerifier;
+        firebase
+          .auth()
+          .signInWithPhoneNumber(phoneNumber, appVerifier)
+          .then(function(confirmationResult) {
+            window.confirmationResult = confirmationResult;
+          })
+          .catch(function(error) {
+            swal("Error",error,'error');
+           
+          });
+    }
 </script>
 
 <script type="text/javascript">

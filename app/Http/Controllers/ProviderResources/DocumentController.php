@@ -21,8 +21,12 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        $VehicleDocuments = Document::vehicle()->get();
-        $DriverDocuments = Document::driver()->get();
+
+        // $VehicleDocuments = Document::vehicle()->get();
+        // $DriverDocuments = Document::driver()->get();
+
+        $VehicleDocuments = Document::where('type', 'VEHICLE')->get();
+        $DriverDocuments = Document::where('type', 'DRIVER')->get();
 
         $Provider = \Auth::guard('provider')->user();
 

@@ -61,7 +61,9 @@ class AccountController extends Controller
             return view('account.dashboard',compact('providers','fleet','scheduled_rides','service','rides','user_cancelled','provider_cancelled','cancel_rides','revenue'));
         }
         catch(Exception $e){
-            return redirect()->route('account.user.index')->with('flash_error', trans('admin.something_wrong_dashboard'));
+            return redirect()->back()->with('flash_error', trans('admin.something_wrong_dashboard'));
+            // return redirect()->route('account.user.index')->with('flash_error', trans('admin.something_wrong_dashboard'));
+        
         }
     }
 

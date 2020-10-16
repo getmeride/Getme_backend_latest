@@ -953,7 +953,13 @@ $Driver_Discount=0;
     public function upcoming_trips() {
     
         try{
-            $UserRequests = UserRequests::ProviderUpcomingRequest(Auth::user()->id)->get();
+            //$UserRequests = UserRequests::ProviderUpcomingRequest(Auth::user()->id)->get();
+            $UserRequests = UserRequests::with(['service_type','user','provider'])
+                    ->where('user_requests.provider_id',Auth::user()->id)
+                    ->where('user_requests.status', 'SCHEDULED')
+                    ->select('user_requests.*');
+                    
+    
             if(!empty($UserRequests)){
                 $map_icon = asset('asset/marker.png');
                 foreach ($UserRequests as $key => $value) {

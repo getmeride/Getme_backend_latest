@@ -111,11 +111,11 @@ class ProviderController extends Controller
                     ->where('created_at', '>=', Carbon::now()->subWeekdays(7))
                     ->get();
 
-        $weekly_sum = UserRequestPayment::whereHas('request', function($query) {
+        $weekly_sum = UserRequestPayment::with(['request' => function($query) {
                         $query->where('provider_id',\Auth::guard('provider')->user()->id);
                         $query->where('created_at', '>=', Carbon::now()->subWeekdays(7));
-                    })
-                        ->sum('provider_pay');
+                    }])->sum('provider_pay');
+
 
         $today = UserRequests::where('provider_id',\Auth::guard('provider')->user()->id)
                     ->where('created_at', '>=', Carbon::today())
@@ -125,11 +125,10 @@ class ProviderController extends Controller
                     ->with('payment','service_type')->orderBy('id','desc')
                     ->get();
 
-        $fully_sum = UserRequestPayment::whereHas('request', function($query) {
+        $fully_sum = UserRequestPayment::with(['request'=> function($query) {
                         $query->where('provider_id', \Auth::guard('provider')->user()->id);
-                        })
-                        ->sum('provider_pay');
-
+                        }])->sum('provider_pay');
+        
         return view('provider.payment.earnings',compact('provider','weekly','fully','today','weekly_sum','fully_sum'));
     }
 

@@ -10,13 +10,21 @@
     <form role="form" method="POST" action="{{ url('/provider/login') }}">
         {{ csrf_field() }}
 
-        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="@lang('user.profile.email')" autofocus>
+        {{-- <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="@lang('user.profile.email')" autofocus>
 
         @if ($errors->has('email'))
             <span class="help-block">
                 <strong>{{ $errors->first('email') }}</strong>
             </span>
+        @endif --}}
+
+        <input type="text" required id="phone_number" class="form-control" placeholder="Enter Phone Number" name="mobile" value="+1{{ old('phone_number') }}" data-stripe="number"  />
+        @if ($errors->has('mobile'))
+            <span class="help-block">
+                <strong>{{ $errors->first('mobile') }}</strong>
+            </span>
         @endif
+                        
 
         <input id="password" type="password" class="form-control" name="password" placeholder="@lang('provider.signup.password')">
 

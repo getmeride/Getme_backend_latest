@@ -1,3 +1,4 @@
+
 @extends('provider.layout.app')
 
 @section('content')
