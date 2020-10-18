@@ -17,11 +17,11 @@
                         <dd class="col-sm-8">{{ $request->booking_id }}</dd>
                         
                         <dt class="col-sm-4">@lang('admin.request.User_Name') :</dt>
-                        <dd class="col-sm-8">{{ $request->user->first_name }}</dd>
+                        <dd class="col-sm-8">{{ $request->user->first_name ?? '-' }}</dd>
 
                         <dt class="col-sm-4">@lang('admin.request.Provider_Name') :</dt>
                         @if($request->provider)
-                        <dd class="col-sm-8">{{ $request->provider->first_name }}</dd>
+                        <dd class="col-sm-8">{{ $request->provider->first_name ?? '-' }}</dd>
                         @else
                         <dd class="col-sm-8">@lang('admin.request.provider_not_assigned')</dd>
                         @endif
