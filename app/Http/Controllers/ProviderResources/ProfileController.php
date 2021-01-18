@@ -167,6 +167,7 @@ class ProfileController extends Controller
      */
     public function show()
     {
+       
         return view('provider.profile.index');
     }
 
