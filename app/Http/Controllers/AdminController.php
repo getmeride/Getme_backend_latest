@@ -262,7 +262,8 @@ class AdminController extends Controller
                 'commission_percentage' => 'required|numeric|min:0|max:100',
                 'fleet_commission_percentage' => 'sometimes|nullable|numeric|min:0|max:100',
                 'surge_trigger' => 'required|integer|min:0',
-                'currency' => 'required'
+                'currency' => 'required',
+                'provider_monthly_charger' => 'required'
             ]);
 
         if($request->has('CARD')==0 && $request->has('CASH')==0){
@@ -283,6 +284,7 @@ class AdminController extends Controller
         Setting::set('surge_trigger', $request->surge_trigger);
         Setting::set('currency', $request->currency);
         Setting::set('booking_prefix', $request->booking_prefix);
+        Setting::set('provider_monthly_charger', $request->provider_monthly_charger);
         Setting::save();
 
         return back()->with('flash_success','Settings Updated Successfully');

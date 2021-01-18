@@ -23,6 +23,7 @@ use App\RequestFilter;
 use App\Document;
 use App\Http\Controllers\SendPushNotification;
 use App\Http\Controllers\ProviderResources\DocumentController;
+use Validator;
 
 class ProfileController extends Controller
 {
@@ -388,11 +389,16 @@ class ProfileController extends Controller
 
     public function chatPush(Request $request){
 
-        $this->validate($request,[
+        $validator = Validator::make(
+            $request->all(),
+             [
                 'user_id' => 'required|numeric',
-                'message' => 'required',
-            ]);       
-
+                'message' => 'required'
+            ]
+        );
+        if($validator->fails()) {
+            return response()->json(['status'=>false,'message' => $validator->messages()->all()]);
+        }
         try{
 
             $user_id=$request->user_id;

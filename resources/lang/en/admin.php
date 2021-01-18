@@ -505,4 +505,6 @@ return array (
     'account_not_found' => 'Strip Account not found',
     'amount_added' => ' added to your wallet',
   ),
+  'provider_monthly_charger' => "Provider Monthly Charger",
+  'subscription_type' => "Subscription"
 );

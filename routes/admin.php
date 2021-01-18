@@ -44,6 +44,8 @@ Route::group(['as' => 'provider.'], function () {
     Route::resource('provider/{provider}/document', 'Resource\ProviderDocumentResource');
     Route::delete('provider/{provider}/service/{document}', 'Resource\ProviderDocumentResource@service_destroy')->name('document.service');
 
+    Route::get('provider/{id}/subscriptionUpdate', 'Resource\ProviderResource@subscriptionUpdate')->name('subscription.update');
+      
 });
 
 Route::get('review/user', 'AdminController@user_review')->name('user.review');

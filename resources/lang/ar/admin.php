@@ -508,4 +508,6 @@ return array (
     'account_not_found' => 'حساب الشريط غير موجود',
     'amount_added' => ' وأضاف إلى محفظتك',
   ),
+  'provider_monthly_charger' => "مزود الشاحن الشهري",
+  'subscription_type' => "الاشتراك"
 );

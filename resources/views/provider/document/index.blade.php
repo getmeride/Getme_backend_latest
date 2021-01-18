@@ -10,7 +10,7 @@
         @if(Setting::get('CARD')==1)
             <a href="{{ route('provider.cards') }}" class="pro-head-link">@lang('provider.card.list')</a>
         @endif    
-        <a href="{{ route('provider.transfer') }}" class="pro-head-link">@lang('provider.profile.transfer')</a>
+        <a href="{{ route('provider.transfer') }}" class="pro-head-link">@lang('provider.profile.cashout')</a>
     </div>
 </div>
 

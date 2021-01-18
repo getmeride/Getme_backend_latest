@@ -12,6 +12,8 @@
 */
 
 // Authentication
+Route::get('/test' , function(){echo "here"; exit();});
+
 Route::post('/register' ,   'ProviderAuth\TokenController@register');
 Route::post('/oauth/token' ,'ProviderAuth\TokenController@authenticate');
 Route::post('/logout' ,     'ProviderAuth\TokenController@logout');

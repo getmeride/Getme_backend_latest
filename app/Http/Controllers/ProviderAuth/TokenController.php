@@ -34,7 +34,20 @@ class TokenController extends Controller
 
     public function register(Request $request)
     {
-        $this->validate($request, [
+        // $this->validate($request, [
+        //         'device_id' => 'required',
+        //         'device_type' => 'required|in:android,ios',
+        //         'device_token' => 'required',
+        //         'first_name' => 'required|max:255',
+        //         'last_name' => 'required|max:255',
+        //         'email' => 'required|email|max:255|unique:providers',
+        //         'mobile' => 'required',
+        //         'password' => 'required|min:6|confirmed',
+        //     ]);
+
+        $validator = Validator::make(
+            $request->all(),
+             [
                 'device_id' => 'required',
                 'device_type' => 'required|in:android,ios',
                 'device_token' => 'required',
@@ -43,7 +56,13 @@ class TokenController extends Controller
                 'email' => 'required|email|max:255|unique:providers',
                 'mobile' => 'required',
                 'password' => 'required|min:6|confirmed',
-            ]);
+            ]
+        );
+        
+        if($validator->fails()) {
+            return response()->json(['status'=>false,'message' => $validator->messages()->all()]);
+        }
+
 
         try{
 
@@ -121,6 +140,7 @@ class TokenController extends Controller
         $User = Provider::with('service', 'device')->find(Auth::user()->id);
 
         $User->access_token = $token;
+        $User->card = (int)Setting::get('CARD', '0');
         $User->currency = Setting::get('currency', '$');
         $User->sos = Setting::get('sos_number', '911');
         $User->measurement = Setting::get('distance', 'Kms');

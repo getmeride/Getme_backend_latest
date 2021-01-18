@@ -194,6 +194,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapProviderApiRoutes()
     {
+        
         Route::group([
             'middleware' => ['provider.language'],
             'namespace' => $this->namespace,

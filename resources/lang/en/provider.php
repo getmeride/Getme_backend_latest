@@ -43,11 +43,13 @@ return array (
  		'paul_walker' => 'Paul Walker',
  		'accept' => 'Accept',
  		'cancel' => 'Cancel',
- 		'wallet_transaction' => 'Wallet Transaction',
+ 		'wallet_transaction' => 'Wallet',
  		'transfer' => 'Transfer',
+ 		'subscription' => 'Subscription',
  		'upload' => 'Upload',
  		'error_msg' => 'can only contain alphanumeric characters and . - spaces',
  		'error_phone' => 'Incorrect phone number',
+ 		'cashout' => 'Cash Out',
 
 		),
  	'partner'=>
@@ -121,7 +123,7 @@ return array (
 	    'month' => 'Month',
 	    'year' => 'Year',
 	    'default' => 'Default',
-	    'list' => 'Debit Cards',
+	    'list' => 'Subscription',
 	    'type' => 'Card Type',
 	    'four' => 'Last Four',
 	    'set' => 'Set Default',	    
@@ -134,6 +136,7 @@ return array (
  	'status' => 'Status',
  	'current_balance' => 'Current Balance',
  	'transfer' => 'Transfer',
+
  	'datetime' => 'Date &amp; Time',
  	'cancel' => 'Cancel',
  	'document_pending' => 'Document Verification Pending',

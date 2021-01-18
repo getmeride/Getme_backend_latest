@@ -371,4 +371,19 @@ class ProviderResource extends Controller
             return back()->with('flash_error', trans('admin.something_wrong'));
         }
     }
+     public function subscriptionUpdate(Request $request, $id)
+    {
+        try {            
+            $Provider = Provider::findOrFail($id); 
+            if($Provider->is_subscription){
+                 $Provider->is_subscription=0;
+            }else{
+                $Provider->is_subscription=1;
+            }
+            $Provider->save();
+            return back()->with('message', trans('admin.provider_msgs.provider_update'));
+        }  catch (Exception $e) {
+            return back()->with('flash_error', trans('admin.something_wrong'));
+        }
+    }       
 }

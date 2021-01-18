@@ -184,6 +184,20 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label for="surge_trigger" class="col-xs-4 col-form-label">@lang('admin.provider_monthly_charger')</label>
+                            <div class="col-xs-8">
+                                <input class="form-control"
+                                    type="number"
+                                    value="{{ Setting::get('provider_monthly_charger', '')  }}"
+                                    id="provider_monthly_charger"
+                                    name="provider_monthly_charger"
+                                    min="0"
+                                    required
+                                    placeholder="Provider Monthly Charger">
+                            </div>
+                        </div>
                     </blockquote>
                 </div>
 
