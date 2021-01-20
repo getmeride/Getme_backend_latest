@@ -156,5 +156,5 @@ return array (
  	'inr' => 'INR',
  	'description'=>'Description',
  	'amount'=>'Amount',
- 	'status'='Status'	
+ 	'status'=>'Status'	
 	);
