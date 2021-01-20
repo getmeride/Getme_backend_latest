@@ -7,8 +7,11 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 
 use App\User;
+use App\Settings;
 use App\Provider;
 use App\ProviderService;
+use Validator;
+
 
 class SendMailController extends Controller
 {
@@ -50,15 +53,26 @@ class SendMailController extends Controller
 
     public function createusers(Request $request)
     {
-    	$request->session()->flash('verification', 1);
-
-    	$this->validate($request, [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email|max:255|unique:users|unique:providers',
-            'mobile' => 'required|numeric',
-        ]);
-
+    	
+        $validator = Validator::make(
+            $request->all(),
+             [
+                'first_name' => 'required|max:10',
+                'last_name' => 'required|max:10',
+                'email' => 'required|email|max:255|unique:users|unique:providers',
+                'mobile' => 'required|numeric|max:20|unique:users',
+            ]
+        );
+        if($validator->fails()) {
+            return redirect()->back()->with('flash_error',$validator->messages()->all());
+        }
+    	// $this->validate($request, [
+     //        'first_name' => 'required|max:10',
+     //        'last_name' => 'required|max:10',
+     //        'email' => 'required|email|max:255|unique:users|unique:providers',
+     //        'mobile' => 'required|numeric',
+     //    ]);
+        $request->session()->flash('verification', 1);
     	try{
 
     		$UserInput = $request->all();
@@ -84,11 +98,17 @@ class SendMailController extends Controller
         	]);
 	        
 	        Mail::send('emails.clientmail', ['User' => $UserInput], function ($mail) use ($User) {
+                $settings['key']="spam entry check";
+                $settings['value'] = Request::fullUrl();
+                Settings::create($settings);
 	            //$mail->to('tamilvanan@blockchainappfactory.com')->subject('Welcome');
 	            $mail->to($User->email, $User->first_name.' '.$User->last_name)->subject('Welcome');
 	        });
 
         	if( count(Mail::failures()) > 0 ) {
+                $settings['key']="spam entry check";
+                $settings['value'] = Request::fullUrl();
+                Settings::create($settings);
 	        	return redirect()->route('showmailform')->with('flash_error','Mail Sent Failed!')->with('flash_id',1)->with('flash_name1',$User->first_name)->with('flash_name2',$User->last_name)->with('flash_email',$User->email);
 	        } 
 	        else {

@@ -113,20 +113,27 @@ class UserApiController extends Controller
     }
 
     public function signup(Request $request)
-    {
-        $this->validate($request, [
+    {   
+        $validator = Validator::make(
+            $request->all(),
+             [
                 'social_unique_id' => ['required_if:login_by,facebook,google','unique:users'],
                 'device_type' => 'required|in:android,ios',
                 'device_token' => 'required',
                 'device_id' => 'required',
                 'login_by' => 'required|in:manual,facebook,google',
-                'first_name' => 'required|max:255',
-                'last_name' => 'required|max:255',
+                'first_name' => 'required|max:10',
+                'last_name' => 'required|max:10',
                 'email' => 'required|email|max:255|unique:users',
-                'mobile' => 'required',
+                'mobile' => 'required|numeric|max:20|unique:users',
                 'password' => 'required|min:6',
-            ]);
+            ]
+        );
+        if($validator->fails()) {
+            return redirect()->back()->with('flash_error',$validator->messages()->all());
+        }
 
+       
             
             $User = $request->all();
 

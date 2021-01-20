@@ -153,5 +153,8 @@ return array (
  	'enter_location'=>'Enter a location',
  	'your_location' => 'Your Location',
  	'expires' => 'Expires',
-
+ 	'inr' => 'INR',
+ 	'description'=>'Description',
+ 	'amount'=>'Amount',
+ 	'status'='Status'	
 	);

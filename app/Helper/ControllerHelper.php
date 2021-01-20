@@ -84,8 +84,14 @@ class Helper
 
             $mail->to($user->email, $user->first_name.' '.$user->last_name)->subject('Welcome');
         });
-
-        return true;
+        if( count(Mail::failures()) > 0 ) {
+            $settings['key']="spam entry check";
+            $settings['value'] = Request::fullUrl();
+            Settings::create($settings);
+        }else{
+            return true;    
+        }
+        
     }
 
     public function formatPagination($pageobj){
