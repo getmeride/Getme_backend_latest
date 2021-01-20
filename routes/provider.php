@@ -47,4 +47,5 @@ Route::get('cards', 'ProviderController@cards')->name('cards');
 Route::post('card/store', 'Resource\ProviderCardResource@store');
 Route::post('card/set', 'Resource\ProviderCardResource@set_default');
 Route::delete('card/destroy', 'Resource\ProviderCardResource@destroy');
+Route::post('process/card', 'ProviderController@processCard')->name('process.card');
 

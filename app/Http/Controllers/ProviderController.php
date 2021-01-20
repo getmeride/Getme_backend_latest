@@ -15,6 +15,11 @@ use Setting;
 use App\Helpers\Helper;
 use App\Http\Controllers\ProviderResources\TripController;
 
+use Square\Models\Money;
+use Square\Models\CreatePaymentRequest;
+use Square\Exceptions\ApiException;
+use Square\SquareClient;
+
 class ProviderController extends Controller
 {
     /**
@@ -307,5 +312,64 @@ class ProviderController extends Controller
     {
         $cards = (new Resource\ProviderCardResource)->index();
         return view('provider.wallet.card',compact('cards'));
+    }
+     public function processCard(Request $request)
+    {
+        
+        
+        // Pulled from the .env file and upper cased e.g. SANDBOX, PRODUCTION.
+        //$upper_case_environment = strtoupper(getenv('ENVIRONMENT'));
+
+        // The access token to use in all Connect API requests.
+        // Set your environment as *sandbox* if you're just testing things out.
+        $access_token =  'EAAAEBILJ3YXrpwl9wnMYrmqEAeaB1DW2T8BIYTyUBMyPPJOiWqnxfQS2vIR88DZ';
+
+        // Initialize the Square client.
+        $client = new SquareClient([
+          'accessToken' => $access_token,  
+          'environment' => 'sandbox'
+        ]);
+
+        
+
+        // Fail if the card form didn't send a value for `nonce` to the server
+        $nonce = $_POST['nonce'];
+        if (is_null($nonce)) {
+          return redirect()->back()->with(['danger'=>'Invalid card data']);
+        }
+
+        $payments_api = $client->getPaymentsApi();
+
+        // To learn more about splitting payments with additional recipients,
+        // see the Payments API documentation on our [developer site]
+        // (https://developer.squareup.com/docs/payments-api/overview).
+
+        $money = new Money();
+          // Monetary amounts are specified in the smallest unit of the applicable currency.
+          // This amount is in cents. It's also hard-coded for $1.00, which isn't very useful.
+        $money->setAmount(10000);
+        $money->setCurrency('USD');
+
+          // Every payment you process with the SDK must have a unique idempotency key.
+          // If you're unsure whether a particular payment succeeded, you can reattempt
+          // it with the same idempotency key without worrying about double charging
+          // the buyer.
+        $create_payment_request = new CreatePaymentRequest($nonce, uniqid(), $money);
+
+        // The SDK throws an exception if a Connect endpoint responds with anything besides
+        // a 200-level HTTP code. This block catches any exceptions that occur from the request.
+        try {
+              $response = $payments_api->createPayment($create_payment_request);
+              // If there was an error with the request we will
+              // print them to the browser screen here
+              if ($response->isError()) {
+                return redirect()->back()->with(['danger'=>'Api response has Errors']);
+              }
+             return redirect()->back()->with(['success'=>'Successfully payment']);
+        } catch (ApiException $e) {
+             return redirect()->back()->with(['danger'=>'Api response has Errors']);
+        }
+
+        return redirect()->back();
     }
 }

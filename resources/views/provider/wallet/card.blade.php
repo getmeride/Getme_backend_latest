@@ -1,4 +1,7 @@
 <?php
+
+
+
 if(Setting::get('CARD', 0) == 0){
     header('Location:/provider/profile');
     exit;
@@ -10,9 +13,79 @@ if(Setting::get('CARD', 0) == 0){
 
 
 @include('provider.provider_header')
+<script type="text/javascript" src="https://js.squareupsandbox.com/v2/paymentform"></script>
+{{-- <script type="text/javascript" src="https://js.squareup.com/v2/paymentform"></script> --}}
+    
+  <script type="text/javascript">
+    window.applicationId ='sandbox-sq0idb-EM5SwDGqHZkblJHg0osXJg';
+    window.locationId ='EAAAEBILJ3YXrpwl9wnMYrmqEAeaB1DW2T8BIYTyUBMyPPJOiWqnxfQS2vIR88DZ';
+  </script>
+
+
+  <!-- link to the custom styles for SqPaymentForm -->
+<link rel="stylesheet" type="text/css" href="{{ asset('asset/css/sq-payment-form.css') }}">
 
 <div class="pro-dashboard-content gray-bg">
     <div class="container">
+        <!-- Begin Payment Form -->
+  <div class="sq-payment-form">
+    <!--
+      Square's JS will automatically hide these buttons if they are unsupported
+      by the current device.
+    -->
+    <div id="sq-walletbox">
+     {{--  <button id="sq-google-pay" class="button-google-pay"></button>
+      <button id="sq-apple-pay" class="sq-apple-pay"></button>
+      <button id="sq-masterpass" class="sq-masterpass"></button> --}}
+      {{-- <div class="sq-wallet-divider">
+        <span class="sq-wallet-divider__text">Or</span>
+      </div> --}}
+    </div>
+    <div id="sq-ccbox">
+      <!--
+        You should replace the action attribute of the form with the path of
+        the URL you want to POST the nonce to (for example, "/process-card").
+
+        You need to then make a "Charge" request to Square's Payments API with
+        this nonce to securely charge the customer.
+
+        Learn more about how to setup the server component of the payment form here:
+        https://developer.squareup.com/docs/payments-api/overview
+      -->
+      <form id="nonce-form" novalidate action="{{route('provider.process.card')}}" method="post">
+        {{csrf_field()}}
+        <div class="sq-field">
+          <label class="sq-label">Card Number</label>
+          <div id="sq-card-number"></div>
+        </div>
+        <div class="sq-field-wrapper">
+          <div class="sq-field sq-field--in-wrapper">
+            <label class="sq-label">CVV</label>
+            <div id="sq-cvv"></div>
+          </div>
+          <div class="sq-field sq-field--in-wrapper">
+            <label class="sq-label">Expiration</label>
+            <div id="sq-expiration-date"></div>
+          </div>
+          <div class="sq-field sq-field--in-wrapper">
+            <label class="sq-label">Postal</label>
+            <div id="sq-postal-code"></div>
+          </div>
+        </div>
+        <div class="sq-field">
+          <button id="sq-creditcard" class="sq-button" onclick="onGetCardNonce(event)">
+            Pay $10.00 Now
+          </button>
+        </div>
+        <!--
+          After a nonce is generated it will be assigned to this hidden input field.
+        -->
+        <div id="error"></div>
+        <input type="hidden" id="card-nonce" name="nonce">
+      </form>
+    </div>
+  </div>
+  <!-- End Payment Form -->
         <div class="manage-docs pad30">
             <div class="manage-doc-content">
                 <div class="manage-doc-section pad50">
@@ -25,18 +98,53 @@ if(Setting::get('CARD', 0) == 0){
                    
                      <div class="manage-doc-section-content border-top">
                      <div class="tab-content list-content">
-                        <div class="list-view pad30 ">
+                        <div class="list-view pad30 " style="position: relative;">
                             @if(Setting::get('demo_mode', 0) == 1)
                                  <div class="col-md-12" style="height:50px;color:red;">
                                     ** Demo Mode : Use this card - CardNo:4000056655665556, MM:12, YY:20, CVV:123.
                                 </div>
+                            @else
+                                <div class="col-md-8">
+                                    <center>PLEASE NOTE PAYMENT MUST BE MADE ON TIME TO GO ONLINE TO WORK</center>
+                                </div>
+                                <div class="col-md-4">
+                                    <SPAN><b>$0.0</b></SPAN>
+                                    
+                                </div>
                             @endif
-                            <a href="#" class="sub-right pull-right" data-toggle="modal" data-target="#add-card-modal" style="margin-right: 10px;margin-bottom: 10px;">@lang('provider.card.add_debit_card')</a>
+                            <a href="#" class="sub-right pull-right" data-toggle="modal" data-target="#add-card-modal" style="margin-right: 10px;margin-bottom: 10px;position: absolute;
+    right: 40px;top: 90px;">@lang('provider.card.add_debit_card')</a>
                             <table class="earning-table table table-responsive">
                                 <thead>
                                     <tr>
                                         <th>@lang('provider.card.type')</th>
                                         <th>@lang('provider.card.four')</th>    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if(count($cards)!='0')    
+                                    @foreach($cards as $each)
+                                        <tr>
+                                            <td>{{ $each->brand }}</td>
+                                            <td>{{ $each->last_four }}</td>
+                                        </tr>
+                                    @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="2">@lang('provider.card.notfound')</td>
+                                       </tr>
+                                    @endif
+                                </tbody>
+
+                            </table>
+
+                             <table class="earning-table table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>@lang('provider.inr')</th>
+                                        <th>@lang('provider.description')</th>
+                                        <th>@lang('provider.amount')</th>
+                                        <th>@lang('provider.status')</th>    
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -123,6 +231,7 @@ if(Setting::get('CARD', 0) == 0){
 @section('scripts')
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
+
 <script type="text/javascript">
     Stripe.setPublishableKey("{{ Setting::get('stripe_publishable_key')}}");
 
@@ -190,5 +299,7 @@ if(Setting::get('CARD', 0) == 0){
         })
     }
 </script>    
+<!-- link to the local SqPaymentForm initialization -->
+<script type="text/javascript" src="{{ asset('asset/js/sq-payment-form.js') }}"></script>
 @endsection
 
