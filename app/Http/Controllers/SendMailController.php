@@ -60,7 +60,7 @@ class SendMailController extends Controller
                 'first_name' => 'required|max:10',
                 'last_name' => 'required|max:10',
                 'email' => 'required|email|max:255|unique:users|unique:providers',
-                'mobile' => 'required|numeric|max:20|unique:users',
+                'mobile' => 'required|numeric|unique:users',
             ]
         );
         if($validator->fails()) {

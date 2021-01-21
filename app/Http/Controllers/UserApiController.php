@@ -125,14 +125,14 @@ class UserApiController extends Controller
                 'first_name' => 'required|max:10',
                 'last_name' => 'required|max:10',
                 'email' => 'required|email|max:255|unique:users',
-                'mobile' => 'required|numeric|max:20|unique:users',
+                'mobile' => 'required|numeric|unique:users',
                 'password' => 'required|min:6',
             ]
         );
         if($validator->fails()) {
-            return response()->json(['error' => $validator->messages()->all()], 500);
+            return response()->json(['error' => $validator->messages()->all()], 422);
         }
-
+       
        
             
             $User = $request->all();
