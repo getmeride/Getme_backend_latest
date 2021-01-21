@@ -9,6 +9,7 @@ use App\RequestFilter;
 use App\ProviderWallet;
 use App\Provider;
 use App\WalletRequests;
+use App\ProviderSubscription;
 use Carbon\Carbon;
 use Auth;
 use Setting;
@@ -311,7 +312,10 @@ class ProviderController extends Controller
     public function cards()
     {
         $cards = (new Resource\ProviderCardResource)->index();
-        return view('provider.wallet.card',compact('cards'));
+       
+
+        $provider_subscription = ProviderSubscription::where('provider_id',\Auth::user()->id)->orderBy('id','desc')->get();
+        return view('provider.wallet.card',compact('cards','provider_subscription'));
     }
      public function processCard(Request $request)
     {
@@ -343,11 +347,12 @@ class ProviderController extends Controller
         // To learn more about splitting payments with additional recipients,
         // see the Payments API documentation on our [developer site]
         // (https://developer.squareup.com/docs/payments-api/overview).
+        $provider_monthly_charger = Setting::get('provider_monthly_charger') * 100;
 
         $money = new Money();
           // Monetary amounts are specified in the smallest unit of the applicable currency.
           // This amount is in cents. It's also hard-coded for $1.00, which isn't very useful.
-        $money->setAmount(10000);
+        $money->setAmount($provider_monthly_charger);
         $money->setCurrency('USD');
 
           // Every payment you process with the SDK must have a unique idempotency key.
@@ -359,13 +364,40 @@ class ProviderController extends Controller
         // The SDK throws an exception if a Connect endpoint responds with anything besides
         // a 200-level HTTP code. This block catches any exceptions that occur from the request.
         try {
-              $response = $payments_api->createPayment($create_payment_request);
+            
+            $response = $payments_api->createPayment($create_payment_request);
+            $response_subscription=json_decode($response->getBody(),true);
+            //dd($response_subscription['payment']['id']);
+            // $json_result = json_decode(stripslashes($response), true);
+            // $json=str_replace("\\",'', $result);
+
+             //echo "<pre>"; print($response);exit();
               // If there was an error with the request we will
               // print them to the browser screen here
-              if ($response->isError()) {
+            if ($response->isError()) {
                 return redirect()->back()->with(['danger'=>'Api response has Errors']);
-              }
-             return redirect()->back()->with(['success'=>'Successfully payment']);
+            }
+
+            $provider_subscription_first = ProviderSubscription::where('provider_id',\Auth::user()->id)->orderBy('id','desc')->first();
+            if($provider_subscription_first){
+                $start_date = date('Y-m-d', strtotime('+1 day',strtotime($provider_subscription_first->end_date)));
+                $end_date = date('Y-m-d', strtotime('+1 month',strtotime($provider_subscription_first->end_date)));
+            }else{
+                $start_date = date("Y-m-d");
+                $end_date = date('Y-m-d', strtotime('+1 month'));
+                $end_date = date('Y-m-d', strtotime('-1 day',strtotime($end_date)));
+            }
+            $provider_subscription = new ProviderSubscription();
+            $provider_subscription->provider_id =\Auth::user()->id;
+            $provider_subscription->transaction_id =$response_subscription['payment']['id'];
+            $provider_subscription->description ="Subscription Payment";
+            $provider_subscription->amount =Setting::get('provider_monthly_charger');
+            $provider_subscription->start_date =$start_date;
+            $provider_subscription->end_date =$end_date;
+            $provider_subscription->status = $response_subscription['payment']['status'];
+            $provider_subscription->save();
+
+            return redirect()->back()->with(['success'=>'Successfully payment']);
         } catch (ApiException $e) {
              return redirect()->back()->with(['danger'=>'Api response has Errors']);
         }
