@@ -130,7 +130,7 @@ class UserApiController extends Controller
             ]
         );
         if($validator->fails()) {
-            return redirect()->back()->with('flash_error',$validator->messages()->all());
+            return response()->json(['error' => $validator->messages()->all()], 500);
         }
 
        
