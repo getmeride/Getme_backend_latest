@@ -34,6 +34,7 @@ class TokenController extends Controller
 
     public function register(Request $request)
     {
+        //echo "here";exit();
         // $this->validate($request, [
         //         'device_id' => 'required',
         //         'device_type' => 'required|in:android,ios',
@@ -42,7 +43,7 @@ class TokenController extends Controller
         //         'last_name' => 'required|max:255',
         //         'email' => 'required|email|max:255|unique:providers',
         //         'mobile' => 'required',
-        //         'password' => 'required|min:6|confirmed',
+        //         'password' => 'required|min:6',
         //     ]);
 
         $validator = Validator::make(
@@ -55,7 +56,7 @@ class TokenController extends Controller
                 'last_name' => 'required|max:255',
                 'email' => 'required|email|max:255|unique:providers',
                 'mobile' => 'required',
-                'password' => 'required|min:6|confirmed',
+                'password' => 'required|min:6',
             ]
         );
         

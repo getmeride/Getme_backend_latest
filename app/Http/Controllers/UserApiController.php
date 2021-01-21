@@ -132,7 +132,7 @@ class UserApiController extends Controller
         if($validator->fails()) {
             return response()->json(['error' => $validator->messages()->all()], 422);
         }
-       
+
        
             
             $User = $request->all();
