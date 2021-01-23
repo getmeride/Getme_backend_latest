@@ -12,3 +12,4 @@ npm-debug.log
 /storage
 /bootstrap
 /bootstrap/cache/*
+composer.lock
