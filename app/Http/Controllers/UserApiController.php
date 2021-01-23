@@ -88,6 +88,9 @@ class UserApiController extends Controller
 
     public function login(Request $request)
     {
+        try{
+
+
         $tokenRequest = $request->create('/oauth/token', 'POST', $request->all());
         
         $request->request->add([
@@ -110,6 +113,9 @@ class UserApiController extends Controller
         $update = User::where('mobile', $request->username)->update(['device_token' => $request->device_token , 'device_id' => $request->device_id , 'device_type' => $request->device_type]);    
 
         return $response;
+        } catch (Exception $e) {
+             return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function signup(Request $request)

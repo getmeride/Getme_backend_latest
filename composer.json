@@ -20,7 +20,8 @@
         "stripe/stripe-php": "^4.4",
         "turbo124/laravel-push-notification": "dev-laravel5",
         "tymon/jwt-auth": "0.5.*",
-        "square/square": "*"
+        "square/square": "*",
+        "lcobucci/jwt": "3.3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
