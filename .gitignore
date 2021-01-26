@@ -10,8 +10,6 @@ npm-debug.log
 .env
 .composer.lock
 /storage
-
-/vendor
 /bootstrap
 /bootstrap/cache/*
 composer.lock
