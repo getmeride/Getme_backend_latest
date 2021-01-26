@@ -12,6 +12,7 @@ return array(
     'Unirest\\' => array($vendorDir . '/apimatic/unirest-php/src'),
     'Sly' => array($vendorDir . '/turbo124/notification-pusher/src'),
     'Sabberworm\\CSS' => array($vendorDir . '/sabberworm/php-css-parser/lib'),
+    'PayPal' => array($vendorDir . '/paypal/rest-api-sdk-php/lib'),
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
     'Location' => array($vendorDir . '/mjaschen/phpgeo/src'),
     'JakubOnderka\\PhpConsoleHighlighter' => array($vendorDir . '/jakub-onderka/php-console-highlighter/src'),

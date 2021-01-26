@@ -13,6 +13,7 @@ use Storage;
 
 use App\Provider;
 use App\UserRequestPayment;
+use App\ProviderSubscription;
 use App\UserRequests;
 use App\Helpers\Helper;
 use App\Document;
@@ -249,6 +250,11 @@ class ProviderResource extends Controller
                     (new SendPushNotification)->DocumentsVerfied($id);
                 }                
                 $Provider->update(['status' => 'approved']);
+
+                $ProviSub=ProviderSubscription::where('provider_id',$id)->orderBy('id','desc')->first();
+                $ProviSub->status="Approved";
+                $ProviSub->save();
+
                 $url=$request->session()->pull('providerpage');                
                 return redirect()->to($url)->with('flash_success', trans('admin.provider_msgs.provider_approve'));
             } else {

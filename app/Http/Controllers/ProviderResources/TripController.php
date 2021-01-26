@@ -1555,13 +1555,18 @@ $Driver_Discount=0;
             $amountRequest->request_from=$request->type;          
             $amountRequest->from_id=Auth::user()->id;
             $amountRequest->type='D';
-            if(Setting::get('CARD', 0) == 1)
+            if(Setting::get('CARD', 0) == 1 && $request->payment_type !="remitlycashpickup")
                 $amountRequest->send_by='online';
             else
                 $amountRequest->send_by='offline';
             $amountRequest->amount=round($request->amount,2);
             $amountRequest->save();
             $fn_response["success"]=trans('api.amount_success');
+
+            if($request->payment_type =="remitlycashpickup"){
+                $User = Auth::user();
+                Helper::site_cashpickup_mail($User);
+            }
 
         }catch(\Illuminate\Database\QueryException $e){
             $fn_response["error"]=$e->getMessage();

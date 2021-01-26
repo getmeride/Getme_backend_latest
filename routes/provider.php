@@ -14,6 +14,9 @@
 Route::get('/', 'ProviderController@index')->name('index');
 Route::get('/trips', 'ProviderResources\TripController@history')->name('trips');
 
+
+
+
 Route::get('/incoming', 'ProviderController@incoming')->name('incoming');
 Route::post('/request/{id}', 'ProviderController@accept')->name('accept');
 Route::patch('/request/{id}', 'ProviderController@update')->name('update');
@@ -48,4 +51,12 @@ Route::post('card/store', 'Resource\ProviderCardResource@store');
 Route::post('card/set', 'Resource\ProviderCardResource@set_default');
 Route::delete('card/destroy', 'Resource\ProviderCardResource@destroy');
 Route::post('process/card', 'ProviderController@processCard')->name('process.card');
+
+// Route::get('create_paypal_plan', 'PaypalController@create_plan');
+// Route::get('/subscribe/paypal', 'PaypalController@paypalRedirect')->name('paypal.redirect');
+// Route::get('/subscribe/paypal/return', 'PaypalController@paypalReturn')->name('paypal.return');
+
+//Route::post('/payment', ['as' => 'payment', 'uses' => 'PaymentController@payWithpaypal']);
+// Route::post('/payment', 'PaypalController@payWithpaypal')->name('paypal.redirect');
+// Route::get('/payment/status','PaypalController@getPaymentStatus')->name('paypal.status');;
 

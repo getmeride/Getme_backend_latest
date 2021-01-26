@@ -394,7 +394,7 @@ class ProviderController extends Controller
             $provider_subscription->amount =Setting::get('provider_monthly_charger');
             $provider_subscription->start_date =$start_date;
             $provider_subscription->end_date =$end_date;
-            $provider_subscription->status = $response_subscription['payment']['status'];
+            $provider_subscription->status = "Pending";
             $provider_subscription->save();
 
             return redirect()->back()->with(['success'=>'Successfully payment']);

@@ -10,7 +10,8 @@ namespace Lcobucci\JWT;
 /**
  * Class that wraps validation values
  *
- * @deprecated This class will be removed on v4, new validation API should be used
+ * @deprecated This component has been removed from the interface in v4.0
+ * @see \Lcobucci\JWT\Validation\Validator
  *
  * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
  * @since 2.0.0

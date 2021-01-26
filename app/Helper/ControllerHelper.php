@@ -135,6 +135,40 @@ class Helper
         return $alias_id;
 
     }
+    public static function site_cashpickup_mail($user){
+
+        $name=Auth::guard('provider')->user()->first_name.' '.Auth::guard('provider')->user()->last_name;
+        $address="-";
+        $country = "-";
+        if(Auth::guard('provider')->user()->profile){
+            $address =Auth::guard('provider')->user()->profile->address.' '.Auth::guard('provider')->user()->profile->address_secondary;  
+            $country =  Auth::guard('provider')->user()->profile->country;s 
+        }
+        $mobile =Auth::guard('provider')->user()->mobile; 
+        
+        
+
+        Mail::send('emails.cashpickup', ['name' => $name,''], function ($mail) use ($user,$site_details) {
+           
+            //$mail->to('tamilvanan@blockchainappfactory.com')->subject('Invoice');
+
+            $mail->to($user->user->email, $user->user->first_name.' '.$user->user->last_name)->subject('Remitly Cash Pickup');
+        });
+
+        /*if( count(Mail::failures()) > 0 ) {
+
+           echo "There was one or more failures. They were: <br />";
+
+           foreach(Mail::failures() as $email_address) {
+               echo " - $email_address <br />";
+            }
+
+        } else {
+            echo "No errors, all sent successfully!";
+        }*/
+
+        return true;
+    }
 
 
 }

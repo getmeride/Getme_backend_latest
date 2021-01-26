@@ -183,7 +183,7 @@ class ProfileController extends Controller
         $this->validate($request, [
                 'first_name' => 'required|max:255',
                 'last_name' => 'required|max:255',
-                'mobile' => 'required',
+                'email' => 'required',
                 'avatar' => 'mimes:jpeg,bmp,png',
                 'language' => 'max:255',
                 'address' => 'max:255',
@@ -202,9 +202,10 @@ class ProfileController extends Controller
 
             if($request->has('last_name')) 
                 $Provider->last_name = $request->last_name;
+            if($request->has('email')) 
+                $Provider->email = $request->email;
 
-            if ($request->has('mobile'))
-                $Provider->mobile = $request->mobile;
+           
 
             if ($request->hasFile('avatar')) {
                 Storage::delete($Provider->avatar);

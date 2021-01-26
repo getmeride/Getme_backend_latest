@@ -22,6 +22,16 @@
                                             {{ csrf_field() }}
                                             <div class="prof-sub-col col-sm-4 col-xs-12 no-left-padding">
                                                 <div class="form-group">
+                                                    <label>Select Payment Type</label>
+                                                    <select class="form-control" name="payment_type" required>
+                                                        <option value="">Select  Payment Type</option>
+                                                        <option value="transfwise">Transfwise</option>
+                                                        <option value="remitlycashpickup">Remitly Cash Pickup</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="prof-sub-col col-sm-4 col-xs-12 no-left-padding">
+                                                <div class="form-group">
                                                     <label>@lang('provider.amount')</label>
                                                     <input type="hidden" name='type' value='provider'/> 
                                                     <input type="text" class="form-control" placeholder="@lang('provider.amount')" name="amount" value="" required="">

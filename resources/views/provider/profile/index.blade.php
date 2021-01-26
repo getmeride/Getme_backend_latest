@@ -44,7 +44,14 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="row">
+                                    <div class="prof-sub-col prof-1 col-xs-12">
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                             <input type="emial" class="form-control" placeholder="Enter Email id" name="email" value="{{ Auth::guard('provider')->user()->email }}" @lang('provider.profile.error_msg')">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="prof-sub-col prof-1 col-xs-12">
                                         <div class="form-group">
@@ -58,7 +65,7 @@
                                     <div class="prof-sub-col col-sm-6 col-xs-12 no-left-padding">
                                         <div class="form-group">
                                             <label>@lang('provider.profile.phone')</label>
-                                            <input type="text" class="form-control" required placeholder="Contact Number" name="mobile" value="{{ Auth::guard('provider')->user()->mobile }}" data-validation="custom length" data-validation-length="10-15" data-validation-regexp="^([0-9\+]+)$" data-validation-error-msg="@lang('provider.profile.error_phone')">
+                                            <input type="text" class="form-control" required placeholder="Contact Number" name="mobile" value="{{ Auth::guard('provider')->user()->mobile }}" data-validation="custom length" data-validation-length="10-15" data-validation-regexp="^([0-9\+]+)$" data-validation-error-msg="@lang('provider.profile.error_phone')" disabled="">
                                         </div>
                                     </div>
                                     <div class="prof-sub-col col-sm-6 col-xs-12 no-right-padding">
@@ -120,7 +127,8 @@
                                             <select class="form-control" name="service_type" data-validation="required">
                                                 <option value="">Select Service</option>
                                                 @foreach(get_all_service_types() as $type)
-                                                    <option @if(Auth::guard('provider')->user()->service->service_type->id == $type->id) selected="selected" @endif value="{{$type->id}}">{{$type->name}}</option>
+
+                                                    <option @if(Auth::guard('provider')->user()->service && Auth::guard('provider')->user()->service->service_type->id == $type->id) selected="selected" @endif value="{{$type->id}}">{{$type->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -128,7 +136,12 @@
                                     <div class="prof-sub-col col-sm-6 col-xs-12 no-right-padding">
                                         <div class="form-group no-margin">
                                             <label>@lang('provider.profile.car_number')</label>
-                                            <input type="text" class="form-control" placeholder="@lang('provider.profile.car_number')" name="service_number" value="{{ Auth::guard('provider')->user()->service->service_number ? Auth::guard('provider')->user()->service->service_number : "" }}" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_number') @lang('provider.profile.error_msg')">
+                                            @if(Auth::guard('provider')->user()->service)
+                                                <input type="text" class="form-control" placeholder="@lang('provider.profile.car_number')" name="service_number" value="{{ Auth::guard('provider')->user()->service->service_number ? Auth::guard('provider')->user()->service->service_number : "" }}" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_number') @lang('provider.profile.error_msg')">
+                                            @else
+                                                <input type="text" class="form-control" placeholder="@lang('provider.profile.car_number')" name="service_number" value="" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_number') @lang('provider.profile.error_msg')">
+                                            @endif
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -137,7 +150,11 @@
                                     <div class="prof-sub-col col-sm-6 col-xs-12 no-left-padding">
                                         <div class="form-group">
                                             <label>@lang('provider.profile.car_model')</label>
-                                            <input type="text"  placeholder="@lang('provider.profile.car_model')" class="form-control" name="service_model" value="{{ Auth::guard('provider')->user()->service->service_model ? Auth::guard('provider')->user()->service->service_model : "" }}" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_model') @lang('provider.profile.error_msg')">
+                                            @if(Auth::guard('provider')->user()->service)
+                                                <input type="text"  placeholder="@lang('provider.profile.car_model')" class="form-control" name="service_model" value="{{ Auth::guard('provider')->user()->service->service_model ? Auth::guard('provider')->user()->service->service_model : "" }}" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_model') @lang('provider.profile.error_msg')">
+                                            @else
+                                                <input type="text"  placeholder="@lang('provider.profile.car_model')" class="form-control" name="service_model" value="" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_model') @lang('provider.profile.error_msg')">
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

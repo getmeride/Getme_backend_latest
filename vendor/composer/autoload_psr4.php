@@ -44,7 +44,6 @@ return array(
     'Symfony\\Bridge\\PsrHttpMessage\\' => array($vendorDir . '/symfony/psr-http-message-bridge'),
     'Svg\\' => array($vendorDir . '/phenx/php-svg-lib/src/Svg'),
     'SuperClosure\\' => array($vendorDir . '/jeremeamia/superclosure/src'),
-    'Stripe\\' => array($vendorDir . '/stripe/stripe-php/lib'),
     'Square\\' => array($vendorDir . '/square/square/src'),
     'SquareConnect\\' => array($vendorDir . '/square/connect/lib'),
     'Ramsey\\Uuid\\' => array($vendorDir . '/ramsey/uuid/src'),
