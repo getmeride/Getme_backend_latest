@@ -1,7 +1,7 @@
 <?php
 if(Auth::user()->status=='document'){   
    if(Route::current()->getName()!='provider.documents.index' && Route::current()->getName()!='provider.index'){?>
-      <script>window.location = "{{ route('provider.documents') }}";</script>
+      <script>window.location = "{{ route('provider.documents.index') }}";</script>
       <?php 
       //header('location:provider/documents');
       //exit;
