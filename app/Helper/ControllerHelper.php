@@ -142,7 +142,7 @@ class Helper
         $country = "-";
         if(Auth::guard('provider')->user()->profile){
             $address =Auth::guard('provider')->user()->profile->address.' '.Auth::guard('provider')->user()->profile->address_secondary;  
-            $country =  Auth::guard('provider')->user()->profile->country;s 
+            $country =  Auth::guard('provider')->user()->profile->country;
         }
         $mobile =Auth::guard('provider')->user()->mobile; 
         
