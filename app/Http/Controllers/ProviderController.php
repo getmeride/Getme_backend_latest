@@ -35,6 +35,10 @@ class ProviderController extends Controller
                 'update_password',
             ]]);
     }
+    public function transfercheck()
+    {
+        dd("here");
+    }
 
     /**
      * Display a listing of the resource.
