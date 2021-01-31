@@ -447,7 +447,7 @@ class ProfileController extends Controller
     {
         $this->validate($request, [
             'document' => 'required',
-            'document.*' => 'mimes:jpg,jpeg,png|max:2048'
+            'document.*' => 'mimes:jpg,jpeg,png'
         ]);
         try {           
 

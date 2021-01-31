@@ -1616,7 +1616,7 @@ class UserApiController extends Controller
                 'user' => 'required',
             ]);  
         } 
-
+        //dd("here");
         if(Auth::user()->wallet_balance < $request->amount)
         {
             if($request->ajax()){    
