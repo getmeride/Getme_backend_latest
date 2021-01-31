@@ -13,3 +13,7 @@ npm-debug.log
 /bootstrap
 /bootstrap/cache/*
 composer.lock
+composer.lock
+*.lock
+composer.lock
+/vendor

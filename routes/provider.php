@@ -11,9 +11,10 @@
 |
 */
 
+Route::post('/transfer' ,'ProviderController@transfer')->name('transfer');
+
 Route::get('/', 'ProviderController@index')->name('index');
 Route::get('/trips', 'ProviderResources\TripController@history')->name('trips');
-
 
 
 

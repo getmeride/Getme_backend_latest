@@ -21,16 +21,15 @@ class DocumentController extends Controller
      */
     public function index()
     {
-
+        try{
+            return view('provider.document.index', compact('DriverDocuments', 'VehicleDocuments', 'Provider'));
+        }catch(\Exception $e){
+            throw new \App\Exceptions\CustomException($e->getMessage());
+        }
         // $VehicleDocuments = Document::vehicle()->get();
         // $DriverDocuments = Document::driver()->get();
 
-        $VehicleDocuments = Document::where('type', 'VEHICLE')->get();
-        $DriverDocuments = Document::where('type', 'DRIVER')->get();
-
-        $Provider = \Auth::guard('provider')->user();
-
-        return view('provider.document.index', compact('DriverDocuments', 'VehicleDocuments', 'Provider'));
+       
     }
 
     /**

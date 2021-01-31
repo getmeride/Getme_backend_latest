@@ -12,7 +12,6 @@
 */
 Route::post('/verify' , 'UserApiController@verify');
 Route::post('/checkemail' , 'UserApiController@checkUserEmail');
-
 Route::post('/oauth/token' , 'UserApiController@login');
 Route::post('/signup' , 'UserApiController@signup');
 Route::post('/logout' , 'UserApiController@logout');
