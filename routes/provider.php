@@ -11,6 +11,8 @@
 |
 */
 
+
+
 Route::post('/transfer' ,'ProviderController@transfer')->name('transfer');
 
 Route::get('/', 'ProviderController@index')->name('index');
