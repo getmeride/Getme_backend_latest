@@ -1565,7 +1565,7 @@ $Driver_Discount=0;
 
             if($request->payment_type =="remitlycashpickup"){
                 $User = Auth::user();
-                Helper::site_cashpickup_mail($User);
+                Helper::site_cashpickup_mail($User,$amountRequest->amount);
             }
 
         }catch(\Illuminate\Database\QueryException $e){
