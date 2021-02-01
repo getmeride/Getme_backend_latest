@@ -204,23 +204,24 @@ class TokenController extends Controller
      */
     public function forgot_password(Request $request){
 
-        $this->validate($request, [
-                'email' => 'required|email|exists:providers,email',
+       
+          $this->validate($request, [
+                'mobile' => 'required|numeric|exists:providers,mobile',
             ]);
 
         try{  
             
-            $provider = Provider::where('email' , $request->email)->first();
+            $provider = Provider::where('mobile' , $request->mobile)->first();
 
-            $otp = mt_rand(100000, 999999);
+            // $otp = mt_rand(100000, 999999);
 
-            $provider->otp = $otp;
-            $provider->save();
+            // $provider->otp = $otp;
+            // $provider->save();
 
-            Notification::send($provider, new ResetPasswordOTP($otp));
+            // Notification::send($provider, new ResetPasswordOTP($otp));
 
             return response()->json([
-                'message' => 'OTP sent to your email!',
+                'message' => 'OTP sent to your mobile number!',
                 'provider' => $provider
             ]);
 
@@ -239,7 +240,7 @@ class TokenController extends Controller
     public function reset_password(Request $request){
 
         $this->validate($request, [
-                'password' => 'required|confirmed|min:6',
+                'password' => 'required|min:6',
                 'id' => 'required|numeric|exists:providers,id'
             ]);
 
