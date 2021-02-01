@@ -1285,22 +1285,22 @@ class UserApiController extends Controller
     public function forgot_password(Request $request){
 
         $this->validate($request, [
-                'email' => 'required|email|exists:users,email',
+                'mobile' => 'required|numeric|exists:users,mobile',
             ]);
 
         try{  
             
-            $user = User::where('email' , $request->email)->first();
+            $user = User::where('mobile' , $request->mobile)->first();
 
-            $otp = mt_rand(100000, 999999);
+            // $otp = mt_rand(100000, 999999);
 
-            $user->otp = $otp;
-            $user->save();
+            // $user->otp = $otp;
+            // $user->save();
 
-            Notification::send($user, new ResetPasswordOTP($otp));
+            //Notification::send($user, new ResetPasswordOTP($otp));
 
             return response()->json([
-                'message' => 'OTP sent to your email!',
+                'message' => 'OTP sent to your mobile number',
                 'user' => $user
             ]);
 
@@ -1319,7 +1319,7 @@ class UserApiController extends Controller
     public function reset_password(Request $request){
 
         $this->validate($request, [
-                'password' => 'required|confirmed|min:6',
+                'password' => 'required|min:6',
                 'id' => 'required|numeric|exists:users,id'
 
             ]);
