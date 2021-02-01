@@ -216,6 +216,7 @@ class AdminController extends Controller
         Setting::set('sos_number', $request->sos_number);
         Setting::set('contact_number', $request->contact_number);
         Setting::set('contact_email', $request->contact_email);
+        Setting::set('contact_link', $request->contact_link);
         Setting::set('site_copyright', $request->site_copyright);        
         Setting::set('social_login', $request->social_login);
         Setting::set('map_key', $request->map_key);

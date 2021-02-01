@@ -24,8 +24,8 @@
                                                 <div class="form-group">
                                                     <label>Select Payment Type</label>
                                                     <select class="form-control" name="payment_type" required>
-                                                        <option value="">Select  Payment Type</option>
-                                                        <option value="transfwise">Transfwise</option>
+                                                        {{-- <option value="">Select  Payment Type</option>
+                                                        <option value="transfwise">Transfwise</option> --}}
                                                         <option value="remitlycashpickup">Remitly Cash Pickup</option>
                                                     </select>
                                                 </div>

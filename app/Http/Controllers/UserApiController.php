@@ -1359,8 +1359,9 @@ class UserApiController extends Controller
             if($request->ajax()) {
                 return response()->json([
                     'contact_number' => Setting::get('contact_number',''), 
-                    'contact_email' => Setting::get('contact_email','')
-                     ]);
+                    'contact_email' => Setting::get('contact_email',''),
+                    'contact_link' => Setting::get('contact_link','')
+                    ]);
             }
 
         }catch (Exception $e) {

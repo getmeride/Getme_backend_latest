@@ -71,6 +71,7 @@ return array (
     'SOS_Number' => 'SOS Number',
     'Contact_Number' => 'Contact Number',
     'Contact_Email' => 'Contact Email',
+    'Contact_link' => 'Contact Link',
     'Social_Login' => 'Social Login',
     'Update_Site_Settings' => 'Update Site Settings',
     'distance' => 'Distance',

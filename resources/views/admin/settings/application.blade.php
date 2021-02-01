@@ -150,12 +150,18 @@
 				</div>
 
 				<div class="form-group row">
+					<label for="contact_link" class="col-xs-2 col-form-label">@lang('admin.setting.Contact_link')</label>
+					<div class="col-xs-10">
+						<input class="form-control" type="text" value="{{ Setting::get('contact_link', '')  }}" name="contact_link" required id="contact_link" placeholder="Contact Link">
+					</div>
+				</div>
+
+				<div class="form-group row">
 					<label for="contact_email" class="col-xs-2 col-form-label">@lang('admin.setting.Contact_Email')</label>
 					<div class="col-xs-10">
 						<input class="form-control" type="email" value="{{ Setting::get('contact_email', '')  }}" name="contact_email" required id="contact_email" placeholder="Contact Email">
 					</div>
 				</div>
-
 				<div class="form-group row">
 					<label for="social_login" class="col-xs-2 col-form-label">@lang('admin.setting.Social_Login')</label>
 					<div class="col-xs-10">
