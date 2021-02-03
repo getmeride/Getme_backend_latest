@@ -6,6 +6,7 @@ use File;
 use Setting;
 use Illuminate\Support\Facades\Mail;
 use App\WalletRequests;
+use Auth;
 
 class Helper
 {
@@ -135,38 +136,42 @@ class Helper
         return $alias_id;
 
     }
-    public static function site_cashpickup_mail($user){
+    public static function site_cashpickup_mail($user,$amount){
 
         $name=Auth::guard('provider')->user()->first_name.' '.Auth::guard('provider')->user()->last_name;
         $address="-";
         $country = "-";
+        $city = "-";
+        $postal_code = "-";
         if(Auth::guard('provider')->user()->profile){
             $address =Auth::guard('provider')->user()->profile->address.' '.Auth::guard('provider')->user()->profile->address_secondary;  
             $country =  Auth::guard('provider')->user()->profile->country;
+            $city =  Auth::guard('provider')->user()->profile->city;
+            $postal_code =  Auth::guard('provider')->user()->profile->postal_code;
         }
         $mobile =Auth::guard('provider')->user()->mobile; 
-        
+        $email = Auth::guard('provider')->user()->email; 
         
 
-        Mail::send('emails.cashpickup', ['name' => $name,''], function ($mail) use ($user,$site_details) {
+        Mail::send('emails.cashpickup', ['name' => $name,'address' => $address,'country' => $country,'mobile' => $mobile,'city' =>$city,'postal_code'=>$postal_code,'email' => $email,'amount'=>$amount], function ($mail) use ($name,$email) {
            
             //$mail->to('tamilvanan@blockchainappfactory.com')->subject('Invoice');
 
-            $mail->to($user->user->email, $user->user->first_name.' '.$user->user->last_name)->subject('Remitly Cash Pickup');
+            $mail->to($email, $name)->subject('Remitly Cash Pickup');
         });
 
-        /*if( count(Mail::failures()) > 0 ) {
+        if( count(Mail::failures()) > 0 ) {
 
-           echo "There was one or more failures. They were: <br />";
+             //echo "There was one or more failures. They were: <br />";
 
            foreach(Mail::failures() as $email_address) {
-               echo " - $email_address <br />";
+               //echo " - $email_address <br />";
             }
 
         } else {
-            echo "No errors, all sent successfully!";
-        }*/
-
+            //echo "No errors, all sent successfully!";
+        }
+        //exit();
         return true;
     }
 

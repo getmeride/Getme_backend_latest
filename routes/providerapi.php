@@ -38,7 +38,9 @@ Route::group(['middleware' => ['provider.api']], function () {
         Route::post('/language' , 'ProviderResources\ProfileController@update_language');
         Route::post('/available', 'ProviderResources\ProfileController@available');
         Route::get ('/documents', 'ProviderResources\ProfileController@documents');
-        Route::post('/documents/store', 'ProviderResources\ProfileController@documentstore');       
+        Route::post('/documents/store', 'ProviderResources\ProfileController@documentstore');    
+        Route::post('/process/card', 'ProviderResources\ProfileController@processCard'); 
+        Route::post('/subscription/history', 'ProviderResources\ProfileController@subscriptionHistory');  
 
     });
 
@@ -78,5 +80,8 @@ Route::group(['middleware' => ['provider.api']], function () {
 
     });
     Route::post('/test/push' ,  'ProviderResources\TripController@test');
+    
+
+
 
 });

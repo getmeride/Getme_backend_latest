@@ -24,6 +24,12 @@ use App\Document;
 use App\Http\Controllers\SendPushNotification;
 use App\Http\Controllers\ProviderResources\DocumentController;
 use Validator;
+use App\ProviderSubscription;
+
+use Square\Models\Money;
+use Square\Models\CreatePaymentRequest;
+use Square\Exceptions\ApiException;
+use Square\SquareClient;
 
 class ProfileController extends Controller
 {
@@ -477,7 +483,7 @@ class ProfileController extends Controller
             }
 
         } catch(Exception $e) {
-            return response()->json(['error' => trans('api.something_went_wrong')], 422);
+            return response()->json(['error' => $e->getMessage()], 422);
         }
     }
 
@@ -523,6 +529,77 @@ class ProfileController extends Controller
             }else{
                 return redirect('/provider')->with('flash_error', $request->error_description);
             }
+        }
+    }
+    public function processCard(Request $request)
+    {
+        $this->validate($request, [
+            'nonce' => 'required',
+        ]);
+        try {           
+            $access_token =  'EAAAEBILJ3YXrpwl9wnMYrmqEAeaB1DW2T8BIYTyUBMyPPJOiWqnxfQS2vIR88DZ';
+            $client = new SquareClient([
+                'accessToken' => $access_token,  
+                'environment' => 'sandbox'
+            ]);
+            // Fail if the card form didn't send a value for `nonce` to the server
+            $nonce = $request->nonce;
+            if (is_null($nonce)) {
+              //return redirect()->back()->with(['danger'=>'Invalid card data']);
+                return response()->json(['error' => 'Invalid card data'], 422);
+            }
+            $payments_api = $client->getPaymentsApi();
+
+            
+            $provider_monthly_charger = Setting::get('provider_monthly_charger') * 100;
+
+            $money = new Money();
+            $money->setAmount($provider_monthly_charger);
+            $money->setCurrency('USD');
+
+            $create_payment_request = new CreatePaymentRequest($nonce, uniqid(), $money);
+
+            $response = $payments_api->createPayment($create_payment_request);
+            $response_subscription=json_decode($response->getBody(),true);
+            //$payments_api = $client->getPaymentsApi();
+            
+            if ($response->isError()) {
+
+                return response()->json(['error' => $response->isError()], 422);
+            }
+
+            $provider_subscription_first = ProviderSubscription::where('provider_id',\Auth::user()->id)->orderBy('id','desc')->first();
+            if($provider_subscription_first){
+                $start_date = date('Y-m-d', strtotime('+1 day',strtotime($provider_subscription_first->end_date)));
+                $end_date = date('Y-m-d', strtotime('+1 month',strtotime($provider_subscription_first->end_date)));
+            }else{
+                $start_date = date("Y-m-d");
+                $end_date = date('Y-m-d', strtotime('+1 month'));
+                $end_date = date('Y-m-d', strtotime('-1 day',strtotime($end_date)));
+            }
+                $provider_subscription = new ProviderSubscription();
+                $provider_subscription->provider_id =Auth::user()->id;
+                $provider_subscription->transaction_id =$response_subscription['payment']['id'];
+                $provider_subscription->description ="Subscription Payment";
+                $provider_subscription->amount =Setting::get('provider_monthly_charger');
+                $provider_subscription->start_date =$start_date;
+                $provider_subscription->end_date =$end_date;
+                $provider_subscription->status = "Pending";
+                $provider_subscription->save();
+
+            return response()->json(['success' => 'true']);
+        } catch(Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 422);
+        }
+    }
+    public function subscriptionHistory(Request $request)
+    {
+        try {           
+            $provider_subscription = ProviderSubscription::where('provider_id',Auth::user()->id)->orderBy('id','desc')->get();
+            
+            return response()->json(['subscription_history' => $provider_subscription]);
+        } catch(Exception $e) {
+            return response()->json(['error' => trans('api.something_went_wrong')], 422);
         }
     }
 }
