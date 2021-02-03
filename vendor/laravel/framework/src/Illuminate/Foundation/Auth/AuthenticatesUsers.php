@@ -58,7 +58,8 @@ trait AuthenticatesUsers
      * @return void
      */
     protected function validateLogin(Request $request)
-    {
+    {   
+
         $this->validate($request, [
             $this->username() => 'required', 'password' => 'required',
         ]);
@@ -72,6 +73,9 @@ trait AuthenticatesUsers
      */
     protected function attemptLogin(Request $request)
     {
+        if(!empty($request['country_code'])){
+            $request['mobile'] = $request['country_code'].''.$request['mobile'];    
+        }
         return $this->guard()->attempt(
             $this->credentials($request), $request->has('remember')
         );
@@ -99,7 +103,7 @@ trait AuthenticatesUsers
         $request->session()->regenerate();
 
         $this->clearLoginAttempts($request);
-
+        //dd($request);
         return $this->authenticated($request, $this->guard()->user())
                 ?: redirect()->intended($this->redirectPath());
     }

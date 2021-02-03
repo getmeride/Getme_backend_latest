@@ -1,7 +1,7 @@
 @extends('user.layout.auth')
 
 @section('content')
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/6.4.1/css/intlTelInput.css">
 <div class="full-page-bg" style="background-image: url({{ asset('asset/img/login-user-bg.jpg') }});">
     <div class="log-overlay"></div>
     <div class="full-page-bg-inner">
@@ -33,8 +33,11 @@
                             <input value="+1" type="text" placeholder="+1" id="country_code" name="country_code" required />
                         </div> 
                          --}}
-                        <div class="col-md-12">
-                            <input type="text" required id="phone_number" class="form-control" placeholder="Enter Phone Number" name="mobile" value="+1{{ old('phone_number') }}" data-stripe="number"  />
+                        <div class="col-md-4">
+                            <input type="tel" name="country_code" id="country_code" value="{{ old('country_code') }}" placeholder="+1">
+                        </div>    
+                        <div class="col-md-8">        
+                            <input type="text" required id="phone_number" class="form-control" placeholder="Enter Phone Number" name="mobile" value="{{ old('phone_number') }}" data-stripe="number"  />
                             @if ($errors->has('mobile'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('mobile') }}</strong>
@@ -102,6 +105,10 @@
         return true;
     }
 </script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/6.4.1/js/intlTelInput.min.js"></script>
+<script type="text/javascript">
+    $("#country_code").intlTelInput();
+    $("#country_code").intlTelInput("setNumber", "+1");
+</script>
 
 @endsection

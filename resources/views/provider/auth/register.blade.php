@@ -1,6 +1,7 @@
 @extends('provider.layout.auth')
 
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/6.4.1/css/intlTelInput.css">
 <div class="col-md-12">
     <a class="log-blk-btn" href="{{ url('/provider/login') }}">@lang('provider.signup.already_register')</a>
     <h3>@lang('provider.signup.sign_up')</h3>
@@ -10,18 +11,18 @@
     <form class="form-horizontal" role="form" method="POST" action="{{ url('/provider/register') }}">
 
         <div id="first_step">
-            <div class="col-md-4">
-                <input value="+1" type="text" placeholder="+1" id="country_code" name="country_code" />
-            </div> 
+           <div class="col-md-4">
+               <input type="tel" name="country_code" id="country_code" placeholder="e.g. +1 702 123 4567">
+            </div>  
             
             <div class="col-md-8">
-                <input type="phone" autofocus id="phone_number" class="form-control" placeholder="@lang('provider.signup.enter_phone')" name="phone_number" value="{{ old('phone_number') }}" data-stripe="number" maxlength="10" onkeypress="return isNumberKey(event);"/>
+                <input type="phone" autofocus id="phone_number" class="form-control" placeholder="@lang('provider.signup.enter_phone')" name="mobile" value="{{ old('mobile') }}" data-stripe="number" maxlength="10" onkeypress="return isNumberKey(event);"/>
             </div>
 
             <div class="col-md-8">
-                @if ($errors->has('phone_number'))
+                @if ($errors->has('mobile'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('phone_number') }}</strong>
+                        <strong>{{ $errors->first('mobile') }}</strong>
                     </span>
                 @endif
             </div>
@@ -276,6 +277,11 @@
         return true;
     }
 
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/6.4.1/js/intlTelInput.min.js"></script>
+<script type="text/javascript">
+    $("#country_code").intlTelInput();
+    $("#country_code").intlTelInput("setNumber", "+1");
 </script>
 @endsection
 

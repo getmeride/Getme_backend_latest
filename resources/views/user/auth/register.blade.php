@@ -1,7 +1,7 @@
 @extends('user.layout.auth')
 
 @section('content')
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/6.4.1/css/intlTelInput.css">
 <?php $login_user = asset('asset/img/login-user-bg.jpg'); ?>
 <div class="full-page-bg" style="background-image: url({{$login_user}});">
 <div class="log-overlay"></div>
@@ -23,17 +23,18 @@
 
                         <div id="first_step">
                             <div class="col-md-4">
-                                <input value="+1" type="text" placeholder="+1" id="country_code" name="country_code" />
+                               {{--  <input value="+1" type="text" placeholder="+1" id="country_code" name="country_code" /> --}}
+                               <input type="tel" name="country_code" id="country_code" placeholder="e.g. +1 702 123 4567">
                             </div> 
                             
                             <div class="col-md-8">
-                                <input type="text" autofocus id="phone_number" class="form-control" placeholder="Enter Phone Number" name="phone_number" value="{{ old('phone_number') }}" data-stripe="number" maxlength="10" onkeypress="return isNumberKey(event);" />
+                                <input type="text" autofocus id="phone_number" class="form-control" placeholder="Enter Mobile Number" name="mobile" value="{{ old('mobile') }}" data-stripe="number" maxlength="10" onkeypress="return isNumberKey(event);" required="" />
                             </div>
 
                             <div class="col-md-8">
-                                @if ($errors->has('phone_number'))
+                                @if ($errors->has('mobile'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('phone_number') }}</strong>
+                                        <strong>{{ $errors->first('mobile') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -41,7 +42,7 @@
                                 <div id="recaptcha-container"></div>
                             </div>
                             <div class="col-md-12" style="padding-bottom: 10px;" id="mobile_verfication">
-                                <input type="button" class="log-teal-btn small login_button"  value="Verify Phone Number"/>
+                                <input type="button" class="log-teal-btn small login_button"  value="Verify Phone Number" required=""/>
                             </div>
                             
                         </div>
@@ -183,11 +184,19 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     $('.login_button').click(function(){
+
         phoneAuth();
     });
     function phoneAuth() {
         var country_code = document.getElementById('country_code').value;
         var phone_number=document.getElementById('phone_number').value;
+        if(country_code == ""){
+            alert("please enter country code");
+            return false;
+        }else if(phone_number == ""){
+            alert("please enter phone number");
+            return false;
+        }
         var number=country_code+''+phone_number;
         firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
             window.confirmationResult=confirmationResult;
@@ -275,6 +284,12 @@
 
         return true;
     }
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/6.4.1/js/intlTelInput.min.js"></script>
+<script type="text/javascript">
+    $("#country_code").intlTelInput();
+    $("#country_code").intlTelInput("setNumber", "+1");
 </script>
 
 
