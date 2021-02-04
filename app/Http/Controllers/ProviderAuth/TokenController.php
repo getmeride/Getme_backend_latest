@@ -145,6 +145,8 @@ class TokenController extends Controller
         $User->currency = Setting::get('currency', '$');
         $User->sos = Setting::get('sos_number', '911');
         $User->measurement = Setting::get('distance', 'Kms');
+        $User->subscription_amount = Setting::get('provider_monthly_charger', '50');
+        
 
         if($User->device) {
             ProviderDevice::where('id',$User->device->id)->update([
