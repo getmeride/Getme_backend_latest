@@ -537,7 +537,8 @@ class ProfileController extends Controller
             'nonce' => 'required',
         ]);
         try {           
-            $access_token =  'EAAAEBILJ3YXrpwl9wnMYrmqEAeaB1DW2T8BIYTyUBMyPPJOiWqnxfQS2vIR88DZ';
+            //$access_token =  'EAAAEBILJ3YXrpwl9wnMYrmqEAeaB1DW2T8BIYTyUBMyPPJOiWqnxfQS2vIR88DZ';
+            $access_token =  env('access_token');
             $client = new SquareClient([
                 'accessToken' => $access_token,  
                 'environment' => 'sandbox'

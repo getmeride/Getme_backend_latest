@@ -111,7 +111,9 @@ class TripController extends Controller
 
             }
 
-
+            $Provider['currency'] = Setting::get('currency', '$');
+            
+            $Provider['subscription_amount'] = Setting::get('provider_monthly_charger', '50');
             $Response = [
                     'account_status' => $Provider->status,
                     'service_status' => $Provider->service ? Auth::user()->service->status : 'offline',

@@ -330,7 +330,7 @@ class ProviderController extends Controller
 
         // The access token to use in all Connect API requests.
         // Set your environment as *sandbox* if you're just testing things out.
-        $access_token =  'EAAAEBILJ3YXrpwl9wnMYrmqEAeaB1DW2T8BIYTyUBMyPPJOiWqnxfQS2vIR88DZ';
+        $access_token =  env('access_token');
 
         // Initialize the Square client.
         $client = new SquareClient([

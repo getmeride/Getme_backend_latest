@@ -13,12 +13,12 @@ if(Setting::get('CARD', 0) == 0){
 
 
 @include('provider.provider_header')
-<script type="text/javascript" src="https://js.squareupsandbox.com/v2/paymentform"></script>
+<script type="text/javascript" src="{{env('SQUARE_UP_link')}}"></script>
 {{-- <script type="text/javascript" src="https://js.squareup.com/v2/paymentform"></script> --}}
     
   <script type="text/javascript">
-    window.applicationId ='sandbox-sq0idb-EM5SwDGqHZkblJHg0osXJg';
-    window.locationId ='12316516';
+    window.applicationId ='{{env('SQUARE_UP_applicationId')}}';
+    window.locationId ='{{env('SQUARE_UP_locationId')}}';
   </script>
 
 
