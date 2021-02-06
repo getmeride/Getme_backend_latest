@@ -226,11 +226,16 @@
         console.log("codeverify");
         var code=document.getElementById('verificationCode').value;
         coderesult.confirm(code).then(function (result) {
-            var mobile_no=$('#mobile_no').val();
+            //var mobile_no=$('#mobile_no').val();
+            
+            var country_code = document.getElementById('country_code').value;
+            var phone_number=document.getElementById('phone_number').value;
+            var number=country_code+''+phone_number;
             $('#verificationCode').val('');
             $('#verification').modal('hide');
             $('#first_step').hide();
             $('#second_step').show();
+            $('#phone_number').val(number);
             // $.ajax({
             //     type:"post",
             //     url:"loginajax.php",

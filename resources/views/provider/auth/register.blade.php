@@ -187,6 +187,13 @@
     function phoneAuth() {
         var country_code = document.getElementById('country_code').value;
         var phone_number=document.getElementById('phone_number').value;
+        if(country_code == ""){
+            alert("please enter country code");
+            return false;
+        }else if(phone_number == ""){
+            alert("please enter phone number");
+            return false;
+        }
         var number=country_code+''+phone_number;
         firebase.auth().signInWithPhoneNumber(number,window.recaptchaVerifier).then(function (confirmationResult) {
             window.confirmationResult=confirmationResult;
@@ -217,10 +224,14 @@
         var code=document.getElementById('verificationCode').value;
         coderesult.confirm(code).then(function (result) {
             var mobile_no=$('#mobile_no').val();
+            var country_code = document.getElementById('country_code').value;
+            var phone_number=document.getElementById('phone_number').value;
+            var number=country_code+''+phone_number;
             $('#verificationCode').val('');
             $('#verification').modal('hide');
             $('#first_step').hide();
             $('#second_step').show();
+            $('#phone_number').val(number);
             // $.ajax({
             //     type:"post",
             //     url:"loginajax.php",
