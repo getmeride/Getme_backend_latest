@@ -309,8 +309,8 @@ class PaymentController extends Controller
         {
 
          // $access_token = Setting::get('square_access_token');
-          $access_token = 'EAAAEAvSoq6fwjHL5evOYZENgCXgPinc-PIBFmO3DgqeH59dhp7WF7fDVVCIbIAz';
-
+          //$access_token = 'EAAAEAvSoq6fwjHL5evOYZENgCXgPinc-PIBFmO3DgqeH59dhp7WF7fDVVCIbIAz';
+           $access_token =  env('access_token');
 
           # setup authorization
           \SquareConnect\Configuration::getDefaultConfiguration()->setAccessToken($access_token);
