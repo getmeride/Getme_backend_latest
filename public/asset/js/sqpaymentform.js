@@ -1,8 +1,8 @@
 // Set the application ID
-var applicationId = "sq0idp-49tadCGo3pQNaLc6sePUrA";
+//var applicationId = "sq0idp-49tadCGo3pQNaLc6sePUrA";
 
 // Set the location ID
-var locationId = "PFH972RPJ6WJQ";
+//var locationId = "PFH972RPJ6WJQ";
 
 
 function buildForm(form) {

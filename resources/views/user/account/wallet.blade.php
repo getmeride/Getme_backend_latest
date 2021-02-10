@@ -226,10 +226,15 @@
     }
 
 </script>
+<script type="text/javascript" src="{{env('SQUARE_UP_link')}}"></script>
+{{-- <script type="text/javascript" src="https://js.squareup.com/v2/paymentform"></script> --}}
 
- <script type="text/javascript" src="https://js.squareup.com/v2/paymentform">
+
     </script>
-
+    <script type="text/javascript">
+    window.applicationId ='{{env('SQUARE_UP_applicationId')}}';
+    window.locationId ='{{env('SQUARE_UP_locationId')}}';
+  </script>
     <!-- link to the local SqPaymentForm initialization -->
     <script type="text/javascript" src="{{asset('asset/js/sqpaymentform.js')}}">
     </script>
