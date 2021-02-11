@@ -232,8 +232,8 @@
 
     </script>
     <script type="text/javascript">
-    window.applicationId ='{{env('SQUARE_UP_applicationId')}}';
-    window.locationId ='{{env('SQUARE_UP_locationId')}}';
+    var applicationId  ='{{env('SQUARE_UP_applicationId')}}';
+    var locationId ='{{env('SQUARE_UP_locationId')}}';
   </script>
     <!-- link to the local SqPaymentForm initialization -->
     <script type="text/javascript" src="{{asset('asset/js/sqpaymentform.js')}}">

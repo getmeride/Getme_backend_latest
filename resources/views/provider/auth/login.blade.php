@@ -69,7 +69,10 @@
     </div>
     @endif
 </div>
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+@endsection
+
+
+@section('scripts')
 <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
 <script type="text/javascript">
     window.onload=function () {

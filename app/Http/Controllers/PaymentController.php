@@ -24,6 +24,11 @@ use App\Fleet;
 
 use App\Http\Controllers\ProviderResources\TripController;
 
+use Square\Models\Money;
+use Square\Models\CreatePaymentRequest;
+use Square\Exceptions\ApiException;
+use Square\SquareClient;
+
 class PaymentController extends Controller
 {
        /**
@@ -308,47 +313,70 @@ class PaymentController extends Controller
         if($request->card_id=='SQUARE')
         {
 
-         // $access_token = Setting::get('square_access_token');
-          //$access_token = 'EAAAEAvSoq6fwjHL5evOYZENgCXgPinc-PIBFmO3DgqeH59dhp7WF7fDVVCIbIAz';
-           $access_token =  env('access_token');
+            // $access_token = Setting::get('square_access_token');
+            //$access_token = 'EAAAEAvSoq6fwjHL5evOYZENgCXgPinc-PIBFmO3DgqeH59dhp7WF7fDVVCIbIAz';
+            $access_token =  env('access_token');
 
-          # setup authorization
-          \SquareConnect\Configuration::getDefaultConfiguration()->setAccessToken($access_token);
-          # create an instance of the Transaction API class
-          $transactions_api = new \SquareConnect\Api\TransactionsApi();
-          $location_id = 'PFH972RPJ6WJQ';
-          $nonce = $request->nonce;
-          $amount =(int)($request->amount*100);
-         // dd($amount);
-          $request_body = array (
-              "card_nonce" => $nonce,
-              # Monetary amounts are specified in the smallest unit of the applicable currency.
-              # This amount is in cents. It's also hard-coded for $1.00, which isn't very useful.
-              "amount_money" => array (
-                  "amount" => $amount,
-                  "currency" => "USD"
-              ),
-              # Every payment you process with the SDK must have a unique idempotency key.
-              # If you're unsure whether a particular payment succeeded, you can reattempt
-              # it with the same idempotency key without worrying about double charging
-              # the buyer.
-              "idempotency_key" => uniqid()
-          );
+             // Initialize the Square client.
+            $client = new SquareClient([
+              'accessToken' => $access_token,  
+              'environment' =>  env('SQUARE_env')
+            ]);
+            // Fail if the card form didn't send a value for `nonce` to the server
+            //$nonce = $request->nonce;
+
+            $payments_api = $client->getPaymentsApi();
+
+
+              # setup authorization
+              //\SquareConnect\Configuration::getDefaultConfiguration()->setAccessToken($access_token);
+              # create an instance of the Transaction API class
+              //$transactions_api = new \SquareConnect\Api\TransactionsApi();
+            $location_id = env('SQUARE_UP_locationId');
+            $nonce = $request->nonce;
+            $amount =(int)($request->amount*100);
+            
+            $money = new Money();
+            // Monetary amounts are specified in the smallest unit of the applicable currency.
+            // This amount is in cents. It's also hard-coded for $1.00, which isn't very useful.
+            $money->setAmount($amount);
+            $money->setCurrency('USD');
+
+            $create_payment_request = new CreatePaymentRequest($nonce, uniqid(), $money);
+            // dd($amount);
+          // $request_body = array (
+          //     "card_nonce" => $nonce,
+          //     # Monetary amounts are specified in the smallest unit of the applicable currency.
+          //     # This amount is in cents. It's also hard-coded for $1.00, which isn't very useful.
+          //     "amount_money" => array (
+          //         "amount" => $amount,
+          //         "currency" => "USD"
+          //     ),
+          //     # Every payment you process with the SDK must have a unique idempotency key.
+          //     # If you're unsure whether a particular payment succeeded, you can reattempt
+          //     # it with the same idempotency key without worrying about double charging
+          //     # the buyer.
+          //     "idempotency_key" => uniqid()
+          // );
 
           try {
-              $result = $transactions_api->charge($location_id,  $request_body);
-              if($result['errors']!=null){
+              
+                //$result = $transactions_api->charge($location_id,  $request_body);
+                $result = $payments_api->createPayment($create_payment_request);
+                $response_subscription=json_decode($result->getBody(),true);
 
-                 if($request->ajax()) {
-                      return response()->json(['error' => "Payment Failed"], 422);
-                  } else {
-                      return back()->with('flash_error', "Payment Failed");
-                  }
+                if($result->isError()){
 
-              }
-              $transaction = $result->getTransaction();
-              $transaction = $transaction["tenders"][0]["card_details"];
-              if($transaction['status']=='CAPTURED'){
+                    if($request->ajax()) {
+                        return response()->json(['error' => "Payment Failed"], 422);
+                    } else {
+                        return back()->with('flash_error', "Payment Failed");
+                    }
+                }
+               // $transaction = $result->getTransaction();
+                //$transaction = $transaction["tenders"][0]["card_details"];
+                $transaction = $response_subscription['payment']['card_details'];
+                if($transaction['status']=='CAPTURED'){
 
                   (new SendPushNotification)->WalletMoney(Auth::user()->id,currency($request->amount));
 

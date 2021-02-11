@@ -335,7 +335,7 @@ class ProviderController extends Controller
         // Initialize the Square client.
         $client = new SquareClient([
           'accessToken' => $access_token,  
-          'environment' => 'sandbox'
+          'environment' =>  env('SQUARE_env')
         ]);
 
         

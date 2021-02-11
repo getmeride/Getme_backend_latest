@@ -541,7 +541,7 @@ class ProfileController extends Controller
             $access_token =  env('access_token');
             $client = new SquareClient([
                 'accessToken' => $access_token,  
-                'environment' => 'sandbox'
+                'environment' => env('SQUARE_env')
             ]);
             // Fail if the card form didn't send a value for `nonce` to the server
             $nonce = $request->nonce;
