@@ -41,7 +41,7 @@ if(Setting::get('CARD', 0) == 0){
         @elseif(Auth::guard('provider')->user()->status == "card" || Auth::guard('provider')->user()->status == "banned")
             <div class="alert alert-danger">
                 <button type="button" class="close" data-dismiss="alert">×</button>
-                Your Subscription expired, Please make subscription ASAP
+                IF YOU HAVE ALREADY MADE PAYMENT, PLEASE WAIT UNTIL YOUR MEMBERSHIP HAVE BEEN APPROVED.
             </div>
         @endif
         

@@ -26,7 +26,8 @@
                                                     <select class="form-control" name="payment_type" required>
                                                         {{-- <option value="">Select  Payment Type</option>
                                                         <option value="transfwise">Transfwise</option> --}}
-                                                        <option value="remitlycashpickup">Remitly Cash Pickup</option>
+                                                        <option value="1">Bank Deposit</option>
+                                                        <option value="2">Pick UP Cash</option>
                                                     </select>
                                                 </div>
                                             </div>

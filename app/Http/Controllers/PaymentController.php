@@ -59,48 +59,66 @@ class PaymentController extends Controller
               $amount = $RequestPayment->payable+$tip_amount;
 
 
-              $access_token = 'EAAAEAvSoq6fwjHL5evOYZENgCXgPinc-PIBFmO3DgqeH59dhp7WF7fDVVCIbIAz';
-
+              //$access_token = 'EAAAEAvSoq6fwjHL5evOYZENgCXgPinc-PIBFmO3DgqeH59dhp7WF7fDVVCIbIAz';
+                $access_token =  env('access_token');
+                $client = new SquareClient([
+                    'accessToken' => $access_token,  
+                    'environment' =>  env('SQUARE_env')
+                ]);
 
               # setup authorization
-              \SquareConnect\Configuration::getDefaultConfiguration()->setAccessToken($access_token);
+             // \SquareConnect\Configuration::getDefaultConfiguration()->setAccessToken($access_token);
               # create an instance of the Transaction API class
-              $transactions_api = new \SquareConnect\Api\TransactionsApi();
-              $location_id = 'PFH972RPJ6WJQ';
-              $nonce = $request->nonce;
-              $amount =(int)$amount;
-             // dd($amount);
-              $request_body = array (
-                  "card_nonce" => $nonce,
-                  # Monetary amounts are specified in the smallest unit of the applicable currency.
-                  # This amount is in cents. It's also hard-coded for $1.00, which isn't very useful.
-                  "amount_money" => array (
-                      "amount" => $amount,
-                      "currency" => "USD"
-                  ),
-                  # Every payment you process with the SDK must have a unique idempotency key.
-                  # If you're unsure whether a particular payment succeeded, you can reattempt
-                  # it with the same idempotency key without worrying about double charging
-                  # the buyer.
-                  "idempotency_key" => uniqid()
-              );
+              //$transactions_api = new \SquareConnect\Api\TransactionsApi();
+              //$location_id = 'PFH972RPJ6WJQ';
+                $payments_api = $client->getPaymentsApi();
+                //$nonce = $request->nonce;
+                //$amount =(int)$amount;
+                
+                $location_id = env('SQUARE_UP_locationId');
+                $nonce = $request->nonce;
+                $amount =(int)($amount*100);    
+                // dd($amount);
+              // $request_body = array (
+              //     "card_nonce" => $nonce,
+              //     # Monetary amounts are specified in the smallest unit of the applicable currency.
+              //     # This amount is in cents. It's also hard-coded for $1.00, which isn't very useful.
+              //     "amount_money" => array (
+              //         "amount" => $amount,
+              //         "currency" => "USD"
+              //     ),
+              //     # Every payment you process with the SDK must have a unique idempotency key.
+              //     # If you're unsure whether a particular payment succeeded, you can reattempt
+              //     # it with the same idempotency key without worrying about double charging
+              //     # the buyer.
+              //     "idempotency_key" => uniqid()
+              // );
+                $money = new Money();
+                $money->setAmount($amount);
+                $money->setCurrency('USD');
 
-              try {
-                  $result = $transactions_api->charge($location_id,  $request_body);
-                  if($result['errors']!=null){
+                $create_payment_request = new CreatePaymentRequest($nonce, uniqid(), $money);
+                try {
+                    $result = $payments_api->createPayment($create_payment_request);
+                    $response_subscription=json_decode($result->getBody(),true);
 
-                     if($request->ajax()) {
-                          return response()->json(['error' => "Payment Failed"], 422);
-                      } else {
-                          return redirect('dashboard')->with('flash_error', "Payment Failed");
-                      }
+                    //$result = $transactions_api->charge($location_id,  $request_body);
+                    if($result->isError()){
 
-                  }
-                  $transaction = $result->getTransaction();
-                  $transactionID = $transaction["tenders"][0]["transaction_id"];
-                  $transaction = $transaction["tenders"][0]["card_details"];
-                  
-                  if($transaction['status']=='CAPTURED'){
+                        if($request->ajax()) {
+                            return response()->json(['error' => "Payment Failed"], 422);
+                        } else {
+                            return redirect('dashboard')->with('flash_error', "Payment Failed");
+                        }
+
+                    }
+                  //$transaction = $result->getTransaction();
+                    //$transactionID = $transaction["tenders"][0]["transaction_id"];
+                    $transactionID =   $response_subscription['payment']['id']
+                    //$transaction = $transaction["tenders"][0]["card_details"];
+                    $transaction = $response_subscription['payment']['card_details'];
+
+                    if($transaction['status']=='CAPTURED'){
 
                         $RequestPayment->payment_id = $transactionID;
                         $RequestPayment->payment_mode = 'SQUARE';
