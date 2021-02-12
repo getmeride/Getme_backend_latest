@@ -41,7 +41,9 @@ class TripResource extends Controller
             }  
             else
             {
-                $requests = UserRequests::RequestHistory()->paginate($this->perpage);
+                //$requests = UserRequests::RequestHistory()->paginate($this->perpage);
+                $requests = UserRequests::with(['user','payment','provider'])->orderBy('user_requests.created_at', 'desc')->paginate($this->perpage);
+                
             
                 if($request->all())
                 {
