@@ -34,6 +34,7 @@ Route::resource('service', 'Resource\ServiceResource');
 Route::resource('promocode', 'Resource\PromocodeResource');
 
 Route::post('user/wallet/recharge', 'Resource\UserResource@user_wallet_recharge')->name('user.wallet.recharge');
+Route::post('provider/wallet/recharge', 'Resource\ProviderResource@provider_wallet_recharge')->name('provider.wallet.recharge');
 
 Route::group(['as' => 'provider.'], function () {
     Route::get('review/provider', 'AdminController@provider_review')->name('review');

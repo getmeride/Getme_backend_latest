@@ -46,7 +46,8 @@
                         <th>@lang('admin.provides.total_requests')</th>
                         <th>@lang('admin.provides.accepted_requests')</th>
                         <th>@lang('admin.provides.cancelled_requests')</th>
-                        {{-- <th>@lang('admin.provides.service_type')</th> --}}
+                        <th>@lang('admin.users.Wallet_Amount')</th>
+                        <th>@lang('admin.users.Recharge')</th>
                         <th>@lang('admin.provides.online')</th>
                         <th>@lang('admin.action')</th>
                     </tr>
@@ -59,25 +60,20 @@
                         <td>{{ $page }}</td>
                         <td>{{ $provider->first_name }} {{ $provider->last_name }}</td>
                         @if(Setting::get('demo_mode', 0) == 1)
-                        <td>{{ substr($provider->email, 0, 3).'****'.substr($provider->email, strpos($provider->email, "@")) }}</td>
+                            <td>{{ substr($provider->email, 0, 3).'****'.substr($provider->email, strpos($provider->email, "@")) }}</td>
                         @else
-                        <td>{{ $provider->email }}</td>
+                            <td>{{ $provider->email }}</td>
                         @endif
                         @if(Setting::get('demo_mode', 0) == 1)
-                        <td>+919876543210</td>
+                            <td>+919876543210</td>
                         @else
-                        <td>{{ $provider->mobile }}</td>
+                            <td>{{ $provider->mobile }}</td>
                         @endif
                         <td>{{ $provider->total_requests() }}</td>
                         <td>{{ $provider->accepted_requests() }}</td>
                         <td>{{ $provider->total_requests() - $provider->accepted_requests() }}</td>
-                        {{-- <td>
-                            @if($provider->is_subscription)
-                                <a class="btn btn-success btn-block" href="{{route('admin.provider.subscription.update', $provider->id )}}">Yes</a>
-                            @else
-                                <a class="btn btn-warning btn-block" href="{{route('admin.provider.subscription.update', $provider->id )}}">No</a>
-                            @endif
-                        </td> --}}
+                         <td>{{currency($provider->wallet_balance)}}</td>
+                        <td><button type="button" class="btn btn-info btn-md pull-left" data-toggle="modal" data-target="#myModalRechargeWallet{{$provider->id}}"><i class="fa fa-money" aria-hidden="true"></i> Recharge Wallet</button> </td>
                         <td>
                             @if($provider->active_documents() == $total_documents && $provider->service != null)
                                  <a class="btn btn-success btn-block" href="{{route('admin.provider.document.index', $provider->id )}}">All Set!</a>
@@ -85,7 +81,7 @@
                                 <a class="btn btn-danger btn-block label-right" href="{{route('admin.provider.document.index', $provider->id )}}">Attention! <span class="btn-label">{{ $provider->pending_documents() }}</span></a>
                             @endif
                         </td>
-                        <td>
+                        <!-- <td>
                             @if($provider->service)
                                 @if($provider->service->status == 'active')
                                     <label class="btn btn-block btn-primary">Yes</label>
@@ -95,7 +91,7 @@
                             @else
                                 <label class="btn btn-block btn-danger">N/A</label>
                             @endif
-                        </td>
+                        </td> -->
                         <td>
                             <div class="input-group-btn">
                                 @if($provider->status == 'approved')
@@ -133,6 +129,37 @@
                             </div>
                         </td>
                     </tr>
+                    <!-- Recharge Wallet Model -->
+                        <div class="modal fade" id="myModalRechargeWallet{{$provider->id}}" role="dialog">
+                            <div class="modal-dialog modal-sm">
+                            <form action="{{route('admin.provider.wallet.recharge')}}" method="POST">
+                            {{csrf_field()}}
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                  <h4 class="modal-title">Recharge Wallet</h4>
+                                </div>  
+                                <div class="modal-body">
+                                <h4 class="modal-title">Current Balance : {{currency($provider->wallet_balance)}}</h4>
+                                   <div class="form-group" style="margin: 10px 0px;">
+                                        <input type="radio" id="credited" name="recharge_type" value="CREDITED" checked="" >
+                                        <label for="credited">CREDITED</label>
+                                        <input type="radio"  id="debited" name="recharge_type" value="DEBITED"  >
+                                        <label for="debited">DEBITED</label>       
+                                   </div>
+                                
+
+                                   <input type="hidden" name="provider_id" class="form-control" value="{{$provider->id}}">
+                                   <input type="number" name="wallet_amount" class="form-control" placeholder="Enter Amount">
+                                </div>
+                                <div class="modal-footer">
+                                <button type="submit" style="margin-left: 1em;" class="btn btn-info btn-md">Recharge</button>
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                </div>
+                              </div>
+                            </form>
+                            </div>
+                      </div>
                 @endforeach
                 </tbody>
                 <tfoot>
@@ -144,8 +171,8 @@
                         <th>@lang('admin.provides.total_requests')</th>
                         <th>@lang('admin.provides.accepted_requests')</th>
                         <th>@lang('admin.provides.cancelled_requests')</th>
-                        {{-- <th>@lang('admin.subscription_type')</th> --}}
-                        <th>@lang('admin.provides.service_type')</th>
+                        <th>@lang('admin.users.Wallet_Amount')</th>
+                        <th>@lang('admin.users.Recharge')</th>
                         <th>@lang('admin.provides.online')</th>
                         <th>@lang('admin.action')</th>
                     </tr>

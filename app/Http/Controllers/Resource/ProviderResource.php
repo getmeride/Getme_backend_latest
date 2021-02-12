@@ -17,6 +17,7 @@ use App\ProviderSubscription;
 use App\UserRequests;
 use App\Helpers\Helper;
 use App\Document;
+use App\WalletProviderPassbook;
 use App\Http\Controllers\SendPushNotification;
 
 class ProviderResource extends Controller
@@ -377,7 +378,7 @@ class ProviderResource extends Controller
             return back()->with('flash_error', trans('admin.something_wrong'));
         }
     }
-     public function subscriptionUpdate(Request $request, $id)
+    public function subscriptionUpdate(Request $request, $id)
     {
         try {            
             $Provider = Provider::findOrFail($id); 
@@ -391,5 +392,58 @@ class ProviderResource extends Controller
         }  catch (Exception $e) {
             return back()->with('flash_error', trans('admin.something_wrong'));
         }
-    }       
+    }  
+     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Provider  $provider
+     * @return \Illuminate\Http\Response
+     */
+    public function provider_wallet_recharge(Request $request){
+
+        try{
+
+        $provider = Provider::findOrFail($request->provider_id);
+        if($request->wallet_amount)
+        {
+            //if(0<$request->wallet_amount) 
+            if($request->recharge_type == "CREDITED")
+            {
+                    WalletProviderPassbook::create([
+                        'provider_id' => $provider->id,
+                        'amount' => $request->wallet_amount,
+                        'status' => 'CREDITED',
+                        'via' => 'Recharged By Admin',
+                      ]); 
+                    $provider->wallet_balance += $request->wallet_amount;
+                    $provider->save();
+                    (new SendPushNotification)->sendPushToProvider($provider->id, 'Getme admin recharged amount is Rs.'.$request->wallet_amount); 
+                return back()->with('flash_success','Amount Recharged for Provider'); 
+            }
+            else
+            {
+                 
+                    WalletProviderPassbook::create([
+                        'provider_id' => $provider->id,
+                        'amount' => abs($request->wallet_amount),
+                        'status' => 'DEBITED',
+                        'via' => 'Debited From Admin',
+                      ]); 
+                    $provider->wallet_balance -= $request->wallet_amount;
+                    $provider->save();
+                    (new SendPushNotification)->sendPushToProvider($provider->id, 'Getme admin debited amount is Rs.'.$request->wallet_amount); 
+
+                return back()->with('flash_success','Amount debited for Provider'); 
+            }
+
+            
+        } 
+            return back()->with('flash_error','Something Went Wrong!'); 
+        }
+
+        catch (Exception $e) {
+             return back()->with('flash_error', trans('admin.something_wrong'));
+        }
+
+    }
 }
