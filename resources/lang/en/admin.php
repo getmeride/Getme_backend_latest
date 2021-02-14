@@ -114,6 +114,7 @@ return array (
     'document_type' => 'Document Type',
     'driver_review' => 'Driver Review',
     'vehicle_review' => 'Vehicle Review',
+    'cashout_review' => 'Cashout Review',
     'update_document' => 'Update Document',
     'document' => 'Document',
   ),

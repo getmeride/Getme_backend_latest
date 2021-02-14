@@ -245,6 +245,8 @@ class ProviderResource extends Controller
         try {            
             $Provider = Provider::findOrFail($id);           
             $total_documents=Document::count();
+
+            
             if($Provider->active_documents()==$total_documents && $Provider->service) {
                 if($Provider->status=='onboarding'){
                     // Sending push to the provider

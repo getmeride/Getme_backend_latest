@@ -59,7 +59,7 @@ class DocumentResource extends Controller
 
         $this->validate($request, [
             'name' => 'required|max:255',
-            'type' => 'required|in:VEHICLE,DRIVER',
+            'type' => 'required|in:VEHICLE,DRIVER,CASHOUT',
         ]);
 
         try{
@@ -116,7 +116,7 @@ class DocumentResource extends Controller
     {
         $this->validate($request, [
             'name' => 'required|max:255',
-            'type' => 'required|in:VEHICLE,DRIVER',
+            'type' => 'required|in:VEHICLE,DRIVER,CASHOUT',
         ]);
 
         try {
