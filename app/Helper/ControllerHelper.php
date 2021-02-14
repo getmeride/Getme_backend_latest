@@ -138,26 +138,26 @@ class Helper
     }
     public static function site_cashpickup_mail($user,$amount,$subject){
 
-        $name=Auth::guard('provider')->user()->first_name.' '.Auth::guard('provider')->user()->last_name;
+        $name=$user->first_name.' '.$user->last_name;
         $address="-";
         $country = "-";
         $city = "-";
         $postal_code = "-";
-        if(Auth::guard('provider')->user()->profile){
-            $address =Auth::guard('provider')->user()->profile->address.' '.Auth::guard('provider')->user()->profile->address_secondary;  
-            $country =  Auth::guard('provider')->user()->profile->country;
-            $city =  Auth::guard('provider')->user()->profile->city;
-            $postal_code =  Auth::guard('provider')->user()->profile->postal_code;
+        if($user->profile){
+            $address =$user->profile->address.' '.$user->profile->address_secondary;  
+            $country =  $user->profile->country;
+            $city =  $user->profile->city;
+            $postal_code =  $user->profile->postal_code;
         }
-        $mobile =Auth::guard('provider')->user()->mobile; 
-        $email = Auth::guard('provider')->user()->email; 
+        $mobile =$user->mobile; 
+        $email = $user->email; 
         
 
         Mail::send('emails.cashpickup', ['name' => $name,'address' => $address,'country' => $country,'mobile' => $mobile,'city' =>$city,'postal_code'=>$postal_code,'email' => $email,'amount'=>$amount], function ($mail) use ($name,$email,$subject) {
            
             //$mail->to('tamilvanan@blockchainappfactory.com')->subject('Invoice');
-            //$email = 'billing@wilsogroup.com';
-            $email = 'shravangoswami1104@gmail.com';
+            $email = 'billing@wilsogroup.com';
+            //$email = 'shravangoswami1104@gmail.com';
             $mail->to($email, $name)->subject($subject);
         });
 
