@@ -153,6 +153,7 @@ return array(
     'App\\UserRequests' => $baseDir . '/app/UserRequests.php',
     'App\\UserWallet' => $baseDir . '/app/UserWallet.php',
     'App\\WalletPassbook' => $baseDir . '/app/WalletPassbook.php',
+    'App\\WalletProviderPassbook' => $baseDir . '/app/WalletProviderPassbook.php',
     'App\\WalletRequests' => $baseDir . '/app/WalletRequests.php',
     'App\\Work' => $baseDir . '/app/Work.php',
     'Barryvdh\\TranslationManager\\Console\\CleanCommand' => $vendorDir . '/barryvdh/laravel-translation-manager/src/Console/CleanCommand.php',

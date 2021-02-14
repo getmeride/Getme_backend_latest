@@ -767,6 +767,7 @@ class ComposerStaticInit7e1aa434eada57fc84276fff69024fd5
         'App\\UserRequests' => __DIR__ . '/../..' . '/app/UserRequests.php',
         'App\\UserWallet' => __DIR__ . '/../..' . '/app/UserWallet.php',
         'App\\WalletPassbook' => __DIR__ . '/../..' . '/app/WalletPassbook.php',
+        'App\\WalletProviderPassbook' => __DIR__ . '/../..' . '/app/WalletProviderPassbook.php',
         'App\\WalletRequests' => __DIR__ . '/../..' . '/app/WalletRequests.php',
         'App\\Work' => __DIR__ . '/../..' . '/app/Work.php',
         'Barryvdh\\TranslationManager\\Console\\CleanCommand' => __DIR__ . '/..' . '/barryvdh/laravel-translation-manager/src/Console/CleanCommand.php',
