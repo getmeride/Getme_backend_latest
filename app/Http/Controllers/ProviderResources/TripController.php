@@ -1543,14 +1543,14 @@ $Driver_Discount=0;
 
         $error=0;
         if($request->payment_type == "1"){
-            $bank_info = ProviderDocument::where('provider_id', \Auth::guard('provider')->user()->id)->whereIn('document_id',[14])->first();
+            $bank_info = ProviderDocument::where('provider_id', Auth::user()->id)->whereIn('document_id',[14])->first();
             if($bank_info && $bank_info->count() > 0){
             }else{
                 $error+=1;
                 $fn_response["error"]="Please upload document for bank information.";
             }
         }elseif($request->payment_type == "2"){
-             $cash_pickup_info = ProviderDocument::where('provider_id', \Auth::guard('provider')->user()->id)->whereIn('document_id',[15])->first();
+             $cash_pickup_info = ProviderDocument::where('provider_id', Auth::user()->id)->whereIn('document_id',[15])->first();
             if($cash_pickup_info && $cash_pickup_info->count() > 0){
             }else{
                 $error+=1;
@@ -1558,7 +1558,7 @@ $Driver_Discount=0;
             }
         }
         elseif($request->payment_type == "3"){
-             $pay_by_zelle = ProviderDocument::where('provider_id', \Auth::guard('provider')->user()->id)->whereIn('document_id',[16])->first();
+             $pay_by_zelle = ProviderDocument::where('provider_id', Auth::user()->id)->whereIn('document_id',[16])->first();
             if($pay_by_zelle && $pay_by_zelle->count() > 0){
             }else{
                 $error+=1;
