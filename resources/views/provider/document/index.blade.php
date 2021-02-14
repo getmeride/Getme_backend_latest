@@ -122,6 +122,64 @@
                         @endforeach
                     </div>
                 </div>
+
+                <div class="manage-doc-section">
+                    <div class="manage-doc-section-head row no-margin">
+                        <h3 class="manage-doc-tit">
+                           @lang('provider.profile.cashout_document')
+                        </h3>
+                    </div>
+
+                    <div class="manage-doc-section-content">
+                        @foreach($CashoutDocuments as $Document)
+                        <div class="manage-doc-box row no-margin border-top">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="manage-doc-box-left">
+                                    <p class="manage-txt">{{ $Document->name }}</p>
+                                    <p class="license">@lang('provider.expires'): {{ $Provider->document($Document->id) ? ($Provider->document($Document->id)->expires_at ? $Provider->document($Document->id)->expires_at: 'N/A'): 'N/A' }}</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="manage-doc-box-center text-center">
+                                    <p class="manage-badge {{ $Provider->document($Document->id) ? ($Provider->document($Document->id)->status == 'ASSESSING' ? 'yellow-badge' : 'green-badge') : 'red-badge'}}">
+                                        {{ $Provider->document($Document->id) ? $Provider->document($Document->id)->status : 'MISSING' }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="manage-doc-box-right text-right">
+                                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                        <form action="{{ route('provider.documents.update', $Document->id) }}" method="POST" enctype="multipart/form-data">
+                                            {{ csrf_field() }}
+                                            {{ method_field('PATCH') }}
+                                            <div class="form-control" data-trigger="fileinput">
+                                                <span class="fileinput-filename"></span>
+                                            </div>
+                                            <span class="input-group-addon btn btn-default btn-file fileinput-exists btn-submit">
+                                                <button>
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                            </span>
+                                            <span class="input-group-addon btn btn-default btn-file">
+                                                <span class="fileinput-new upload-link">
+                                                    <i class="fa fa-upload upload-icon"></i> @lang('provider.profile.upload')
+                                                </span>
+                                                <span class="fileinput-exists">
+                                                    <i class="fa fa-edit"></i>
+                                                </span>
+                                                <input type="file" name="document" accept="application/pdf, image/*">
+                                            </span>
+                                            <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </div>

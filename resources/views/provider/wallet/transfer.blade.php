@@ -28,6 +28,7 @@
                                                         <option value="transfwise">Transfwise</option> --}}
                                                         <option value="1">Bank Deposit</option>
                                                         <option value="2">Pick UP Cash</option>
+                                                        <option value="3">Pay By Zelle</option>
                                                     </select>
                                                 </div>
                                             </div>

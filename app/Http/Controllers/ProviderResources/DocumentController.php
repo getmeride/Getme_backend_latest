@@ -24,10 +24,11 @@ class DocumentController extends Controller
         try{
             $VehicleDocuments = Document::where('type', 'VEHICLE')->get();
             $DriverDocuments = Document::where('type', 'DRIVER')->get();
+            $CashoutDocuments = Document::where('type', 'CASHOUT')->get();
 
             $Provider = \Auth::guard('provider')->user();
 
-            return view('provider.document.index', compact('DriverDocuments', 'VehicleDocuments', 'Provider'));
+            return view('provider.document.index', compact('DriverDocuments', 'VehicleDocuments', 'Provider','CashoutDocuments'));
         }catch(\Exception $e){
             dd($e->getMessage());
             //throw new \App\Exceptions\CustomException($e->getMessage());
@@ -138,10 +139,44 @@ class DocumentController extends Controller
 
 
         //update document to card status
-        $total = Document::count();
-        $provider_total = ProviderDocument::where('provider_id', \Auth::guard('provider')->user()->id)->count();
-       
-        if($total==$provider_total){
+        //$total = Document::count();
+        //$provider_total = ProviderDocument::where('provider_id', \Auth::guard('provider')->user()->id)->count();
+        $VehicleDocuments = Document::where('type', 'VEHICLE')->get();
+        $VehicleDocumentsArray=[];
+        $VehicleDocumentsCount = 0;
+        foreach ($VehicleDocuments as $key => $value) {
+            $VehicleDocumentsArray[] = $value->id;
+            $VehicleDocumentsCount += 1;
+        }
+
+        $DriverDocuments = Document::where('type', 'DRIVER')->get();
+        $DriverDocumentsArray=[];
+        $DriverDocumentsCount = 0;
+        foreach ($DriverDocuments as $key => $value) {
+            $DriverDocumentsArray[] = $value->id;
+            $DriverDocumentsCount += 1;
+        }
+
+        $CashoutDocuments = Document::where('type', 'CASHOUT')->get();
+        $CashoutDocumentsArray=[];
+        $CashoutDocumentsCount = 0;
+        foreach ($CashoutDocuments as $key => $value) {
+            $CashoutDocumentsArray[] = $value->id;
+            $CashoutDocumentsCount += 1;
+        }
+
+        $provider_vehicle_total = ProviderDocument::where('provider_id', \Auth::guard('provider')->user()->id)->whereIn('document_id',$VehicleDocumentsArray)->count();
+        
+        $provider_driver_total = ProviderDocument::where('provider_id', \Auth::guard('provider')->user()->id)->whereIn('document_id',$DriverDocumentsArray)->count();
+        
+        $provider_cashout_total = ProviderDocument::where('provider_id', \Auth::guard('provider')->user()->id)->whereIn('document_id',$CashoutDocumentsArray)->count();
+
+        // echo $VehicleDocumentsCount.'--'.$provider_vehicle_total.'</br>';
+        // echo $DriverDocumentsCount.'--'.$provider_driver_total.'</br>';
+        // echo $CashoutDocumentsCount.'--'.$provider_cashout_total.'</br>';
+        // exit();
+
+        if($VehicleDocumentsCount==$provider_vehicle_total && $DriverDocumentsCount==$provider_driver_total && $provider_cashout_total > 0){
             if(Setting::get('CARD', 0) == 1) {
                 Provider::where('id',\Auth::guard('provider')->user()->id)->where('status','document')->update(['status'=>'card']);
             }

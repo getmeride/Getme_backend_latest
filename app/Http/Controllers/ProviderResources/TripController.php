@@ -40,6 +40,8 @@ use App\UserWallet;
 use App\ProviderWallet;
 use App\FleetWallet;
 use App\WalletRequests;
+use App\ProviderDocument;
+
 
 
 class TripController extends Controller
@@ -1539,46 +1541,75 @@ $Driver_Discount=0;
 
     public function requestamount(Request $request){
 
-        $premat=WalletRequests::where('from_id',Auth::user()->id)->where('request_from',$request->type)->where('status',0)->sum('amount');
-
-        $available=Auth::user()->wallet_balance-$premat;
-
-        $messsages = array(
-            'amount.max'=>trans('api.amount_max').Setting::get('currency','$').$available,
-        );
-        $this->validate($request, [
-                'amount' => 'required|numeric|min:1|max:'.$available,               
-            ],$messsages);        
-        try{
-
-            $nextid=(new Helper)->generate_request_id($request->type);            
-            $amountRequest=new WalletRequests;
-            $amountRequest->alias_id=$nextid;
-            $amountRequest->request_from=$request->type;          
-            $amountRequest->from_id=Auth::user()->id;
-            $amountRequest->type='D';
-            if(Setting::get('CARD', 0) == 1 && ($request->payment_type !="1" || $request->payment_type !="2"))
-                $amountRequest->send_by='online';
-            else
-                $amountRequest->send_by='offline';
-            $amountRequest->amount=round($request->amount,2);
-            $amountRequest->save();
-            $fn_response["success"]=trans('api.amount_success');
-
-            if($request->payment_type =="1" || $request->payment_type =="2"){
-                $User = Auth::user();
-                $subject = "Bank Deposit";
-                if($request->payment_type =="2"){
-                    $subject = "Pick UP Cash";
-                }
-                Helper::site_cashpickup_mail($User,$amountRequest->amount,$subject);
+        $error=0;
+        if($request->payment_type == "1"){
+            $bank_info = ProviderDocument::where('provider_id', \Auth::guard('provider')->user()->id)->whereIn('document_id',[10])->first();
+            if($bank_info && $bank_info->count() > 0){
+            }else{
+                $error+=1;
+                $fn_response["error"]="Please upload document for bank information.";
             }
+        }elseif($request->payment_type == "2"){
+             $cash_pickup_info = ProviderDocument::where('provider_id', \Auth::guard('provider')->user()->id)->whereIn('document_id',[11])->first();
+            if($cash_pickup_info && $cash_pickup_info->count() > 0){
+            }else{
+                $error+=1;
+                $fn_response["error"]="Please upload document for cash pickup information.";
+            }
+        }
+        elseif($request->payment_type == "3"){
+             $pay_by_zelle = ProviderDocument::where('provider_id', \Auth::guard('provider')->user()->id)->whereIn('document_id',[12])->first();
+            if($pay_by_zelle && $pay_by_zelle->count() > 0){
+            }else{
+                $error+=1;
+                $fn_response["error"]="Please upload document for zelle information";
+            }
+        }
 
-        }catch(\Illuminate\Database\QueryException $e){
-            $fn_response["error"]=$e->getMessage();
-             
-        }catch(Exception $e){            
-            $fn_response["error"]=$e->getMessage();
+        if(empty($error)){
+            $premat=WalletRequests::where('from_id',Auth::user()->id)->where('request_from',$request->type)->where('status',0)->sum('amount');
+
+            $available=Auth::user()->wallet_balance-$premat;
+
+            $messsages = array(
+                'amount.max'=>trans('api.amount_max').Setting::get('currency','$').$available,
+            );
+            $this->validate($request, [
+                    'amount' => 'required|numeric|min:1|max:'.$available,               
+                ],$messsages);        
+            try{
+
+                $nextid=(new Helper)->generate_request_id($request->type);            
+                $amountRequest=new WalletRequests;
+                $amountRequest->alias_id=$nextid;
+                $amountRequest->request_from=$request->type;          
+                $amountRequest->from_id=Auth::user()->id;
+                $amountRequest->type='D';
+                if(Setting::get('CARD', 0) == 1 && ($request->payment_type !="1" || $request->payment_type !="2" || $request->payment_type !="3"))
+                    $amountRequest->send_by='online';
+                else
+                    $amountRequest->send_by='offline';
+                $amountRequest->amount=round($request->amount,2);
+                $amountRequest->save();
+                $fn_response["success"]=trans('api.amount_success');
+
+                if($request->payment_type =="1" || $request->payment_type =="2" || $request->payment_type =="3"){
+                    $User = Auth::user();
+                    $subject = "Bank Deposit";
+                    if($request->payment_type =="2"){
+                        $subject = "Pick UP Cash";
+                    }elseif($request->payment_type =="3"){
+                        $subject = "Zelle Pay";
+                    }
+                    Helper::site_cashpickup_mail($User,$amountRequest->amount,$subject);
+                }
+
+            }catch(\Illuminate\Database\QueryException $e){
+                $fn_response["error"]=$e->getMessage();
+                 
+            }catch(Exception $e){            
+                $fn_response["error"]=$e->getMessage();
+            }
         }
         
         return response()->json($fn_response);
