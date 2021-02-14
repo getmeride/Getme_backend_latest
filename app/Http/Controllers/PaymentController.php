@@ -114,7 +114,7 @@ class PaymentController extends Controller
                     }
                   //$transaction = $result->getTransaction();
                     //$transactionID = $transaction["tenders"][0]["transaction_id"];
-                    $transactionID =   $response_subscription['payment']['id']
+                    $transactionID =   $response_subscription['payment']['id'];
                     //$transaction = $transaction["tenders"][0]["card_details"];
                     $transaction = $response_subscription['payment']['card_details'];
 
@@ -411,15 +411,22 @@ class PaymentController extends Controller
 
               }
 
-          } catch (\SquareConnect\ApiException $e) {
-             $error = $e->getResponseBody();
-            //  dd($error->errors[0]->detail);
-              if($request->ajax()) {
-                    return response()->json(['error' => $error->errors[0]->detail], 422);
+          }catch(Exception $e) {
+                if($request->ajax()){
+                    return response()->json(['error' => $e->getMessage()], 422);
                 } else {
-                    return back()->with('flash_error', $error->errors[0]->detail);
+                    return back()->with('flash_error', $e->getMessage());
                 }
-          }
+          } 
+          // catch (\SquareConnect\ApiException $e) {
+          //    $error = $e->getResponseBody();
+          //   //  dd($error->errors[0]->detail);
+          //     if($request->ajax()) {
+          //           return response()->json(['error' => $error->errors[0]->detail], 422);
+          //       } else {
+          //           return back()->with('flash_error', $error->errors[0]->detail);
+          //       }
+          // }
       }
 
 
