@@ -48,6 +48,7 @@
                         <th>@lang('admin.provides.cancelled_requests')</th>
                         <th>@lang('admin.users.Wallet_Amount')</th>
                         <th>@lang('admin.users.Recharge')</th>
+                        <th>@lang('admin.subscription_type')</th>
                         <th>@lang('admin.provides.online')</th>
                         <th>@lang('admin.action')</th>
                     </tr>
@@ -72,8 +73,15 @@
                         <td>{{ $provider->total_requests() }}</td>
                         <td>{{ $provider->accepted_requests() }}</td>
                         <td>{{ $provider->total_requests() - $provider->accepted_requests() }}</td>
-                         <td>{{currency($provider->wallet_balance)}}</td>
+                        <td>{{currency($provider->wallet_balance)}}</td>
                         <td><button type="button" class="btn btn-info btn-md pull-left" data-toggle="modal" data-target="#myModalRechargeWallet{{$provider->id}}"><i class="fa fa-money" aria-hidden="true"></i> Recharge Wallet</button> </td>
+                        <td>
+                            @if($provider->is_subscription)
+                                <a class="btn btn-success btn-block" href="{{route('admin.provider.subscription.update', $provider->id )}}">Yes</a>
+                            @else
+                                <a class="btn btn-warning btn-block" href="{{route('admin.provider.subscription.update', $provider->id )}}">No</a>
+                            @endif
+                        </td>
                         <td>
                             @if($provider->active_documents() == $total_documents && $provider->service != null)
                                  <a class="btn btn-success btn-block" href="{{route('admin.provider.document.index', $provider->id )}}">All Set!</a>
@@ -173,6 +181,7 @@
                         <th>@lang('admin.provides.cancelled_requests')</th>
                         <th>@lang('admin.users.Wallet_Amount')</th>
                         <th>@lang('admin.users.Recharge')</th>
+                        <th>@lang('admin.subscription_type')</th>
                         <th>@lang('admin.provides.online')</th>
                         <th>@lang('admin.action')</th>
                     </tr>

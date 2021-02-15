@@ -254,9 +254,7 @@ class ProviderResource extends Controller
                 }                
                 $Provider->update(['status' => 'approved']);
 
-                $ProviSub=ProviderSubscription::where('provider_id',$id)->orderBy('id','desc')->first();
-                $ProviSub->status="Approved";
-                $ProviSub->save();
+                
 
                 $url=$request->session()->pull('providerpage');                
                 return redirect()->to($url)->with('flash_success', trans('admin.provider_msgs.provider_approve'));
@@ -388,6 +386,11 @@ class ProviderResource extends Controller
                  $Provider->is_subscription=0;
             }else{
                 $Provider->is_subscription=1;
+                
+                $ProviSub=ProviderSubscription::where('provider_id',$id)->orderBy('id','desc')->first();
+                $ProviSub->status="Approved";
+                $ProviSub->save();
+
             }
             $Provider->save();
             return back()->with('message', trans('admin.provider_msgs.provider_update'));
