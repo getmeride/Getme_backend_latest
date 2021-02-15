@@ -391,6 +391,8 @@ class ProviderResource extends Controller
                 $ProviSub->status="Approved";
                 $ProviSub->save();
 
+                $Provider->status='approved';
+
             }
             $Provider->save();
             return back()->with('message', trans('admin.provider_msgs.provider_update'));
