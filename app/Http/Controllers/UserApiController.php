@@ -1599,7 +1599,7 @@ class UserApiController extends Controller
 
     public function filter_user_email($filter)
     {
-        $user =User::whereNotIn('id',[Auth::user()->id])->where('email', 'like', '%'. $filter .'%')->get();
+        $user =User::whereNotIn('id',[Auth::user()->id])->where('mobile', 'like', '%'. $filter .'%')->get();
         return response()->json(['users' => $user]);        
        
     }

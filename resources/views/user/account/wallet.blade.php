@@ -94,9 +94,9 @@
             <form action="{{url('wallet/transfer')}}" method="POST">
             {{ csrf_field() }}
                 <div class="col-md-3">
-                <div><input type="text" name="search_user" class="form-control" placeholder="Enter User email"></div>
+                <div><input type="text" name="search_user" class="form-control" placeholder="Enter mobile number"></div>
                 <div id="dropbox" style="display: none;">
-                    <select id="user" name="user" size="10" style="margin: 1px; width: 170px;height: 86px;""> 
+                    <select id="user" name="user" size="10" style="margin: 1px; width: 170px;height: 86px;"> 
                     </select>
                 </div>
                 </div>
@@ -115,7 +115,7 @@
                           </div>
                           <div class="toast-body">
                             <p>Name : <strong>{{$data->first_name}} {{$data->last_name}}</strong></p>
-                            <p>Email : <strong>{{$data->email}}</strong></p>
+                            <p>Mobile No : <strong>{{$data->mobile}}</strong></p>
                           </div>
                     </div>
                 </div>
