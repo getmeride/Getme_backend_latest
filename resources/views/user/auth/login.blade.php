@@ -7,7 +7,10 @@
     <div class="full-page-bg-inner">
         <div class="row no-margin">
             <div class="col-md-6 log-left">
-                <span class="login-logo"><img src="{{ Setting::get('site_logo', asset('logo-black.png'))}}"></span>
+                <span class="login-logo">
+                    <a href="{{url('/')}}">
+                        <img src="{{ Setting::get('site_logo', asset('logo-black.png'))}}"></span>
+                    </a>    
                 <h2>Create your account and get moving in minutes</h2>
                 <p>Welcome to {{Setting::get('site_title', 'Tranxit')}}, the easiest way to get around at the tap of a button.</p>
             </div>
