@@ -255,6 +255,7 @@ class AdminController extends Controller
         $this->validate($request, [
                 'CARD' => 'in:on',
                 'CASH' => 'in:on',
+                'SQUARE' =>'in:on',
                 'stripe_secret_key' => 'required_if:CARD,on|max:255',
                 'stripe_publishable_key' => 'required_if:CARD,on|max:255',                
                 'daily_target' => 'required|integer|min:0',
@@ -273,6 +274,7 @@ class AdminController extends Controller
 
         Setting::set('CARD', $request->has('CARD') ? 1 : 0 );
         Setting::set('CASH', $request->has('CASH') ? 1 : 0 );
+        Setting::set('SQUARE', $request->has('SQUARE') ? 1 : 0 );
         Setting::set('stripe_secret_key', $request->stripe_secret_key);
         Setting::set('stripe_publishable_key', $request->stripe_publishable_key);
         //Setting::set('stripe_oauth_url', $request->stripe_oauth_url);

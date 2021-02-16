@@ -60,6 +60,22 @@
                             </div>
                         </div>
                     </blockquote>
+                    
+                </div>
+                <div class="card card-block card-inverse card-primary">
+                    <blockquote class="card-blockquote">
+                        <i class="fa fa-3x fa-money pull-right"></i>
+                        <div class="form-group row">
+                            <div class="col-xs-4 arabic_right">
+                                <label for="cash-payments" class="col-form-label">
+                                  Square Payment
+                                </label>
+                            </div>
+                            <div class="col-xs-6">
+                                <input @if(Setting::get('SQUARE') == 1) checked  @endif name="SQUARE" id="square-payments"  type="checkbox" class="js-switch" data-color="#43b968">
+                            </div>
+                        </div>
+                    </blockquote>
                 </div>
                 <h5>@lang('admin.payment.payment_settings')</h5>
 
@@ -220,6 +236,14 @@
 function cardselect()
 {
     if($('#stripe_check').is(":checked")) {
+        $("#card_field").fadeIn(700);
+    } else {
+        $("#card_field").fadeOut(700);
+    }
+}
+function squarecardselect()
+{
+    if($('#square-payments').is(":checked")) {
         $("#card_field").fadeIn(700);
     } else {
         $("#card_field").fadeOut(700);
