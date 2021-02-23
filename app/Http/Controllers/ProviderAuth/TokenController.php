@@ -206,13 +206,21 @@ class TokenController extends Controller
      */
     public function forgot_password(Request $request){
 
-       
-          $this->validate($request, [
-                'mobile' => 'required|numeric|exists:providers,mobile',
-            ]);
+         $validator = Validator::make(
+            $request->all(),
+             [
+                 'mobile' => 'required|numeric|exists:providers,mobile',
+            ]
+        );
+        
+        if($validator->fails()) {
+            return response()->json(['status'=>false,'message' => $validator->messages()->all()]);
+        }
 
+
+         
         try{  
-            
+             
             $provider = Provider::where('mobile' , $request->mobile)->first();
 
             // $otp = mt_rand(100000, 999999);
@@ -241,10 +249,19 @@ class TokenController extends Controller
 
     public function reset_password(Request $request){
 
-        $this->validate($request, [
+        $validator = Validator::make(
+            $request->all(),
+             [
                 'password' => 'required|min:6',
                 'id' => 'required|numeric|exists:providers,id'
-            ]);
+            ]
+        );
+        
+        if($validator->fails()) {
+            return response()->json(['status'=>false,'message' => $validator->messages()->all()]);
+        }
+
+       
 
         try{
 
@@ -254,6 +271,8 @@ class TokenController extends Controller
             $Provider->save();
             if($request->ajax()) {
                 return response()->json(['message' => trans('api.provider.password_updated')]);
+            }else{
+                 return response()->json(['status'=>true,'message' => trans('api.provider.password_updated')]);
             }
 
         }catch (Exception $e) {

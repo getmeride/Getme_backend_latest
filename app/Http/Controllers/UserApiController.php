@@ -1284,9 +1284,18 @@ class UserApiController extends Controller
 
     public function forgot_password(Request $request){
 
-        $this->validate($request, [
-                'mobile' => 'required|numeric|exists:users,mobile',
-            ]);
+        $validator = Validator::make(
+            $request->all(),
+             [
+                 'mobile' => 'required|numeric|exists:users,mobile',
+            ]
+        );
+        
+        if($validator->fails()) {
+            return response()->json(['status'=>false,'message' => $validator->messages()->all()]);
+        }
+
+       
 
         try{  
             
@@ -1318,11 +1327,19 @@ class UserApiController extends Controller
 
     public function reset_password(Request $request){
 
-        $this->validate($request, [
+        $validator = Validator::make(
+            $request->all(),
+             [
                 'password' => 'required|min:6',
                 'id' => 'required|numeric|exists:users,id'
+            ]
+        );
+        
+        if($validator->fails()) {
+            return response()->json(['status'=>false,'message' => $validator->messages()->all()]);
+        }
 
-            ]);
+       
 
         try{
 
@@ -1335,6 +1352,8 @@ class UserApiController extends Controller
             $User->save();
             if($request->ajax()) {
                 return response()->json(['message' => trans('api.user.password_updated')]);
+            }else{
+                return response()->json(['status'=>true,'message' => trans('api.provider.password_updated')]);
             }
            
             
