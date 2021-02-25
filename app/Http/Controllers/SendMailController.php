@@ -64,7 +64,7 @@ class SendMailController extends Controller
             ]
         );
         if($validator->fails()) {
-            return redirect()->back()->with('flash_error',$validator->messages()->all());
+            return redirect()->back()->with('flash_error',$validator->messages()->first());
         }
     	// $this->validate($request, [
      //        'first_name' => 'required|max:10',

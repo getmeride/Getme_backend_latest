@@ -61,7 +61,7 @@ class TokenController extends Controller
         );
         
         if($validator->fails()) {
-            return response()->json(['status'=>false,'message' => $validator->messages()->all()]);
+            return response()->json(['status'=>false,'message' => $validator->messages()->first()]);
         }
 
 
@@ -214,7 +214,7 @@ class TokenController extends Controller
         );
         
         if($validator->fails()) {
-            return response()->json(['status'=>false,'message' => $validator->messages()->all()]);
+            return response()->json(['status'=>false,'message' => $validator->messages()->first()]);
         }
 
 
@@ -258,7 +258,7 @@ class TokenController extends Controller
         );
         
         if($validator->fails()) {
-            return response()->json(['status'=>false,'message' => $validator->messages()->all()]);
+            return response()->json(['status'=>false,'message' => $validator->messages()->first()]);
         }
 
        
@@ -302,7 +302,7 @@ class TokenController extends Controller
         );
         
         if($validator->fails()) {
-            return response()->json(['status'=>false,'message' => $validator->messages()->all()]);
+            return response()->json(['status'=>false,'message' => $validator->messages()->first()]);
         }
         $user = Socialite::driver('facebook')->stateless();
         $FacebookDrive = $user->userFromToken( $request->accessToken);
@@ -407,7 +407,7 @@ class TokenController extends Controller
         );
         
         if($validator->fails()) {
-            return response()->json(['status'=>false,'message' => $validator->messages()->all()]);
+            return response()->json(['status'=>false,'message' => $validator->messages()->first()]);
         }
         $user = Socialite::driver('google')->stateless();        
 

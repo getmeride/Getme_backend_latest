@@ -147,7 +147,7 @@ class SocialLoginController extends Controller
         );
     	
         if($validator->fails()) {
-            return response()->json(['status'=>false,'message' => $validator->messages()->all()],500);
+            return response()->json(['status'=>false,'message' => $validator->messages()->first()],500);
         }
 
         $user = Socialite::driver('facebook')->stateless();
@@ -337,7 +337,7 @@ class SocialLoginController extends Controller
         );
         
         if($validator->fails()) {
-            return response()->json(['status'=>false,'message' => $validator->messages()->all()],500);
+            return response()->json(['status'=>false,'message' => $validator->messages()->first()],500);
         }
         $user = Socialite::driver('google')->stateless();
         $GoogleDrive = $user->userFromToken( $request->accessToken);
