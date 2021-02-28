@@ -44,7 +44,7 @@
 				<div class="form-group row">
 					<label for="mobile" class="col-xs-2 col-form-label">Mobile</label>
 					<div class="col-xs-10">
-						<input class="form-control" type="number" value="{{ $user->mobile }}" name="mobile" required id="mobile" placeholder="Mobile">
+						<input class="form-control" type="text" value="{{ $user->mobile }}" name="mobile" required id="mobile" placeholder="Mobile">
 					</div>
 				</div>
 
