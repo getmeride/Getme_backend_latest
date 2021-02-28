@@ -147,7 +147,7 @@ setInterval("checkstatus()",3000);
 
 function checkstatus(){
     $.ajax({
-        url: '/user/incoming',
+        url: 'user/incoming',
         dataType: "JSON",
         data:'',
         type: "GET",

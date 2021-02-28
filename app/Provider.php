@@ -33,6 +33,7 @@ class Provider extends Authenticatable
         'social_unique_id',
         'fleet',
         'login_by',
+        'is_subscription'
     ];
 
     /**
