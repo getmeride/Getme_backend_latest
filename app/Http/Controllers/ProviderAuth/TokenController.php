@@ -57,6 +57,12 @@ class TokenController extends Controller
                 'email' => 'required|email|max:255|unique:providers',
                 'mobile' => 'required',
                 'password' => 'required|min:6',
+                'service_type' => 'required',
+                'service_number' => 'required',
+                'service_model' => 'required',
+                'year' => 'required',
+                'car_make' => 'required',
+                'color' => 'required',
             ]
         );
         
@@ -73,16 +79,19 @@ class TokenController extends Controller
 
             $Provider = Provider::create($Provider);
 
-            if(Setting::get('demo_mode', 0) == 1) {
+            // if(Setting::get('demo_mode', 0) == 1) {
                 //$Provider->update(['status' => 'approved']);
                 ProviderService::create([
                     'provider_id' => $Provider->id,
-                    'service_type_id' => '1',
+                    'service_type_id' => $request->service_type,
                     'status' => 'active',
-                    'service_number' => '4pp03ets',
-                    'service_model' => 'Audi R8',
+                    'service_number' => $request->service_number,
+                    'service_model' => $request->service_model,
+                    'year' =>$request->year,
+                    'car_make' => $request->car_make,
+                    'color' =>$request->color,
                 ]);
-            }
+            //}
 
             ProviderDevice::create([
                     'provider_id' => $Provider->id,
@@ -541,6 +550,22 @@ class TokenController extends Controller
         try{
             
             return response()->json(['message' => trans('api.email_available')]);
+
+        } catch (Exception $e) {
+             return response()->json(['error' => trans('api.something_went_wrong')], 500);
+        }
+    }
+    public function serviceType(Request $request)
+    {
+       
+        try{
+            $service_types = get_all_service_types();
+            return response()->json([
+                'message' => 'all service_type',
+                'service_type' => $service_types
+            ]);
+
+            //return response()->json(['message' => trans('api.email_available')]);
 
         } catch (Exception $e) {
              return response()->json(['error' => trans('api.something_went_wrong')], 500);

@@ -63,6 +63,9 @@ class RegisterController extends Controller
             'service_type' => 'required',
             'service_number' => 'required',
             'service_model' => 'required',
+            'year' => 'required',
+            'car_make' => 'required',
+            'color' => 'required',
         ]);
     }
 
@@ -93,6 +96,10 @@ class RegisterController extends Controller
             'service_type_id' => $data['service_type'],
             'service_number' => $data['service_number'],
             'service_model' => $data['service_model'],
+            'year' => $data['year'],
+            'car_make' => $data['car_make'],
+            'color' => $data['color'],
+
         ]);
 
         if(Setting::get('demo_mode', 0) == 1) {

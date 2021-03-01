@@ -10,7 +10,7 @@
 <div class="col-md-12">
     <form class="form-horizontal" role="form" method="POST" action="{{ url('/provider/register') }}">
 
-        <div id="first_step">
+        <div id="first_step" style="display: block;">
            <div class="col-md-4">
                <input type="tel" name="country_code" id="country_code" placeholder="e.g. +1 702 123 4567">
             </div>  
@@ -124,24 +124,59 @@
                     </span>
                 @endif
             </div>
-            <div>
-                <input id="service-number" type="text" class="form-control" name="service_number" value="{{ old('service_number') }}" placeholder="@lang('provider.profile.car_number')" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_number') can only contain alphanumeric characters and - spaces">
-                
-                @if ($errors->has('service_number'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('service_number') }}</strong>
-                    </span>
-                @endif
-            </div>
-            <div>
-                <input id="service-model" type="text" class="form-control" name="service_model" value="{{ old('service_model') }}" placeholder="@lang('provider.profile.car_model')" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_model') can only contain alphanumeric characters and - spaces">
-                
-                @if ($errors->has('service_model'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('service_model') }}</strong>
-                    </span>
-                @endif
-            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <input id="service-number" type="text" class="form-control" name="service_number" value="{{ old('service_number') }}" placeholder="@lang('provider.profile.car_number')" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_number') can only contain alphanumeric characters and - spaces">
+                    
+                    @if ($errors->has('service_number'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('service_number') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <select class="form-control" name="year" data-validation="required">
+                        <option value="">Select Year</option>    
+                        <?php for($year=2009;$year<=2033;$year++){?>
+                            <option value="<?php echo $year;?>"><?php echo $year;?></option>
+                        <?php }?>    
+                    </select>
+                    @if ($errors->has('year'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('year') }}</strong>
+                        </span>
+                     @endif
+                </div>
+            </div>  
+            <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <input id="service-model" type="text" class="form-control" name="service_model" value="{{ old('service_model') }}" placeholder="@lang('provider.profile.car_model')" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_model') can only contain alphanumeric characters and - spaces">
+                    
+                    @if ($errors->has('service_model'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('service_model') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <input id="car-make" type="text" class="form-control" name="car_make" value="{{ old('car_make') }}" placeholder="@lang('provider.profile.car_make')" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_make') can only contain alphanumeric characters and - spaces">
+                    
+                    @if ($errors->has('car_make'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('car_make') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <input id="color" type="text" class="form-control" name="color" value="{{ old('color') }}" placeholder="@lang('provider.profile.color')" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.color') can only contain alphanumeric characters and - spaces">
+                    
+                    @if ($errors->has('color'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('color') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>  
             <button type="submit" class="log-teal-btn">
                 @lang('provider.signup.register')
             </button>

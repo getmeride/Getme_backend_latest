@@ -50,7 +50,9 @@ return array (
  		'error_msg' => 'can only contain alphanumeric characters and . - spaces',
  		'error_phone' => 'Incorrect phone number',
  		'cashout' => 'Cash Out',
- 		'cashout_document' =>'Cashout Documents'
+ 		'cashout_document' =>'Cashout Documents',
+ 		'car_make'=>'Car Make',
+ 		'color'=>'Color'
 
 		),
  	'partner'=>
