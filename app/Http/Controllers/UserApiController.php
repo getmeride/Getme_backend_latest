@@ -1292,7 +1292,7 @@ class UserApiController extends Controller
         );
         
         if($validator->fails()) {
-            return response()->json(['status'=>false,'message' => $validator->messages()->first()]);
+            return response()->json(['status'=>false,'message' => $validator->messages()->first()],422);
         }
 
        
@@ -1336,7 +1336,7 @@ class UserApiController extends Controller
         );
         
         if($validator->fails()) {
-            return response()->json(['status'=>false,'message' => $validator->messages()->first()]);
+            return response()->json(['status'=>false,'message' => $validator->messages()->first()],422);
         }
 
        

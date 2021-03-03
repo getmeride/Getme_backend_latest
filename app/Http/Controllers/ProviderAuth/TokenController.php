@@ -48,7 +48,8 @@ class TokenController extends Controller
         //         'password' => 'required|min:6',
         //     ]);
 
-        $validator = Validator::make(
+        
+$validator = Validator::make(
             $request->all(),
              [
                 'device_id' => 'required',
@@ -71,9 +72,8 @@ class TokenController extends Controller
         );
         
         if($validator->fails()) {
-            return response()->json(['status'=>false,'message' => $validator->messages()->first()]);
+            return response()->json(['status'=>false,'message' => $validator->messages()->first()],422);
         }
-
 
 
         try{
@@ -265,7 +265,7 @@ class TokenController extends Controller
         );
         
         if($validator->fails()) {
-            return response()->json(['status'=>false,'message' => $validator->messages()->first()]);
+            return response()->json(['status'=>false,'message' => $validator->messages()->first()],422);
         }
 
 
@@ -309,7 +309,7 @@ class TokenController extends Controller
         );
         
         if($validator->fails()) {
-            return response()->json(['status'=>false,'message' => $validator->messages()->first()]);
+            return response()->json(['status'=>false,'message' => $validator->messages()->first()],422);
         }
 
        
@@ -353,7 +353,7 @@ class TokenController extends Controller
         );
         
         if($validator->fails()) {
-            return response()->json(['status'=>false,'message' => $validator->messages()->first()]);
+            return response()->json(['status'=>false,'message' => $validator->messages()->first()],422);
         }
         $user = Socialite::driver('facebook')->stateless();
         $FacebookDrive = $user->userFromToken( $request->accessToken);
@@ -458,7 +458,7 @@ class TokenController extends Controller
         );
         
         if($validator->fails()) {
-            return response()->json(['status'=>false,'message' => $validator->messages()->first()]);
+            return response()->json(['status'=>false,'message' => $validator->messages()->first()],422);
         }
         $user = Socialite::driver('google')->stateless();        
 
