@@ -1649,7 +1649,9 @@ $Driver_Discount=0;
         }
         $pendinglist =$pendinglist->orderBy('id','desc')->get();
 
-        return response()->json(['pendinglist' => $pendinglist,'wallet_balance'=>Auth::user()->wallet_balance]);
+        $provider_cashout = ProviderBillingCashout::where('provider_id',Auth::user()->id)->orderBy('id','desc')->first();
+
+        return response()->json(['pendinglist' => $pendinglist,'wallet_balance'=>Auth::user()->wallet_balance,'provider_cashout' => $provider_cashout]);
     }
 
 

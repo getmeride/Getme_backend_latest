@@ -25,7 +25,8 @@
                                 <th>@lang('admin.provides.service_model')</th>
                                 <th>Car Make</th>
                                 <th>Color</th>
-                                <th>Year</th>                                
+                                <th>Year</th>
+                                <th>@lang('admin.action')</th>                                
                             </tr>
                         </thead>
                         <tbody>
@@ -56,6 +57,9 @@
                                 <th>@lang('admin.provides.service_name')</th>
                                 <th>@lang('admin.provides.service_number')</th>
                                 <th>@lang('admin.provides.service_model')</th>
+                                <th>Car Make</th>
+                                <th>Color</th>
+                                <th>Year</th>
                                 <th>@lang('admin.action')</th>
                             </tr>
                         </tfoot>
