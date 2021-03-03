@@ -38,7 +38,7 @@ if(Setting::get('CARD', 0) == 0){
                 <button type="button" class="close" data-dismiss="alert">×</button>
                 {{ Session::get('danger') }}
             </div>
-        @elseif(Auth::guard('provider')->user()->status == "card" || Auth::guard('provider')->user()->status == "banned")
+        @elseif(Auth::guard('provider')->user()->is_subscription == 0 || Auth::guard('provider')->user()->status == "card" || Auth::guard('provider')->user()->status == "banned")
             <div class="alert alert-danger">
                 <button type="button" class="close" data-dismiss="alert">×</button>
                 IF YOU HAVE ALREADY MADE PAYMENT, PLEASE WAIT UNTIL YOUR MEMBERSHIP HAVE BEEN APPROVED.
