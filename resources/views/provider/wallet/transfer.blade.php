@@ -32,6 +32,11 @@
                                                         <option value="2">Pick UP Cash</option>
                                                         @elseif($provider_cashout && $provider_cashout->cashout_type == "pay_by_zelle")
                                                         <option value="3">Pay By Zelle</option>
+                                                        @else
+                                                            <option value="1">Bank Deposit</option>
+                                                            <option value="2">Pick UP Cash</option>
+                                                            <option value="3">Pay By Zelle</option>
+
                                                         @endif
                                                     </select>
                                                 </div>
