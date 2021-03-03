@@ -68,7 +68,7 @@
                 @endif
             </div>
             <div>
-                <input id="lname" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" placeholder="@lang('provider.profile.last_name')"data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.last_name') can only contain alphanumeric characters and . - spaces">            
+                <input id="lname" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" placeholder="@lang('provider.profile.last_name')" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.last_name') can only contain alphanumeric characters and . - spaces">            
                 @if ($errors->has('last_name'))
                     <span class="help-block">
                         <strong>{{ $errors->first('last_name') }}</strong>
@@ -126,7 +126,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6 col-sm-12">
-                    <input id="service-number" type="text" class="form-control" name="service_number" value="{{ old('service_number') }}" placeholder="@lang('provider.profile.car_number')" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_number') can only contain alphanumeric characters and - spaces">
+                    <input id="service-number" type="text" class="form-control" name="service_number" value="{{ old('service_number') }}" placeholder="@lang('provider.profile.car_number')"  data-validation="required">
                     
                     @if ($errors->has('service_number'))
                         <span class="help-block">
@@ -150,7 +150,7 @@
             </div>  
             <div class="row">
                 <div class="col-md-4 col-sm-12">
-                    <input id="service-model" type="text" class="form-control" name="service_model" value="{{ old('service_model') }}" placeholder="@lang('provider.profile.car_model')" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_model') can only contain alphanumeric characters and - spaces">
+                    <input id="service-model" type="text" class="form-control" name="service_model" value="{{ old('service_model') }}" placeholder="@lang('provider.profile.car_model')"  data-validation="required">
                     
                     @if ($errors->has('service_model'))
                         <span class="help-block">
@@ -159,7 +159,7 @@
                     @endif
                 </div>
                 <div class="col-md-4 col-sm-12">
-                    <input id="car-make" type="text" class="form-control" name="car_make" value="{{ old('car_make') }}" placeholder="@lang('provider.profile.car_make')" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_make') can only contain alphanumeric characters and - spaces">
+                    <input id="car-make" type="text" class="form-control" name="car_make" value="{{ old('car_make') }}" placeholder="@lang('provider.profile.car_make')"  data-validation="required">
                     
                     @if ($errors->has('car_make'))
                         <span class="help-block">
@@ -168,7 +168,7 @@
                     @endif
                 </div>
                 <div class="col-md-4 col-sm-12">
-                    <input id="color" type="text" class="form-control" name="color" value="{{ old('color') }}" placeholder="@lang('provider.profile.color')" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.color') can only contain alphanumeric characters and - spaces">
+                    <input id="color" type="text" class="form-control" name="color" value="{{ old('color') }}" placeholder="@lang('provider.profile.color')"  data-validation="required">
                     
                     @if ($errors->has('color'))
                         <span class="help-block">
@@ -177,6 +177,151 @@
                     @endif
                 </div>
             </div>  
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <select class="form-control billing_information" name="cashout_type" data-validation="required">
+                        <option value="">Select Payout Option</option>    
+                        <option value="bank_deposit">Bank Deposit</option>
+                        <option value="pay_by_zelle">Pay By Zelle</option>
+                        <option value="cash_pickup">Cash Pickup</option>
+                    </select>
+                    @if ($errors->has('cashout_type'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('cashout_type') }}</strong>
+                        </span>
+                     @endif
+                </div>
+            </div>
+            <div class="row bank_deposit common_select_dropdown" id="bank_deposit" style="display: none;">
+                <div class="col-md-12 col-sm-12">
+                    <input id="bank_deposit_full_name" type="text" class="form-control" name="bank_deposit_full_name" value="{{ old('bank_deposit_full_name') }}" placeholder="Full Name of the  account holder" data-validation="required">
+                    @if ($errors->has('bank_deposit_full_name'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('bank_deposit_full_name') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <input id="bank_deposit_routing_number" type="text" class="form-control" name="bank_deposit_routing_number" value="{{ old('bank_deposit_routing_number') }}" placeholder="ACH routing number"  data-validation="required">
+                    
+                    @if ($errors->has('bank_deposit_routing_number'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('bank_deposit_routing_number') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <input id="bank_deposit_account_number" type="text" class="form-control" name="bank_deposit_account_number" value="{{ old('bank_deposit_account_number') }}" placeholder="Account Number" data-validation="required">
+                    
+                    @if ($errors->has('bank_deposit_account_number'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('bank_deposit_account_number') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <label class="checkbox-inline"><input type="checkbox" name="bank_deposit_account_type" value="checking" data-validation="checkbox_group" data-validation-qty="1" data-validation-error-msg="Please choose one account type">Checking</label>
+                    <label class="checkbox-inline"><input type="checkbox" name="bank_deposit_account_type" value="savings" data-validation="checkbox_group" data-validation-qty="1" data-validation-error-msg="Please choose one account type">Savings</label>
+                    @if ($errors->has('bank_deposit_account_type'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('bank_deposit_account_type') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <input id="bank_deposit_swift_code" type="text" class="form-control" name="bank_deposit_swift_code" value="{{ old('bank_deposit_swift_code') }}" placeholder="SWIFT/ BIC code" data-validation="required">
+                    
+                    @if ($errors->has('bank_deposit_swift_code'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('bank_deposit_swift_code') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <input id="bank_deposit_iban_number" type="text" class="form-control" name="bank_deposit_iban_number" value="{{ old('bank_deposit_iban_number') }}" placeholder="IBAN / Account Number" data-validation="required">
+                    
+                    @if ($errors->has('bank_deposit_iban_number'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('bank_deposit_iban_number') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>
+            <div class="row pay_by_zelle common_select_dropdown" id="pay_by_zelle" style="display: none;">
+                <div class="col-md-12 col-sm-12">
+                    <input id="pay_by_zelle_full_name" type="text" class="form-control" name="pay_by_zelle_full_name" value="{{ old('pay_by_zelle_full_name') }}" placeholder="Full Name of the  account holder" data-validation="required">
+                    @if ($errors->has('pay_by_zelle_full_name'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('pay_by_zelle_full_name') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <input id="pay_by_zelle_mobile_number" type="phone" class="form-control" name="pay_by_zelle_mobile_number" value="{{ old('pay_by_zelle_mobile_number') }}" data-stripe="number" maxlength="10" placeholder="Enter Your Mobile number assigned to your bank"  data-validation="required" onkeypress="return isNumberPayZelllMobileKey(event);">
+                    
+                    @if ($errors->has('pay_by_zelle_mobile_number'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('pay_by_zelle_mobile_number') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <input id="pay_by_zelle_email" type="email" class="form-control" name="pay_by_zelle_email" value="{{ old('pay_by_zelle_email') }}" placeholder="Enter your email that associated with your bank" data-validation="email">
+                    
+                    @if ($errors->has('pay_by_zelle_email'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('pay_by_zelle_email') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>
+            <div class="row cash_pickup common_select_dropdown" id="cash_pickup" style="display: none;">
+                <div class="col-md-12 col-sm-12">
+                    <input id="cashpickup_full_name" type="text" class="form-control" name="cashpickup_full_name" value="{{ old('cashpickup_full_name') }}" placeholder="Full Name" data-validation="alphanumeric" data-validation-allowing=" -" data-validation-error-msg="@lang('provider.profile.car_model') can only contain alphanumeric characters and - spaces">
+                    
+                    @if ($errors->has('cashpickup_full_name'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('cashpickup_full_name') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <input id="cashpickup_address" type="text" class="form-control" name="cashpickup_address" value="{{ old('cashpickup_address') }}" placeholder="Address"  data-validation="required">
+                    
+                    @if ($errors->has('cashpickup_address'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('cashpickup_address') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <input id="cashpickup_city_state" type="text" class="form-control" name="cashpickup_city_state" value="{{ old('cashpickup_city_state') }}" placeholder="City and State" data-validation="required">
+                    
+                    @if ($errors->has('cashpickup_city_state'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('cashpickup_city_state') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <input id="cashpickup_country" type="text" class="form-control" name="cashpickup_country" value="{{ old('cashpickup_country') }}" placeholder="country" data-validation="required">
+                    
+                    @if ($errors->has('cashpickup_country'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('cashpickup_country') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <input id="cashpickup_mobile_number" type="phone"  class="form-control" name="cashpickup_mobile_number" value="{{ old('cashpickup_mobile_number') }}" data-stripe="number" maxlength="10" placeholder="Billing Mobile Number" data-validation="required" onkeypress="return isNumberCashPickupMobileKey(event);">
+                    
+                    @if ($errors->has('cashpickup_mobile_number'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('cashpickup_mobile_number') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>
             <button type="submit" class="log-teal-btn">
                 @lang('provider.signup.register')
             </button>
@@ -322,12 +467,63 @@
 
         return true;
     }
+    function isNumberPayZelllMobileKey(evt)
+    {   
+        var edValue = document.getElementById("pay_by_zelle_mobile_number");
+        var s = edValue.value;
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            if(s.length>=10){
+                //smsLogin();
+            }
+        }
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        if (charCode != 46 && charCode > 31 
+        && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+    function isNumberCashPickupMobileKey(evt)
+    {   
+        var edValue = document.getElementById("cashpickup_mobile_number");
+        var s = edValue.value;
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            if(s.length>=10){
+                //smsLogin();
+            }
+        }
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        if (charCode != 46 && charCode > 31 
+        && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
 
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/6.4.1/js/intlTelInput.min.js"></script>
 <script type="text/javascript">
     $("#country_code").intlTelInput();
     $("#country_code").intlTelInput("setNumber", "+1");
+    $(document).ready(function(){
+        $("select.billing_information").change(function(){
+            var billing_information = $(this).children("option:selected").val();
+            if(billing_information == "bank_deposit"){
+                $('.common_select_dropdown').hide();
+                $('#bank_deposit').show();
+            }else if(billing_information == "pay_by_zelle"){
+                $('.common_select_dropdown').hide();
+                $('#pay_by_zelle').show();
+            }else if(billing_information == "cash_pickup"){
+                $('.common_select_dropdown').hide();
+                $('#cash_pickup').show();
+            }else{
+                $('.common_select_dropdown').hide();   
+            }
+        });
+    });
 </script>
 @endsection
 

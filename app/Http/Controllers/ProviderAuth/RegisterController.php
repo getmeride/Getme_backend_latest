@@ -12,6 +12,7 @@ use Validator;
 use App\Helpers\Helper;
 use App\Provider;
 use App\ProviderService;
+use App\ProviderBillingCashout;
 
 class RegisterController extends Controller
 {
@@ -101,6 +102,38 @@ class RegisterController extends Controller
             'color' => $data['color'],
 
         ]);
+
+        if($data['cashout_type'] == "bank_deposit"){
+            $provider_billing_cashout = ProviderBillingCashout::create([
+                'provider_id' => $Provider->id,
+                'cashout_type' => $data['cashout_type'],
+                'bank_deposit_full_name' => $data['bank_deposit_full_name'],
+                'bank_deposit_routing_number' => $data['bank_deposit_routing_number'],
+                'bank_deposit_account_number' => $data['bank_deposit_account_number'],
+                'bank_deposit_account_type' => $data['bank_deposit_account_type'],
+                'bank_deposit_swift_code' => $data['bank_deposit_swift_code'],
+                'bank_deposit_iban_number' => $data['bank_deposit_iban_number'],
+            ]);
+        }elseif($data['cashout_type'] == "pay_by_zelle"){
+            $provider_billing_cashout = ProviderBillingCashout::create([
+                'provider_id' => $Provider->id,
+                'cashout_type' => $data['cashout_type'],
+                'pay_by_zelle_full_name' => $data['pay_by_zelle_full_name'],
+                'pay_by_zelle_mobile_number' => $data['pay_by_zelle_mobile_number'],
+                'pay_by_zelle_email' => $data['pay_by_zelle_email']
+            ]);
+        }elseif($data['cashout_type'] == "cash_pickup"){
+            $provider_billing_cashout = ProviderBillingCashout::create([
+                'provider_id' => $Provider->id,
+                'cashout_type' => $data['cashout_type'],
+                'cashpickup_full_name' => $data['cashpickup_full_name'],
+                'cashpickup_address' => $data['cashpickup_address'],
+                'cashpickup_city_state' => $data['cashpickup_city_state'],
+                'cashpickup_country' => $data['cashpickup_country'],
+                'cashpickup_mobile_number' => $data['cashpickup_mobile_number']
+            ]);
+        }
+        
 
         if(Setting::get('demo_mode', 0) == 1) {
             //$Provider->update(['status' => 'approved']);
