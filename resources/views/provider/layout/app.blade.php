@@ -7,7 +7,7 @@ if(Auth::user()->status=='document'){
       //exit;
    }
 }
-if(Auth::user()->is_subscription==0 || Auth::user()->status=='card' || Auth::guard('provider')->user()->status == "banned"){  
+elseif(Auth::user()->is_subscription==0 || Auth::user()->status=='card' || Auth::guard('provider')->user()->status == "banned"){  
    if(Route::current()->getName()!='provider.cards' && Route::current()->getName()!='provider.index'){?>   
         <script>window.location = "{{ route('provider.cards') }}";</script>
      <?php //header('Location:provider/cards');
