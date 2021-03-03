@@ -23,6 +23,7 @@ use App\ProviderDevice;
 use App\ProviderService;
 use App\RequestFilter;
 use App\Helpers\Helper;
+use App\ProviderBillingCashout;
 
 class TokenController extends Controller
 {
@@ -54,8 +55,8 @@ class TokenController extends Controller
                 'device_token' => 'required',
                 'first_name' => 'required|max:255',
                 'last_name' => 'required|max:255',
-                'email' => 'required|email|max:255|unique:providers',
-                'mobile' => 'required',
+                'email' => 'required|email|max:255',
+                'mobile' => 'required|numeric|unique:providers',
                 'password' => 'required|min:6',
                 'service_type' => 'required',
                 'service_number' => 'required',
@@ -63,12 +64,14 @@ class TokenController extends Controller
                 'year' => 'required',
                 'car_make' => 'required',
                 'color' => 'required',
+                'cashout_type' => 'required',
             ]
         );
         
         if($validator->fails()) {
             return response()->json(['status'=>false,'message' => $validator->messages()->first()]);
         }
+
 
 
         try{
@@ -99,6 +102,38 @@ class TokenController extends Controller
                     'token' => $request->device_token,
                     'type' => $request->device_type,
                 ]);
+
+        if($request->cashout_type == "bank_deposit"){
+            $provider_billing_cashout = ProviderBillingCashout::create([
+                'provider_id' => $Provider->id,
+                'cashout_type' => $request->cashout_type,
+                'bank_deposit_full_name' => $request->bank_deposit_full_name,
+                'bank_deposit_routing_number' => $request->bank_deposit_routing_number,
+                'bank_deposit_account_number' => $request->bank_deposit_account_number,
+                'bank_deposit_account_type' => $request->bank_deposit_account_type,
+                'bank_deposit_swift_code' => $request->bank_deposit_swift_code,
+                'bank_deposit_iban_number' => $request->bank_deposit_iban_number,
+            ]);
+        }elseif($request->cashout_type == "pay_by_zelle"){
+            $provider_billing_cashout = ProviderBillingCashout::create([
+                'provider_id' => $Provider->id,
+                'cashout_type' => $request->cashout_type,
+                'pay_by_zelle_full_name' => $request->pay_by_zelle_full_name,
+                'pay_by_zelle_mobile_number' => $request->pay_by_zelle_mobile_number,
+                'pay_by_zelle_email' => $request->pay_by_zelle_email
+            ]);
+        }elseif($request->cashout_type == "cash_pickup"){
+            $provider_billing_cashout = ProviderBillingCashout::create([
+                'provider_id' => $Provider->id,
+                'cashout_type' => $request->cashout_type,
+                'cashpickup_full_name' => $request->cashpickup_full_name,
+                'cashpickup_address' => $request->cashpickup_address,
+                'cashpickup_city_state' => $request->cashpickup_city_state,
+                'cashpickup_country' => $request->cashpickup_country,
+                'cashpickup_mobile_number' => $request->cashpickup_mobile_number
+            ]);
+        }
+        
 
             $ProviderUser=$this->authenticate($request);
             

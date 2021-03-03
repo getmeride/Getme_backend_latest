@@ -59,7 +59,7 @@ class RegisterController extends Controller
             'last_name' => 'required|max:255',
             'mobile' => 'required|numeric|unique:providers',
             'country_code' => 'required',
-            'email' => 'required|email|max:255|unique:providers',
+            'email' => 'required|email|max:255',
             'password' => 'required|min:6',
             'service_type' => 'required',
             'service_number' => 'required',
@@ -67,6 +67,7 @@ class RegisterController extends Controller
             'year' => 'required',
             'car_make' => 'required',
             'color' => 'required',
+            'cashout_type' => 'required',
         ]);
     }
 
