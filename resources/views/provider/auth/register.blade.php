@@ -8,7 +8,7 @@
 </div>
 
 <div class="col-md-12">
-    <form class="form-horizontal" role="form" method="POST" action="{{ url('/provider/register') }}">
+    <form class="form-horizontal" role="form" method="POST" action="{{ url('/provider/register') }}" enctype="multipart/form-data">
 
         <div id="first_step" style="display: block;">
            <div class="col-md-4">
@@ -82,6 +82,10 @@
                         <strong>{{ $errors->first('email') }}</strong>
                     </span>
                 @endif
+            </div>
+            <div>
+                <label>Profile Picture</label>
+                <input id="avatar" type="file" class="form-control" name="avatar"  data-validation="required" accept="image/x-png,image/gif,image/jpeg" >            
             </div>
             <div>
                 <label class="checkbox-inline"><input type="checkbox" name="gender" value="MALE" data-validation="checkbox_group" data-validation-qty="1" data-validation-error-msg="Please choose one gender">@lang('provider.signup.male')</label>

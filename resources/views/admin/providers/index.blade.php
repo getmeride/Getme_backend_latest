@@ -119,6 +119,12 @@
                                     <li>
                                         <a href="{{ route('admin.provider.statement', $provider->id) }}" class="btn btn-default"><i class="fa fa-account"></i> @lang('admin.Statements')</a>
                                     </li>
+                                    <li>
+                                       <!--  <a href="#" class="btn btn-default"><i class="fa fa-bill" data-toggle="modal" data-target="#exampleModal"></i> Billing</a> -->
+                                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#provider{{$provider->id}}" style="background: #fff;color: #428bca;">
+                                          &nbsp;&nbsp;Billing
+                                        </button>
+                                    </li>
                                     @if( Setting::get('demo_mode') == 0)
                                     <li>
                                         <a href="{{ route('admin.provider.edit', $provider->id) }}" class="btn btn-default"><i class="fa fa-pencil"></i> @lang('admin.edit')</a>
@@ -168,6 +174,93 @@
                             </form>
                             </div>
                       </div>
+                        <div class="modal fade" id="provider{{$provider->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel{{$provider->id}}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel{{$provider->id}}">
+                                        Billing Information</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                       @if($provider->billingInfo != null)
+                                            <div>
+                                                <label>Cashout Type :  </label>
+                                                <label>{{$provider->billingInfo->cashout_type}}<label>
+                                            </div>
+                                            @if($provider->billingInfo->cashout_type == "pay_by_zelle")
+                                                
+                                                <div>
+                                                    <label>Full Name :  </label>
+                                                    <label>{{$provider->billingInfo->pay_by_zelle_full_name}}<label>
+                                                </div>
+                                                <div>
+                                                    <label>Mobile Number :  </label>
+                                                    <label>{{$provider->billingInfo->pay_by_zelle_mobile_number}}<label>
+                                                </div>
+                                                <div>
+                                                    <label>Email : </label>
+                                                    <label>{{$provider->billingInfo->pay_by_zelle_email}}<label>
+                                                </div>
+                                            @elseif($provider->billingInfo->cashout_type == "bank_deposit")
+                                                
+                                                <div>
+                                                    <label>Full Name :  </label>
+                                                    <label>{{$provider->billingInfo->bank_deposit_full_name}}<label>
+                                                </div>
+                                                <div>
+                                                    <label>Routing Number : </label>
+                                                    <label>{{$provider->billingInfo->bank_deposit_routing_number}}<label>
+                                                </div>
+                                                <div>
+                                                    <label>Account Number  :</label>
+                                                    <label>{{$provider->billingInfo->bank_deposit_account_number}}<label>
+                                                </div>
+                                                <div>
+                                                    <label>Account Type  :</label>
+                                                    <label>{{$provider->billingInfo->bank_deposit_account_type}}<label>
+                                                </div>
+                                                <div>
+                                                    <label>Swift Code  :</label>
+                                                    <label>{{$provider->billingInfo->bank_deposit_swift_code}}<label>
+                                                </div>
+                                                <div>
+                                                    <label>IBAN Number  :</label>
+                                                    <label>{{$provider->billingInfo->bank_deposit_iban_number}}<label>
+                                                </div>
+                                            @elseif($provider->billingInfo->cashout_type == "cash_pickup")
+                                                
+                                                <div>
+                                                    <label>Full Name :  </label>
+                                                    <label>{{$provider->billingInfo->cashpickup_full_name}}<label>
+                                                </div>
+                                                <div>
+                                                    <label>Address : </label>
+                                                    <label>{{$provider->billingInfo->cashpickup_address}}<label>
+                                                </div>
+                                                <div>
+                                                    <label>City State  :</label>
+                                                    <label>{{$provider->billingInfo->cashpickup_city_state}}<label>
+                                                </div>
+                                                <div>
+                                                    <label>Country  :</label>
+                                                    <label>{{$provider->billingInfo->cashpickup_country}}<label>
+                                                </div>
+                                                <div>
+                                                    <label>Mobile Number  :</label>
+                                                    <label>{{$provider->billingInfo->cashpickup_mobile_number}}<label>
+                                                </div>
+                                                
+                                            @endif
+                                       @else
+                                        <h3>No Data Found</h3>
+                                       @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 @endforeach
                 </tbody>
                 <tfoot>

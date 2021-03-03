@@ -23,7 +23,9 @@
                                 <th>@lang('admin.provides.service_name')</th>
                                 <th>@lang('admin.provides.service_number')</th>
                                 <th>@lang('admin.provides.service_model')</th>
-                                <th>@lang('admin.action')</th>
+                                <th>Car Make</th>
+                                <th>Color</th>
+                                <th>Year</th>                                
                             </tr>
                         </thead>
                         <tbody>
@@ -32,6 +34,11 @@
                                 <td>{{ $service->service_type->name }}</td>
                                 <td>{{ $service->service_number }}</td>
                                 <td>{{ $service->service_model }}</td>
+                                
+                                <td>{{ $service->car_make }}</td>
+                                <td>{{ $service->color }}</td>
+                                <td>{{ $service->year }}</td>
+
                                 <td>
                                 @if( Setting::get('demo_mode') == 0)
                                     <form action="{{ route('admin.provider.document.service', [$Provider->id, $service->id]) }}" method="POST">
@@ -58,26 +65,45 @@
                 </div>
                 <form action="{{ route('admin.provider.document.store', $Provider->id) }}" method="POST">
                     {{ csrf_field() }}
-                    <div class="col-xs-3">
-                        <select class="form-control input" name="service_type" required>
-                            @forelse($ServiceTypes as $Type)
-                            <option value="{{ $Type->id }}">{{ $Type->name }}</option>
-                            @empty
-                            <option>- @lang('admin.service_select') -</option>
-                            @endforelse
-                        </select>
-                    </div>
-                    <div class="col-xs-3">
-                        <input type="text" required name="service_number" class="form-control" placeholder="Number (CY 98769)">
-                    </div>
-                    <div class="col-xs-3">
-                        <input type="text" required name="service_model" class="form-control" placeholder="Model (Audi R8 - Black)">
-                    </div>
-                    @if( Setting::get('demo_mode') == 0)
-                    <div class="col-xs-3">
-                        <button class="btn btn-primary btn-block" type="submit">@lang('admin.update')</button>
-                    </div>
-                    @endif
+                    <div class="col-xs-12 row" style="margin-bottom: 15px;">
+                        <div class="col-xs-3">
+                            <select class="form-control input" name="service_type" required>
+                                @forelse($ServiceTypes as $Type)
+                                <option value="{{ $Type->id }}">{{ $Type->name }}</option>
+                                @empty
+                                <option>- @lang('admin.service_select') -</option>
+                                @endforelse
+                            </select>
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" required name="service_number" class="form-control" placeholder="Number (CY 98769)">
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" required name="service_model" class="form-control" placeholder="Model (Audi R8 - Black)">
+                        </div>
+                    </div><br>
+                    <div class="col-xs-12 row">    
+                        <div class="col-xs-3">
+                            <input type="text" required name="car_make" class="form-control" placeholder="Car Make">
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" required name="color" class="form-control" placeholder="Color">
+                        </div>
+                        <div class="col-xs-3">
+                           <!--  <input type="text" required name="service_model" class="form-control" placeholder="Year"> -->
+                            <select class="form-control" name="year" required>
+                                <option value="">Select Year</option>    
+                                <?php for($year=2009;$year<=2033;$year++){?>
+                                    <option value="<?php echo $year;?>"><?php echo $year;?></option>
+                                <?php }?>    
+                            </select>
+                        </div>
+                        @if( Setting::get('demo_mode') == 0)
+                        <div class="col-xs-3">
+                            <button class="btn btn-primary btn-block" type="submit">@lang('admin.update')</button>
+                        </div>
+                        @endif
+                    </div>    
                 </form>
             </div>
         </div>

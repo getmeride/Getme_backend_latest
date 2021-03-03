@@ -42,7 +42,7 @@ class ProviderResource extends Controller
     {
 
         if(!empty($request->page) && $request->page=='all'){
-            $AllProviders = Provider::with('service','accepted','cancelled')
+            $AllProviders = Provider::with('service','accepted','cancelled','billingInfo')
                     ->orderBy('id', 'asc');
             if(request()->has('fleet')){
                 $providers = $AllProviders->where('fleet',$request->fleet)->get();
@@ -53,7 +53,7 @@ class ProviderResource extends Controller
             return response()->json(array('success' => true, 'data'=>$providers));
         }
         else{
-            $AllProviders = Provider::with('service','accepted','cancelled')
+            $AllProviders = Provider::with('service','accepted','cancelled','billingInfo')
                     ->orderBy('id', 'DESC');
             if(request()->has('fleet')){
                 $providers = $AllProviders->where('fleet',$request->fleet)->paginate($this->perpage);

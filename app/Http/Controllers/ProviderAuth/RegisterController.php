@@ -13,6 +13,7 @@ use App\Helpers\Helper;
 use App\Provider;
 use App\ProviderService;
 use App\ProviderBillingCashout;
+use Storage;
 
 class RegisterController extends Controller
 {
@@ -68,6 +69,7 @@ class RegisterController extends Controller
             'car_make' => 'required',
             'color' => 'required',
             'cashout_type' => 'required',
+            'avatar'=>'required'
         ]);
     }
 
@@ -84,13 +86,20 @@ class RegisterController extends Controller
         else
             $gender='MALE';
 
+       
+        if (!empty($data['avatar'])) {
+            $avatar = $data['avatar']->store('provider/profile');
+        }
+
+
         $Provider = Provider::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'gender' => $gender,
             'mobile' => $data['mobile'],
-            'password' => bcrypt($data['password'])            
+            'password' => bcrypt($data['password']),
+            'avatar' => $avatar,        
         ]);
 
         $provider_service = ProviderService::create([

@@ -26,7 +26,7 @@
                         <select name="type">
                             <option value="DRIVER">@lang('admin.document.driver_review')</option>
                             <option value="VEHICLE">@lang('admin.document.vehicle_review')</option>
-                            <option value="CASHOUT">@lang('admin.document.cashout_review')</option>
+                            <!-- <option value="CASHOUT">@lang('admin.document.cashout_review')</option> -->
                         </select>
                     </div>
                 </div>

@@ -123,7 +123,7 @@
                     </div>
                 </div>
 
-                <div class="manage-doc-section">
+               {{--   <div class="manage-doc-section">
                     <div class="manage-doc-section-head row no-margin">
                         <h3 class="manage-doc-tit">
                            @lang('provider.profile.cashout_document')
@@ -179,7 +179,7 @@
                         </div>
                         @endforeach
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

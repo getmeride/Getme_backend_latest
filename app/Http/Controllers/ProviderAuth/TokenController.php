@@ -17,6 +17,7 @@ use Notification;
 use Validator;
 use Socialite;
 use File; 
+use Storage;
 
 use App\Provider;
 use App\ProviderDevice;
@@ -65,6 +66,7 @@ class TokenController extends Controller
                 'car_make' => 'required',
                 'color' => 'required',
                 'cashout_type' => 'required',
+                'avatar'=>'required'
             ]
         );
         
@@ -79,6 +81,11 @@ class TokenController extends Controller
             $Provider = $request->all();
             $Provider['password'] = bcrypt($request->password);
             
+            if ($request->hasFile('avatar')) {
+                //Storage::delete($Provider->avatar);
+                //$avatar = $request->avatar->store('provider/profile');
+                $Provider['avatar'] = $request->avatar->store('provider/profile');
+            }
 
             $Provider = Provider::create($Provider);
 
@@ -92,7 +99,7 @@ class TokenController extends Controller
                     'service_model' => $request->service_model,
                     'year' =>$request->year,
                     'car_make' => $request->car_make,
-                    'color' =>$request->color,
+                    'color' =>$request->color
                 ]);
             //}
 

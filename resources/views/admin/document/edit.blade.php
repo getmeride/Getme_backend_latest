@@ -27,7 +27,7 @@
                         <select name="type">
                             <option value="DRIVER" @if($document->type == 'DRIVER') selected @endif>@lang('admin.document.driver_review')</option>
                             <option value="VEHICLE" @if($document->type == 'VEHICLE') selected @endif>@lang('admin.document.vehicle_review')</option>
-                             <option value="CASHOUT" @if($document->type == 'CASHOUT') selected @endif>@lang('admin.document.cashout_review')</option>
+                            <!--  <option value="CASHOUT" @if($document->type == 'CASHOUT') selected @endif>@lang('admin.document.cashout_review')</option> -->
                         </select>
                     </div>
                 </div>

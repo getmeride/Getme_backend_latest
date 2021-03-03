@@ -160,4 +160,9 @@ class Provider extends Authenticatable
     {
         $this->notify(new ProviderResetPassword($token));
     }
+
+    public function billingInfo()
+    {
+        return $this->hasOne('App\ProviderBillingCashout');
+    }
 }

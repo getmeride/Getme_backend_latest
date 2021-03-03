@@ -26,9 +26,13 @@
                                                     <select class="form-control" name="payment_type" required>
                                                         {{-- <option value="">Select  Payment Type</option>
                                                         <option value="transfwise">Transfwise</option> --}}
+                                                        @if($provider_cashout && $provider_cashout->cashout_type== "bank_deposit")
                                                         <option value="1">Bank Deposit</option>
+                                                        @elseif($provider_cashout && $provider_cashout->cashout_type == "cash_pickup")
                                                         <option value="2">Pick UP Cash</option>
+                                                        @elseif($provider_cashout && $provider_cashout->cashout_type == "pay_by_zelle")
                                                         <option value="3">Pay By Zelle</option>
+                                                        @endif
                                                     </select>
                                                 </div>
                                             </div>

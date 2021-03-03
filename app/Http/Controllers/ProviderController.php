@@ -20,6 +20,9 @@ use Square\Models\Money;
 use Square\Models\CreatePaymentRequest;
 use Square\Exceptions\ApiException;
 use Square\SquareClient;
+use App\ProviderBillingCashout;
+
+
 
 class ProviderController extends Controller
 {
@@ -275,7 +278,9 @@ class ProviderController extends Controller
 
         $pendinglist = WalletRequests::where('from_id',Auth::user()->id)->where('request_from','provider')->where('status',0)->get();
         $wallet_balance=Auth::user()->wallet_balance;
-        return view('provider.wallet.transfer',compact('pendinglist','wallet_balance'));
+        
+        $provider_cashout = ProviderBillingCashout::where('provider_id',Auth::user()->id)->orderBy('id','desc')->first();
+        return view('provider.wallet.transfer',compact('pendinglist','wallet_balance','provider_cashout'));
     }
 
     public function requestamount(Request $request)

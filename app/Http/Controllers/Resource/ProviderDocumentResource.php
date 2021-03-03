@@ -59,6 +59,9 @@ class ProviderDocumentResource extends Controller
                 'service_type' => 'required|exists:service_types,id',
                 'service_number' => 'required',
                 'service_model' => 'required',
+                'year' => 'required',
+                'car_make' => 'required',
+                'color' => 'required',
             ]);
         
 
@@ -70,6 +73,9 @@ class ProviderDocumentResource extends Controller
                     'status' => 'offline',
                     'service_number' => $request->service_number,
                     'service_model' => $request->service_model,
+                    'year' => $request->year,
+                    'car_make' => $request->car_make,
+                    'color' => $request->color,
                 ]);
 
             // Sending push to the provider
