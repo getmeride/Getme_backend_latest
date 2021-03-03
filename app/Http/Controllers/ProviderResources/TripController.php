@@ -41,6 +41,7 @@ use App\ProviderWallet;
 use App\FleetWallet;
 use App\WalletRequests;
 use App\ProviderDocument;
+use App\ProviderBillingCashout;
 
 
 
