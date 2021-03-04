@@ -186,74 +186,83 @@
                                     </div>
                                     <div class="modal-body">
                                        @if($provider->billingInfo != null)
-                                            <div>
-                                                <label>Cashout Type :  </label>
-                                                <label>{{$provider->billingInfo->cashout_type}}<label>
-                                            </div>
-                                            @if($provider->billingInfo->cashout_type == "pay_by_zelle")
-                                                
-                                                <div>
-                                                    <label>Full Name :  </label>
-                                                    <label>{{$provider->billingInfo->pay_by_zelle_full_name}}<label>
-                                                </div>
-                                                <div>
-                                                    <label>Mobile Number :  </label>
-                                                    <label>{{$provider->billingInfo->pay_by_zelle_mobile_number}}<label>
-                                                </div>
-                                                <div>
-                                                    <label>Email : </label>
-                                                    <label>{{$provider->billingInfo->pay_by_zelle_email}}<label>
-                                                </div>
-                                            @elseif($provider->billingInfo->cashout_type == "bank_deposit")
-                                                
-                                                <div>
-                                                    <label>Full Name :  </label>
-                                                    <label>{{$provider->billingInfo->bank_deposit_full_name}}<label>
-                                                </div>
-                                                <div>
-                                                    <label>Routing Number : </label>
-                                                    <label>{{$provider->billingInfo->bank_deposit_routing_number}}<label>
-                                                </div>
-                                                <div>
-                                                    <label>Account Number  :</label>
-                                                    <label>{{$provider->billingInfo->bank_deposit_account_number}}<label>
-                                                </div>
-                                                <div>
-                                                    <label>Account Type  :</label>
-                                                    <label>{{$provider->billingInfo->bank_deposit_account_type}}<label>
-                                                </div>
-                                                <div>
-                                                    <label>Swift Code  :</label>
-                                                    <label>{{$provider->billingInfo->bank_deposit_swift_code}}<label>
-                                                </div>
-                                                <div>
-                                                    <label>IBAN Number  :</label>
-                                                    <label>{{$provider->billingInfo->bank_deposit_iban_number}}<label>
-                                                </div>
-                                            @elseif($provider->billingInfo->cashout_type == "cash_pickup")
-                                                
-                                                <div>
-                                                    <label>Full Name :  </label>
-                                                    <label>{{$provider->billingInfo->cashpickup_full_name}}<label>
-                                                </div>
-                                                <div>
-                                                    <label>Address : </label>
-                                                    <label>{{$provider->billingInfo->cashpickup_address}}<label>
-                                                </div>
-                                                <div>
-                                                    <label>City State  :</label>
-                                                    <label>{{$provider->billingInfo->cashpickup_city_state}}<label>
-                                                </div>
-                                                <div>
-                                                    <label>Country  :</label>
-                                                    <label>{{$provider->billingInfo->cashpickup_country}}<label>
-                                                </div>
-                                                <div>
-                                                    <label>Mobile Number  :</label>
-                                                    <label>{{$provider->billingInfo->cashpickup_mobile_number}}<label>
-                                                </div>
-                                                
-                                            @endif
+                                            @foreach($provider->billingInfo as $billing_info_value)
+                                                @if($billing_info_value->cashout_type == "pay_by_zelle")
+                                                    <div>
+                                                        <label>Cashout Type :  </label>
+                                                        <label><b>Pay By Zelle</b><label>
+                                                    </div>    
+                                                    <div>
+                                                        <label>Full Name :  </label>
+                                                        <label>{{$billing_info_value->pay_by_zelle_full_name}}<label>
+                                                    </div>
+                                                    <div>
+                                                        <label>Mobile Number :  </label>
+                                                        <label>{{$billing_info_value->pay_by_zelle_mobile_number}}<label>
+                                                    </div>
+                                                    <div>
+                                                        <label>Email : </label>
+                                                        <label>{{$billing_info_value->pay_by_zelle_email}}<label>
+                                                    </div>
+                                                    <hr>
+                                                @elseif($billing_info_value->cashout_type == "bank_deposit")
+                                                    <div>
+                                                        <label>Cashout Type :  </label>
+                                                        <label><b>Bank Deposit</b><label>
+                                                    </div>  
+                                                    <div>
+                                                        <label>Full Name :  </label>
+                                                        <label>{{$billing_info_value->bank_deposit_full_name}}<label>
+                                                    </div>
+                                                    <div>
+                                                        <label>Routing Number : </label>
+                                                        <label>{{$billing_info_value->bank_deposit_routing_number}}<label>
+                                                    </div>
+                                                    <div>
+                                                        <label>Account Number  :</label>
+                                                        <label>{{$billing_info_value->bank_deposit_account_number}}<label>
+                                                    </div>
+                                                    <div>
+                                                        <label>Account Type  :</label>
+                                                        <label>{{$billing_info_value->bank_deposit_account_type}}<label>
+                                                    </div>
+                                                    <div>
+                                                        <label>Swift Code  :</label>
+                                                        <label>{{$billing_info_value->bank_deposit_swift_code}}<label>
+                                                    </div>
+                                                    <div>
+                                                        <label>IBAN Number  :</label>
+                                                        <label>{{$billing_info_value->bank_deposit_iban_number}}<label>
+                                                    </div>
+                                                    <hr>
+                                                @elseif($billing_info_value->cashout_type == "cash_pickup")
+                                                    <div>
+                                                        <label>Cashout Type :  </label>
+                                                        <label><b>Cash Pickup</b><label>
+                                                    </div> 
+                                                    <div>
+                                                        <label>Full Name :  </label>
+                                                        <label>{{$billing_info_value->cashpickup_full_name}}<label>
+                                                    </div>
+                                                    <div>
+                                                        <label>Address : </label>
+                                                        <label>{{$billing_info_value->cashpickup_address}}<label>
+                                                    </div>
+                                                    <div>
+                                                        <label>City State  :</label>
+                                                        <label>{{$billing_info_value->cashpickup_city_state}}<label>
+                                                    </div>
+                                                    <div>
+                                                        <label>Country  :</label>
+                                                        <label>{{$billing_info_value->cashpickup_country}}<label>
+                                                    </div>
+                                                    <div>
+                                                        <label>Mobile Number  :</label>
+                                                        <label>{{$billing_info_value->cashpickup_mobile_number}}<label>
+                                                    </div>
+                                                    <hr>
+                                                @endif
+                                            @endforeach
                                        @else
                                         <h3>No Data Found</h3>
                                        @endif

@@ -57,7 +57,9 @@ Route::group(['middleware' => ['provider.api']], function () {
     Route::get('/transferlist', 'ProviderResources\TripController@transferlist');
     Route::post('/requestamount' ,'ProviderResources\TripController@requestamount');
     Route::get('/requestcancel' ,'ProviderResources\TripController@requestcancel');
-   
+
+    Route::get('/billinglist', 'ProviderAuth\TokenController@billinglist');
+    Route::post('/billingstore' ,   'ProviderAuth\TokenController@billingstore');
 
 
     Route::group(['prefix' => 'trip'], function () {
