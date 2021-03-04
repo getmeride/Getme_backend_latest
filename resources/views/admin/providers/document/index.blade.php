@@ -32,7 +32,11 @@
                         <tbody>
                             @foreach($ProviderService as $service)
                             <tr>
-                                <td>{{ $service->service_type->name }}</td>
+                                @if($service->service_type && $service->service_type->name)
+                                    <td>{{ $service->service_type->name }}</td>
+                                @else
+                                    <td>-</td>
+                                @endif
                                 <td>{{ $service->service_number }}</td>
                                 <td>{{ $service->service_model }}</td>
                                 
