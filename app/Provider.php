@@ -163,6 +163,6 @@ class Provider extends Authenticatable
 
     public function billingInfo()
     {
-        return $this->hasOne('App\ProviderBillingCashout');
+        return $this->hasMany('App\ProviderBillingCashout');
     }
 }

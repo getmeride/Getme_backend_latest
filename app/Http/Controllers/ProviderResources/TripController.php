@@ -1543,29 +1543,33 @@ $Driver_Discount=0;
     public function requestamount(Request $request){
 
         $error=0;
-        // if($request->payment_type == "1"){
-        //     $bank_info = ProviderDocument::where('provider_id', Auth::user()->id)->whereIn('document_id',[14])->first();
-        //     if($bank_info && $bank_info->count() > 0){
-        //     }else{
-        //         $error+=1;
-        //         $fn_response["error"]="Please upload document for bank information.";
-        //     }
-        // }elseif($request->payment_type == "2"){
-        //      $cash_pickup_info = ProviderDocument::where('provider_id', Auth::user()->id)->whereIn('document_id',[15])->first();
-        //     if($cash_pickup_info && $cash_pickup_info->count() > 0){
-        //     }else{
-        //         $error+=1;
-        //         $fn_response["error"]="Please upload document for cash pickup information.";
-        //     }
-        // }
-        // elseif($request->payment_type == "3"){
-        //      $pay_by_zelle = ProviderDocument::where('provider_id', Auth::user()->id)->whereIn('document_id',[16])->first();
-        //     if($pay_by_zelle && $pay_by_zelle->count() > 0){
-        //     }else{
-        //         $error+=1;
-        //         $fn_response["error"]="Please upload document for zelle information";
-        //     }
-        // }
+        
+        if($request->payment_type == "1"){
+            //$bank_info = ProviderDocument::where('provider_id', Auth::user()->id)->whereIn('document_id',[14])->first();
+            $bank_info = ProviderBillingCashout::where('provider_id',Auth::user()->id)->where('cashout_type','bank_deposit')->orderBy('id','desc')->first();
+            if($bank_info && $bank_info->count() > 0){
+            }else{
+                $error+=1;
+                $fn_response["error"]="Please add bank information.";
+            }
+        }elseif($request->payment_type == "2"){
+             //$cash_pickup_info = ProviderDocument::where('provider_id', Auth::user()->id)->whereIn('document_id',[15])->first();
+            $cash_pickup_info = ProviderBillingCashout::where('provider_id',Auth::user()->id)->where('cashout_type','cash_pickup')->orderBy('id','desc')->first();
+            if($cash_pickup_info && $cash_pickup_info->count() > 0){
+            }else{
+                $error+=1;
+                $fn_response["error"]="Please add cash pickup information.";
+            }
+        }
+        elseif($request->payment_type == "3"){
+             //$pay_by_zelle = ProviderDocument::where('provider_id', Auth::user()->id)->whereIn('document_id',[16])->first();
+            $pay_by_zelle = ProviderBillingCashout::where('provider_id',Auth::user()->id)->where('cashout_type','pay_by_zelle')->orderBy('id','desc')->first();
+            if($pay_by_zelle && $pay_by_zelle->count() > 0){
+            }else{
+                $error+=1;
+                $fn_response["error"]="Please add zelle information";
+            }
+        }
 
         if(empty($error)){
             $premat=WalletRequests::where('from_id',Auth::user()->id)->where('request_from',$request->type)->where('status',0)->sum('amount');
@@ -1714,6 +1718,4 @@ $Driver_Discount=0;
 
         return true;
     }
-    
-
 }
