@@ -21,6 +21,7 @@ use Square\Models\CreatePaymentRequest;
 use Square\Exceptions\ApiException;
 use Square\SquareClient;
 use App\ProviderBillingCashout;
+use Validator;
 
 
 
@@ -279,9 +280,11 @@ class ProviderController extends Controller
         $pendinglist = WalletRequests::where('from_id',Auth::user()->id)->where('request_from','provider')->where('status',0)->get();
         $wallet_balance=Auth::user()->wallet_balance;
         
-        $provider_cashout = ProviderBillingCashout::where('provider_id',Auth::user()->id)->orderBy('id','desc')->first();
-        return view('provider.wallet.transfer',compact('pendinglist','wallet_balance','provider_cashout'));
+        //$provider_cashout = ProviderBillingCashout::where('provider_id',Auth::user()->id)->orderBy('id','desc')->first();
+        return view('provider.wallet.transfer',compact('pendinglist','wallet_balance'));
     }
+
+   
 
     public function requestamount(Request $request)
     {
@@ -412,5 +415,110 @@ class ProviderController extends Controller
         }
 
         return redirect()->back();
+    }
+    public function billing(Request $request){
+        
+        $bank_deposit = ProviderBillingCashout::where('provider_id',\Auth::user()->id)->where('cashout_type','bank_deposit')->orderBy('id','desc')->first();
+
+        $cash_pickup = ProviderBillingCashout::where('provider_id',\Auth::user()->id)->where('cashout_type','cash_pickup')->orderBy('id','desc')->first();
+        
+        $pay_by_zelle = ProviderBillingCashout::where('provider_id',\Auth::user()->id)->where('cashout_type','pay_by_zelle')->orderBy('id','desc')->first();
+        return view('provider.wallet.billing',compact('bank_deposit','cash_pickup','pay_by_zelle'));
+    }
+    public function billingstore(Request $request)
+    {
+       
+        if($request->cashout_type == "bank_deposit"){
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'cashout_type' => 'required',
+                    'bank_deposit_full_name' => 'required',
+                    'bank_deposit_routing_number' => 'required',
+                    'bank_deposit_account_number' => 'required',
+                    'bank_deposit_account_type' => 'required',
+                    'bank_deposit_swift_code' => 'required',
+                    'bank_deposit_iban_number' => 'required',
+                ]
+            );
+        }elseif ($request->cashout_type == "pay_by_zelle") {
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'cashout_type' => 'required',
+                    'pay_by_zelle_full_name' => 'required',
+                    'pay_by_zelle_mobile_number' => 'required',
+                    'pay_by_zelle_email' => 'required',
+                ]
+            );
+        }elseif ($request->cashout_type == "cash_pickup") {
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'cashout_type' => 'required',
+                    'cashpickup_full_name' => 'required',
+                    'cashpickup_address' => 'required',
+                    'cashpickup_city_state' => 'required',
+                    'cashpickup_country' => 'required',
+                    'cashpickup_mobile_number' => 'required',
+                ]
+            );
+        }else{
+            // return response()->json(['error' => trans('api.something_went_wrong')], 500);
+            return redirect()->back()->with(['danger'=>trans('api.something_went_wrong')]);
+        } 
+       
+        
+        if($validator->fails()) {
+            return redirect()->back()->with(['danger'=>trans('api.something_went_wrong')]);
+        }
+        try{
+            //$Provider = Provider::where('id',Auth::user()->id)->first();
+            if($request->cashout_type == "bank_deposit"){
+                ProviderBillingCashout::where('provider_id',\Auth::user()->id)->where('cashout_type','=','bank_deposit')->delete();
+
+                $provider_billing_cashout = ProviderBillingCashout::create([
+                    'provider_id' => \Auth::user()->id,
+                    'cashout_type' => $request->cashout_type,
+                    'bank_deposit_full_name' => $request->bank_deposit_full_name,
+                    'bank_deposit_routing_number' => $request->bank_deposit_routing_number,
+                    'bank_deposit_account_number' => $request->bank_deposit_account_number,
+                    'bank_deposit_account_type' => $request->bank_deposit_account_type,
+                    'bank_deposit_swift_code' => $request->bank_deposit_swift_code,
+                    'bank_deposit_iban_number' => $request->bank_deposit_iban_number,
+                ]);
+            }elseif($request->cashout_type == "pay_by_zelle"){
+                ProviderBillingCashout::where('provider_id',\Auth::user()->id)->where('cashout_type','=','pay_by_zelle')->delete();
+                $provider_billing_cashout = ProviderBillingCashout::create([
+                    'provider_id' => \Auth::user()->id,
+                    'cashout_type' => $request->cashout_type,
+                    'pay_by_zelle_full_name' => $request->pay_by_zelle_full_name,
+                    'pay_by_zelle_mobile_number' => $request->pay_by_zelle_mobile_number,
+                    'pay_by_zelle_email' => $request->pay_by_zelle_email
+                ]);
+            }elseif($request->cashout_type == "cash_pickup"){
+                ProviderBillingCashout::where('provider_id',\Auth::user()->id)->where('cashout_type','=','cash_pickup')->delete();
+                $provider_billing_cashout = ProviderBillingCashout::create([
+                    'provider_id' => \Auth::user()->id,
+                    'cashout_type' => $request->cashout_type,
+                    'cashpickup_full_name' => $request->cashpickup_full_name,
+                    'cashpickup_address' => $request->cashpickup_address,
+                    'cashpickup_city_state' => $request->cashpickup_city_state,
+                    'cashpickup_country' => $request->cashpickup_country,
+                    'cashpickup_mobile_number' => $request->cashpickup_mobile_number
+                ]);
+            }
+            
+            return redirect()->back()->with(['success'=>"Billing Information Successfully Submitted"]);
+
+            //return redirect()->back()->with(['danger'=>trans('api.something_went_wrong')]);
+            //return response()->json(['message' => "Billing Information Successfully Submitted"]);
+        } catch (QueryException $e) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
+            return abort(500);
+        }
+        
     }
 }

@@ -8,5 +8,8 @@
             <a href="{{ route('provider.cards') }}" class="pro-head-link <?php if(Route::current()->getName()=='provider.cards') { echo "active"; }?>">@lang('provider.card.list')</a>
         @endif    
         <a href="{{ route('provider.transfer') }}" class="pro-head-link <?php if(Route::current()->getName()=='provider.transfer') { echo "active"; }?>">@lang('provider.profile.cashout')</a>
+        
+        <a href="{{ route('provider.billing') }}" class="pro-head-link <?php if(Route::current()->getName()=='provider.billing') { echo "active"; }?>">Billing Information</a>
+
     </div>
 </div>

@@ -128,7 +128,7 @@
                                                 <option value="">Select Service</option>
                                                 @foreach(get_all_service_types() as $type)
 
-                                                    <option @if(Auth::guard('provider')->user()->service && Auth::guard('provider')->user()->service->service_type->id == $type->id) selected="selected" @endif value="{{$type->id}}">{{$type->name}}</option>
+                                                    <option @if(Auth::guard('provider')->user()->service && Auth::guard('provider')->user()->service->service_type && Auth::guard('provider')->user()->service->service_type->id == $type->id) selected="selected" @endif value="{{$type->id}}">{{$type->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

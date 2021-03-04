@@ -44,6 +44,10 @@ Route::post('/change/password', 'ProviderController@update_password')->name('pas
 Route::post('/profile/available', 'ProviderController@available')->name('available');
 Route::get('/wallet_transation', 'ProviderController@wallet_transation')->name('wallet.transation');
 Route::get('/transfer', 'ProviderController@transfer')->name('transfer');
+
+Route::get('/billing', 'ProviderController@billing')->name('billing');
+Route::post('/billingstore' ,'ProviderController@billingstore')->name('billing.store');
+
 Route::post('/transfer/send', 'ProviderController@requestamount')->name('requestamount');
 Route::get('/transfer/cancel', 'ProviderController@requestcancel')->name('requestcancel');
 
