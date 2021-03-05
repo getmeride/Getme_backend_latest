@@ -117,8 +117,9 @@ class ProviderResource extends Controller
         $this->validate($request, [
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
-            'email' => 'required|unique:providers,email|email|max:255',
-            'mobile' => 'digits_between:6,13',
+            //'email' => 'required|unique:providers,email|email|max:255',
+            'email' => 'required|email|max:255',
+            'mobile' => 'required|unique:providers',
             'avatar' => 'mimes:jpeg,jpg,bmp,png|max:5242880',
             'password' => 'required|min:6|confirmed',
         ]);
@@ -188,7 +189,8 @@ class ProviderResource extends Controller
         $this->validate($request, [
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
-            'mobile' => 'digits_between:6,13',
+            //'mobile' => 'digits_between:6,13',
+            'mobile' => 'required',
             'avatar' => 'mimes:jpeg,jpg,bmp,png|max:5242880',
         ]);
 
