@@ -66,7 +66,7 @@
                                     @endif
                                 </div>
                                 <div class="col-md-12 col-sm-12">
-                                    <input id="bank_deposit_swift_code" type="text" class="form-control margin_bottom_15" name="bank_deposit_swift_code" value="{{ old('bank_deposit_swift_code',($bank_deposit) ? $bank_deposit->bank_deposit_swift_code : '') }}" placeholder="SWIFT/ BIC code" data-validation="required">
+                                    <input id="bank_deposit_swift_code" type="text" class="form-control margin_bottom_15" name="bank_deposit_swift_code" value="{{ old('bank_deposit_swift_code',($bank_deposit) ? $bank_deposit->bank_deposit_swift_code : '') }}" placeholder="SWIFT/ BIC code" >
                                     
                                     @if ($errors->has('bank_deposit_swift_code'))
                                         <span class="help-block">

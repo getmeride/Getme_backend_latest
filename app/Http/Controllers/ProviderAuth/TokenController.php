@@ -622,7 +622,7 @@ class TokenController extends Controller
                     'bank_deposit_routing_number' => 'required',
                     'bank_deposit_account_number' => 'required',
                     'bank_deposit_account_type' => 'required',
-                    'bank_deposit_swift_code' => 'required',
+                    //'bank_deposit_swift_code' => 'required',
                     'bank_deposit_iban_number' => 'required',
                 ]
             );

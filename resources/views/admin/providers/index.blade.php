@@ -228,7 +228,7 @@
                                                     </div>
                                                     <div>
                                                         <label>Swift Code  :</label>
-                                                        <label>{{$billing_info_value->bank_deposit_swift_code}}<label>
+                                                        <label>{{$billing_info_value->bank_deposit_swift_code ?? '-'}}<label>
                                                     </div>
                                                     <div>
                                                         <label>IBAN Number  :</label>
