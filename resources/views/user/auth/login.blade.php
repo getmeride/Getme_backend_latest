@@ -27,7 +27,7 @@
                             <input type="tel" name="country_code" id="country_code" value="{{ old('country_code') }}" placeholder="+1">
                         </div>    
                         <div class="col-md-8">        
-                            <input type="phone" required id="phone_number" class="form-control" placeholder="Enter Phone Number" name="mobile" value="{{ old('phone_number') }}" data-stripe="number"  maxlength="10" onkeypress="return isNumberKey(event);" />
+                            <input type="phone" required id="phone_number" class="form-control" placeholder="Enter Phone Number" name="mobile" value="{{ old('phone_number') }}" data-stripe="number"  maxlength="15" onkeypress="return isNumberKey(event);" />
                             @if ($errors->has('mobile'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('mobile') }}</strong>
