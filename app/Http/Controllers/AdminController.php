@@ -965,17 +965,36 @@ class AdminController extends Controller
     public function transferlist(Request $request){
 
         $croute= Route::currentRouteName();
-        
-        if($croute=='admin.fleettransfer')
+        $check_array =[];
+        if($croute=='admin.fleettransfer'){
+            $fleet = Fleet::get();
+            foreach ($fleet as $key => $value) {
+                $check_array[] = $value->id;
+            }
             $type='fleet';
-        else
+        }else{
+            
+            $provider = Provider::get();
+            foreach ($provider as $key => $value) {
+                $check_array[] = $value->id;
+            }
             $type='provider';
+        }
+        //dd($provider_array);
+        // $deleteArray = WalletRequests::where('request_from',$type)->where('status',0)->whereNotIN('from_id',$provider_array)->get();
+        
+        //     foreach ($deleteArray as $key => $value) {
+        //         $provider_array1[] = $value->from_id;
+        //     }
+        // //dd($provider_array1);
 
-        $pendinglist = WalletRequests::where('request_from',$type)->where('status',0);
-        if($croute=='admin.fleettransfer')
+        $pendinglist = WalletRequests::where('request_from',$type)->where('status',0)->whereIN('from_id',$check_array);
+        
+        if($croute=='admin.fleettransfer'){
             $pendinglist = $pendinglist->with('fleet');
-        else
+        }else{
             $pendinglist = $pendinglist->with('provider');
+        }
 
         $pendinglist = $pendinglist->get();
                
