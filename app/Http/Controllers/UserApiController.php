@@ -409,7 +409,7 @@ class UserApiController extends Controller
      */
 
     public function send_request(Request $request) {
-//dd($request);
+
         $this->validate($request, [
                 's_latitude' => 'required|numeric',
                 'd_latitude' => 'required|numeric',
@@ -441,7 +441,7 @@ class UserApiController extends Controller
         }
 
         if($request->has('schedule_date') && $request->has('schedule_time')){
-            dd("inside");   
+           
             $beforeschedule_time = (new Carbon("$request->schedule_date $request->schedule_time"))->subHour(1);
             $afterschedule_time = (new Carbon("$request->schedule_date $request->schedule_time"))->addHour(1);
 
