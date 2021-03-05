@@ -32,7 +32,7 @@
                             </div> 
                             
                             <div class="col-md-8">
-                                <input type="text" autofocus id="phone_number" class="form-control" placeholder="Enter Mobile Number" name="mobile" value="{{ old('mobile') }}" data-stripe="number" maxlength="10" onkeypress="return isNumberKey(event);" required="" />
+                                <input type="text" autofocus id="phone_number" class="form-control" placeholder="Enter Mobile Number" name="mobile" value="{{ old('mobile') }}" data-stripe="number" maxlength="15" onkeypress="return isNumberKey(event);" required="" />
                             </div>
 
                             <div class="col-md-8">

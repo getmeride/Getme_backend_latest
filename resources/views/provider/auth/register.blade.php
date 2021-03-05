@@ -16,7 +16,7 @@
             </div>  
             
             <div class="col-md-8">
-                <input type="phone" autofocus id="phone_number" class="form-control" placeholder="@lang('provider.signup.enter_phone')" name="mobile" value="{{ old('mobile') }}" data-stripe="number" maxlength="10" onkeypress="return isNumberKey(event);"/>
+                <input type="phone" autofocus id="phone_number" class="form-control" placeholder="@lang('provider.signup.enter_phone')" name="mobile" value="{{ old('mobile') }}" data-stripe="number" maxlength="15" onkeypress="return isNumberKey(event);"/>
             </div>
 
             <div class="col-md-8">
