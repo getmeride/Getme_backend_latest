@@ -425,7 +425,7 @@ class UserApiController extends Controller
 
         /*Log::info('New Request from User: '.Auth::user()->id);
         Log::info('Request Details:', $request->all());*/
-        //dd($ActiveRequests);
+        
         //$ActiveRequests = UserRequests::PendingRequest(Auth::user()->id)->count();
         $ActiveRequests = UserRequests::where('user_id', Auth::user()->id)
                             ->whereNotIn('status' , ['CANCELLED', 'COMPLETED', 'SCHEDULED'])
@@ -487,7 +487,7 @@ class UserApiController extends Controller
             ->orderBy('distance','asc')
             ->get();
 
-        //dd($Providers_temp);
+        
         // List Providers who are currently busy and add them to the filter list.
 
         if(count($Providers) == 0) {
@@ -596,7 +596,7 @@ class UserApiController extends Controller
                     $Filter->save();
                 }
             }
-            //dd("here");
+           
             if($request->ajax()) {
                 return response()->json([
                         'message' => 'New request Created!',
@@ -608,7 +608,7 @@ class UserApiController extends Controller
             }
 
         } catch (Exception $e) {  
-     //   dd($e->getMessage());          
+             
             if($request->ajax()) {
                 return response()->json(['error' => trans('api.something_went_wrong')], 500);
             }else{
@@ -1048,7 +1048,7 @@ class UserApiController extends Controller
                                 ])
                                 ->where('expiration','>=',date("Y-m-d H:i"))
                                 ->get(); 
-        //dd($promo_list);            
+             
         if($request->ajax()){
             return response()->json([
                     'promo_list' => $promo_list
@@ -1111,7 +1111,7 @@ class UserApiController extends Controller
                 $promo->save();
                 
                 $count_id = PromocodePassbook::where('promocode_id' , $find_promo->id)->count();
-                //dd($count_id); 
+              
                 if($count_id == 0){
 
                    PromocodePassbook::create([
@@ -1447,7 +1447,7 @@ class UserApiController extends Controller
          //$push =  (new SendPushNotification)->IncomingRequest($request->id); 
          $push = (new SendPushNotification)->Arrived($request->id);
 
-         dd($push);
+         
     }
 
      /**
@@ -1636,7 +1636,7 @@ class UserApiController extends Controller
                 'user' => 'required',
             ]);  
         } 
-        //dd("here");
+      
         if(Auth::user()->wallet_balance < $request->amount)
         {
             if($request->ajax()){    

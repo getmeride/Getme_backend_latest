@@ -41,7 +41,7 @@ class ProviderController extends Controller
     }
     public function transfercheck()
     {
-        dd("here");
+       
     }
 
     /**
@@ -379,7 +379,7 @@ class ProviderController extends Controller
             
             $response = $payments_api->createPayment($create_payment_request);
             $response_subscription=json_decode($response->getBody(),true);
-            //dd($response_subscription['payment']['id']);
+           
             // $json_result = json_decode(stripslashes($response), true);
             // $json=str_replace("\\",'', $result);
 

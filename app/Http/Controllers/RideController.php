@@ -43,7 +43,7 @@ class RideController extends Controller
                 'longitude' => $request->current_longitude
             ]);
         }
-        //dd($service);
+        
         return view('user.ride.confirm_ride',compact('request','fare','service','cards','promolist'));
     }
 

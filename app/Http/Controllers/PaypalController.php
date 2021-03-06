@@ -111,7 +111,7 @@ if (isset($redirect_url)) {
       
       if ($result->getState() == 'approved') {
          // \Session()->flash('success', 'Payment success');
-         dd($result);
+         
          return Redirect::route('/');
       }
       echo "error";exit();

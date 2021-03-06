@@ -30,7 +30,7 @@ class DocumentController extends Controller
 
             return view('provider.document.index', compact('DriverDocuments', 'VehicleDocuments', 'Provider'));
         }catch(\Exception $e){
-            dd($e->getMessage());
+            
             //throw new \App\Exceptions\CustomException($e->getMessage());
         }
         // $VehicleDocuments = Document::vehicle()->get();

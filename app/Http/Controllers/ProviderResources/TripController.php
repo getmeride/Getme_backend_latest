@@ -481,7 +481,7 @@ class TripController extends Controller
                 ProviderService::where('provider_id',$UserRequest->provider_id)->update(['status' =>'riding']);
 
                 $Filters = RequestFilter::where('request_id', $UserRequest->id)->where('provider_id', '!=', Auth::user()->id)->get();
-                // dd($Filters->toArray());
+                
                 foreach ($Filters as $Filter) {
                     $Filter->delete();
                 }
@@ -642,7 +642,7 @@ class TripController extends Controller
          //$push =  (new SendPushNotification)->IncomingRequest($request->id); 
          $push = (new SendPushNotification)->Arrived($request->user_id);
 
-         dd($push);
+        
     }
 
     /**

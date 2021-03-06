@@ -482,7 +482,6 @@ class AdminController extends Controller
         $data = \PushNotification::app('IOSUser')
             ->to('3911e9870e7c42566b032266916db1f6af3af1d78da0b52ab230e81d38541afa')
             ->send('Hello World, i`m a push message');
-        dd($data);
     }
 
     /**
@@ -980,13 +979,7 @@ class AdminController extends Controller
             }
             $type='provider';
         }
-        //dd($provider_array);
-        // $deleteArray = WalletRequests::where('request_from',$type)->where('status',0)->whereNotIN('from_id',$provider_array)->get();
         
-        //     foreach ($deleteArray as $key => $value) {
-        //         $provider_array1[] = $value->from_id;
-        //     }
-        // //dd($provider_array1);
 
         $pendinglist = WalletRequests::where('request_from',$type)->where('status',0)->whereIN('from_id',$check_array);
         

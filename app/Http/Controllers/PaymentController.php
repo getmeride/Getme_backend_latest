@@ -78,7 +78,7 @@ class PaymentController extends Controller
                 $location_id = env('SQUARE_UP_locationId');
                 $nonce = $request->nonce;
                 $amount =(int)($amount*100);    
-                // dd($amount);
+               
               // $request_body = array (
               //     "card_nonce" => $nonce,
               //     # Monetary amounts are specified in the smallest unit of the applicable currency.
@@ -147,7 +147,7 @@ class PaymentController extends Controller
 
               } catch (\SquareConnect\ApiException $e) {
                  $error = $e->getResponseBody();
-                //  dd($error->errors[0]->detail);
+               
                   if($request->ajax()) {
                         return response()->json(['error' => $error->errors[0]->detail], 422);
                     } else {
@@ -327,7 +327,7 @@ class PaymentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function add_money(Request $request){
-//dd($request);
+
         if($request->card_id=='SQUARE')
         {
 
@@ -361,7 +361,7 @@ class PaymentController extends Controller
             $money->setCurrency('USD');
 
             $create_payment_request = new CreatePaymentRequest($nonce, uniqid(), $money);
-            // dd($amount);
+            
           // $request_body = array (
           //     "card_nonce" => $nonce,
           //     # Monetary amounts are specified in the smallest unit of the applicable currency.
@@ -420,7 +420,7 @@ class PaymentController extends Controller
           } 
           // catch (\SquareConnect\ApiException $e) {
           //    $error = $e->getResponseBody();
-          //   //  dd($error->errors[0]->detail);
+          //   
           //     if($request->ajax()) {
           //           return response()->json(['error' => $error->errors[0]->detail], 422);
           //       } else {
@@ -534,7 +534,7 @@ class PaymentController extends Controller
                 return back()->with('flash_error',$e->getMessage());
             }
         } catch(Exception $e) {
-          //dd($e);
+         
             if($request->ajax()) {
                 return response()->json(['error' => $e->getMessage()], 500);
             } else {

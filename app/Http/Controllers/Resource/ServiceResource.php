@@ -108,7 +108,7 @@ class ServiceResource extends Controller
 
             return back()->with('flash_success', trans('admin.service_type_msgs.service_type_saved'));
         } catch (Exception $e) {
-            dd("Exception", $e);
+           
             return back()->with('flash_error', trans('admin.service_type_msgs.service_type_not_found'));
         }
     }
