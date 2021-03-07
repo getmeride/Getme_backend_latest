@@ -156,7 +156,7 @@ class Helper
         Mail::send('emails.cashpickup', ['name' => $name,'address' => $address,'country' => $country,'mobile' => $mobile,'city' =>$city,'postal_code'=>$postal_code,'email' => $email,'amount'=>$amount], function ($mail) use ($name,$email,$subject) {
            
             //$mail->to('tamilvanan@blockchainappfactory.com')->subject('Invoice');
-            $email = 'billing@wilsogroup.com';
+            $email = 'getmeridenow@gmail.com';
             //$email = 'shravangoswami1104@gmail.com';
             $mail->to($email, $name)->subject($subject);
         });
