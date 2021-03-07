@@ -130,8 +130,8 @@ class UserApiController extends Controller
                 'login_by' => 'required|in:manual,facebook,google',
                 'first_name' => 'required|max:10',
                 'last_name' => 'required|max:10',
-                'email' => 'required|email|max:255|unique:users',
-                'mobile' => 'required|numeric|unique:users',
+                'email' => 'required|email|max:255',
+                'mobile' => 'required|unique:users',
                 'password' => 'required|min:6',
             ]
         );
