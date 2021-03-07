@@ -1520,11 +1520,11 @@ class UserApiController extends Controller
             $message=$request->message;
             $sender=$request->sender;
 
-            $message = \PushNotification::Message($message,array(
-            'badge' => 1,
-            'sound' => 'default',
-            'custom' => array('type' => 'chat')
-            ));
+            // $message = \PushNotification::Message($message,array(
+            // 'badge' => 1,
+            // 'sound' => 'default',
+            // 'custom' => array('type' => 'chat')
+            // ));
 
             (new SendPushNotification)->sendPushToUser($user_id, $message);         
 

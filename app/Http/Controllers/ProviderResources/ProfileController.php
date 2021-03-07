@@ -412,11 +412,11 @@ class ProfileController extends Controller
             $user_id=$request->user_id;
             $message=$request->message;
            
-            $message = \PushNotification::Message($message,array(
-            'badge' => 1,
-            'sound' => 'default',
-            'custom' => array('type' => 'chat')
-            ));
+            // $message = \PushNotification::Message($message,array(
+            // 'badge' => 1,
+            // 'sound' => 'default',
+            // 'custom' => array('type' => 'chat')
+            // ));
 
            
             (new SendPushNotification)->sendPushToProvider($user_id, $message);          

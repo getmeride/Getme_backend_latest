@@ -258,8 +258,8 @@ class SendPushNotification extends Controller
 
             if($user->device_token != ""){
 
-               \Log::info('sending push for user : '. $user->first_name);
-                \Log::info($push_message);
+               // \Log::info('sending push for user : '. $user->first_name);
+               //  \Log::info($push_message);
 
                 if($user->device_type == 'ios'){
                      if(env('IOS_USER_ENV')=='development'){
@@ -295,7 +295,7 @@ class SendPushNotification extends Controller
                             ]
                         ])
                         ->setDevicesToken($user->device_token)->send();
-                        \Log::info('sent');
+                       // \Log::info('sent');
                     
                     return $send;
 
@@ -312,7 +312,7 @@ class SendPushNotification extends Controller
             }
 
         } catch(Exception $e){
-            return $e;
+            return $e->getMessage();
         }
 
     }
