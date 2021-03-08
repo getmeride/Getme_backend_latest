@@ -418,8 +418,8 @@ class ProfileController extends Controller
             // 'custom' => array('type' => 'chat')
             // ));
 
-           
-            (new SendPushNotification)->sendPushToProvider($user_id, $message);          
+            (new SendPushNotification)->sendPushToUser($user_id, $message);
+            //(new SendPushNotification)->sendPushToProvider($user_id, $message);          
 
             return response()->json(['success' => 'true']);
 
