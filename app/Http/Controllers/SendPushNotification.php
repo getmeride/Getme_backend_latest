@@ -262,29 +262,22 @@ class SendPushNotification extends Controller
                //  \Log::info($push_message);
 
                 if($user->device_type == 'ios'){
-                    //  if(env('IOS_USER_ENV')=='development'){
-                    //     $crt_user_path=app_path().'/apns/user/user.pem';
-                    //     $crt_provider_path=app_path().'/apns/provider/provider.pem';
-                    //     $dry_run = true;
-                    // }
-                    // else{
-                    //     $crt_user_path=app_path().'/apns/user/user.pem';
-                    //     $crt_provider_path=app_path().'/apns/provider/provider.pem';
-                    //     $dry_run = false;
-                    // }
+                    
                     if(env('IOS_USER_ENV')=='development'){
-                         $crt_user_path=app_path().'/apns/user/GetmeUser.pem';
-                         $crt_provider_path=app_path().'/apns/provider/GetmeProvider.pem';
+                        $crt_user_path=app_path().'/apns/user/CustomerDev.pem';
+                        $crt_provider_path=app_path().'/apns/provider/DriverDev.pem';
+                        $dry_run = true;
                     }else{
-                         $crt_user_path=app_path().'/apns/user/GetmeUser.pem';
-                         $crt_provider_path=app_path().'/apns/provider/GetmeProvider.pem';
+                        $crt_user_path=app_path().'/apns/user/CustomerDist.pem';
+                        $crt_provider_path=app_path().'/apns/provider/DriverDist.pem';
+                        $dry_run = false; 
                     }
                     
                    $push = new PushNotification('apn');
 
                     $push->setConfig([
                             'certificate' => $crt_user_path,
-                            'passPhrase' => env('IOS_USER_PUSH_PASS', 'appoets@123'),
+                            'passPhrase' => env('IOS_USER_PUSH_PASS', '123456'),
                             'dry_run' => $dry_run
                         ]);
 
@@ -344,28 +337,20 @@ class SendPushNotification extends Controller
 
                 if($provider->type == 'ios'){
 
-                    // if(env('IOS_USER_ENV')=='development'){
-                    //     $crt_user_path=app_path().'/apns/user/user.pem';
-                    //     $crt_provider_path=app_path().'/apns/provider/provider.pem';
-                    //     $dry_run = true;
-                    // }
-                    // else{
-                    //     $crt_user_path=app_path().'/apns/user/user.pem';
-                    //     $crt_provider_path=app_path().'/apns/provider/provider.pem';
-                    //     $dry_run = false;
-                    // }
-                    if(env('IOS_USER_ENV')=='development'){
-                         $crt_user_path=app_path().'/apns/user/GetmeUser.pem';
-                         $crt_provider_path=app_path().'/apns/provider/GetmeProvider.pem';
+                    if(env('IOS_USER_ENV')env('IOS_USER_ENV')=='development'){
+                        $crt_user_path=app_path().'/apns/user/CustomerDev.pem';
+                        $crt_provider_path=app_path().'/apns/provider/DriverDev.pem';
+                        $dry_run = true;
                     }else{
-                         $crt_user_path=app_path().'/apns/user/GetmeUser.pem';
-                         $crt_provider_path=app_path().'/apns/provider/GetmeProvider.pem';
+                        $crt_user_path=app_path().'/apns/user/CustomerDist.pem';
+                        $crt_provider_path=app_path().'/apns/provider/DriverDist.pem';
+                        $dry_run = false; 
                     }
 
                    $push = new PushNotification('apn');
                    $push->setConfig([
                             'certificate' => $crt_provider_path,
-                            'passPhrase' => env('IOS_PROVIDER_PUSH_PASS', 'appoets@123'),
+                            'passPhrase' => env('IOS_PROVIDER_PUSH_PASS', '123456'),
                             'dry_run' => $dry_run
                         ]);
                    $send=  $push->setMessage([

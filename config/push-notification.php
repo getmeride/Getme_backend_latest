@@ -1,11 +1,12 @@
 <?php
 if(env('IOS_USER_ENV')=='development'){
-    $crt_user_path=app_path().'/apns/user/GetmeUser.pem';
-    $crt_provider_path=app_path().'/apns/provider/GetmeProvider.pem';
+    $crt_user_path=app_path().'/apns/user/CustomerDev.pem';
+    $crt_provider_path=app_path().'/apns/provider/DriverDev.pem';
 }
 else{
-    $crt_user_path=app_path().'/apns/user/GetmeUser.pem';
-    $crt_provider_path=app_path().'/apns/provider/GetmeProvider.pem';
+    $crt_user_path=app_path().'/apns/user/CustomerDist.pem';
+    $crt_provider_path=app_path().'/apns/provider/DriverDist.pem';
+                       
 }
 
 
@@ -14,13 +15,13 @@ return array(
     'IOSUser'     => array(
         'environment' => env('IOS_USER_ENV', 'production'),
         'certificate' => $crt_user_path,
-        'passPhrase'  => env('IOS_USER_PUSH_PASS', 'appoets@123'),
+        'passPhrase'  => env('IOS_USER_PUSH_PASS', '123456'),
         'service'     => 'apns'
     ),
     'IOSProvider' => array(
         'environment' => env('IOS_PROVIDER_ENV', 'production'),
         'certificate' => $crt_provider_path,
-        'passPhrase'  => env('IOS_PROVIDER_PUSH_PASS', 'appoets@123'),
+        'passPhrase'  => env('IOS_PROVIDER_PUSH_PASS', '123456'),
         'service'     => 'apns'
     ),
     'AndroidUser' => array(
