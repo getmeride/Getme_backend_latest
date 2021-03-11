@@ -97,6 +97,7 @@ Route::get('/pages', 'AdminController@cmspages')->name('cmspages');
 Route::post('/pages', 'AdminController@pages')->name('pages.update');
 Route::get('/pages/search/{types}','AdminController@pagesearch');
 Route::resource('requests', 'Resource\TripResource');
+Route::resource('subscriptions', 'Resource\SubscriptionResource');
 Route::get('scheduled', 'Resource\TripResource@scheduled')->name('requests.scheduled');
 
 Route::get('push', 'AdminController@push_index')->name('push.index');

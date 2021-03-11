@@ -138,6 +138,12 @@
 					<span class="s-text">@lang('admin.include.scheduled_rides')</span>
 				</a>
 			</li>
+			<li>
+				<a href="{{ route('admin.subscriptions.index') }}" class="waves-effect  waves-light">
+					<span class="s-icon"><i class="ti-infinite"></i></span>
+					<span class="s-text">Subscription History</span>
+				</a>
+			</li>
 			<li class="menu-title">@lang('admin.include.general')</li>
 			<li class="with-sub">
 				<a href="#" class="waves-effect  waves-light">

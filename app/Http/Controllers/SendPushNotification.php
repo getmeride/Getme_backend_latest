@@ -337,7 +337,7 @@ class SendPushNotification extends Controller
 
                 if($provider->type == 'ios'){
 
-                    if(env('IOS_USER_ENV')env('IOS_USER_ENV')=='development'){
+                    if(env('IOS_USER_ENV')=='development'){
                         $crt_user_path=app_path().'/apns/user/CustomerDev.pem';
                         $crt_provider_path=app_path().'/apns/provider/DriverDev.pem';
                         $dry_run = true;

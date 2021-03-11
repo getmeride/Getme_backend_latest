@@ -1,0 +1,1 @@
+[Wed Mar 10 17:32:31.375313 2021] [cgid:error] [pid 98597:tid 140006823794432] [client 24.38.44.164:8973] AH01264: script not found or unable to stat: /var/www/cgi-bin/kerbynet
