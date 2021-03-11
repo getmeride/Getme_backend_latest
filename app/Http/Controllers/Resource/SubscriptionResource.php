@@ -50,14 +50,6 @@ class SubscriptionResource extends Controller
                     if(isset($request->search) && $request->search)
                     {   
                         $search = $request->search;
-                        // $paid_status = ((strtolower($request->search) == 'paid') ? 1 : (strtolower($request->search) == 'not paid') ? 0 : '');
-                        // if(strtolower($request->search) == 'paid') {
-                        //     $paid_status = 1;
-                        // } elseif(strtolower($request->search) == 'not paid') {
-                        //     $paid_status = 0;
-                        // } else {
-                        //     $paid_status = '';
-                        // }
                         // $requests = UserRequests::RequestHistory()
                         // ->where(function($query) use ($request, $paid_status) {
                         //     $query->where('booking_id', 'like', '%' . $request->search . '%');

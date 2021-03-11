@@ -17,14 +17,14 @@
             <div class="col-md-12">    
                 <div class="col-md-3"></div>
                 <div class="col-md-6"> 
-                    <form action="{{route('admin.subscriptions.index')}}" method="GET"> 
+                    <!-- <form action="{{route('admin.subscriptions.index')}}" method="GET"> 
                         <div class="col-md-6">
                             <input type="text" class="form-control col-md-6" name="search" value="{{@Request::get('search')}}">
                         </div>
                         <div class="col-md-6"> 
                             <button type="submit" class="btn btn-success btn-md col-md-6" ><span class="glyphicon glyphicon-search" style="font-size: 15px;">Search</span></button>
                         </div> 
-                    </form>
+                    </form> -->
                 </div>  
             </div>
             @if(Session::has('flash_success'))
