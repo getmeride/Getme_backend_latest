@@ -389,17 +389,35 @@ class ProviderResource extends Controller
             }else{
                 $Provider->is_subscription=1;
                 
-                $ProviSub=ProviderSubscription::where('provider_id',$id)->orderBy('id','desc')->first();
-                $ProviSub->status="Approved";
-                $ProviSub->save();
+                $provider_subscription=ProviderSubscription::where('provider_id',$id)->orderBy('id','desc')->first();
+
+                if($provider_subscription){
+                }else{
+                    $start_date = date("Y-m-d");
+                    $end_date = date('Y-m-d', strtotime('+1 month'));
+                    $end_date = date('Y-m-d', strtotime('-1 day',strtotime($end_date)));
+                    $provider_subscription = new ProviderSubscription();
+                    $provider_subscription->provider_id =$id;
+                    $provider_subscription->transaction_id ='Admin123';
+                    $provider_subscription->description ="Subscription Payment";
+                    $provider_subscription->amount =Setting::get('provider_monthly_charger');
+                    $provider_subscription->start_date =$start_date;
+                    $provider_subscription->end_date =$end_date;
+                }
+                $provider_subscription->status = "Approved";
+                $provider_subscription->save();
+
+
+                // $ProviSub->status="Approved";
+                // $ProviSub->save();
 
                 $Provider->status='approved';
 
             }
             $Provider->save();
-            return back()->with('message', trans('admin.provider_msgs.provider_update'));
+            return back()->with('flash_success', trans('admin.provider_msgs.provider_update'));
         }  catch (Exception $e) {
-            return back()->with('flash_error', trans('admin.something_wrong'));
+            return back()->with('flash_error', $e->getMessage());
         }
     }  
      /**

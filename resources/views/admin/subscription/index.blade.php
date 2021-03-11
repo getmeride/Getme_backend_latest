@@ -8,26 +8,37 @@
     <div class="container-fluid">
         <div class="box box-block bg-white">
             @if(Setting::get('demo_mode') == 1)
-        <div class="col-md-12" style="height:50px;color:red;">
+                <div class="col-md-12" style="height:50px;color:red;">
                     ** Demo Mode : @lang('admin.demomode')
                 </div>
-                @endif
+            @endif
             <h5 class="mb-1">Subscription History</h5>
             @if(count($requests) != 0)
             <div class="col-md-12">    
-            <div class="col-md-3"> 
+                <div class="col-md-3"></div>
+                <div class="col-md-6"> 
+                    <form action="{{route('admin.subscriptions.index')}}" method="GET"> 
+                        <div class="col-md-6">
+                            <input type="text" class="form-control col-md-6" name="search" value="{{@Request::get('search')}}">
+                        </div>
+                        <div class="col-md-6"> 
+                            <button type="submit" class="btn btn-success btn-md col-md-6" ><span class="glyphicon glyphicon-search" style="font-size: 15px;">Search</span></button>
+                        </div> 
+                    </form>
+                </div>  
             </div>
-            <div class="col-md-6"> 
-            <form action="{{route('admin.subscriptions.index')}}" method="GET"> 
-            <div class="col-md-6">
-            <input type="text" class="form-control col-md-6" name="search" value="{{@Request::get('search')}}">
+            @if(Session::has('flash_success'))
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                {{ Session::get('flash_success') }}
             </div>
-            <div class="col-md-6"> 
-            <button type="submit" class="btn btn-success btn-md col-md-6" ><span class="glyphicon glyphicon-search" style="font-size: 15px;">Search</span></button>
-            </div> 
-            </form>
-            </div>  
-            </div>  <br><br>
+            @elseif(Session::has('flash_error'))
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    {{ Session::get('flash_error') }}
+                </div>
+            @endif
+            <br><br>
             <table class="table table-striped table-bordered dataTable" id="table-4">
                 <thead>
                     <tr>
@@ -35,25 +46,31 @@
                         <th>Mobile Number</th>
                         <th>Name</th>
                         <th>transaction_id</th>
-                        <th>description</th>
                         <th>amount</th>
                         <th>start_date</th>
                         <th>end_date</th>
                         <th>status</th>
+                        <th>action</th>
                     </tr>
                 </thead>
                 <tbody>
                 @foreach($requests as $index => $request)
                     <tr>
                         <td>{{ $request->id }}</td>
-                        <td>{{ $request->id }}</td>
-                        <td>{{ $request->id }}</td>
+                        <td>{{ ($request->providerInfo) ? $request->providerInfo->mobile : '' }}</td>
+                        <td>{{ ($request->providerInfo) ? $request->providerInfo->first_name.' '.$request->providerInfo->last_name : '' }}</td>
                         <td>{{ $request->transaction_id }}</td>
-                        <td>{{ $request->description }}</td>
                         <td>{{ $request->amount }}</td>
                         <td>{{ $request->start_date }}</td>
                         <td>{{ $request->end_date }}</td>
                         <td>{{ $request->status }}</td>
+                        <td>
+                            @if($request->status =="Pending")
+                                <a class="btn btn-success btn-block" href="{{route('admin.provider.subscription.update', $request->provider_id )}}">Approved</a>
+                            @else
+                                -
+                            @endif
+                        </td>
                         
                     </tr>
                 @endforeach
@@ -64,11 +81,11 @@
                         <th>Mobile Number</th>
                         <th>Name</th>
                         <th>transaction_id</th>
-                        <th>description</th>
                         <th>amount</th>
                         <th>start_date</th>
                         <th>end_date</th>
                         <th>status</th>
+                        <th>action</th>
                     </tr>
                 </tfoot>
             </table> 

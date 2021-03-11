@@ -35,16 +35,16 @@ class SubscriptionResource extends Controller
             
             if(!empty($request->page) && $request->page=='all'){
                 
-                $providers = ProviderSubscription::orderBy('id', 'asc')->get();  
+                $providers = ProviderSubscription::with('providerInfo')->orderBy('id', 'desc')->get();  
 
                 return response()->json(array('success' => true, 'data'=>$providers));
             }  
             else
             {
                 //$requests = UserRequests::RequestHistory()->paginate($this->perpage);
-                $requests = ProviderSubscription::with(['providerInfo'])->orderBy('id', 'asc')->paginate($this->perpage);
+                $requests = ProviderSubscription::with('providerInfo')->orderBy('id', 'desc')->paginate($this->perpage);
                
-            
+                //dd($requests);
                 if($request->all())
                 {
                     if(isset($request->search) && $request->search)
