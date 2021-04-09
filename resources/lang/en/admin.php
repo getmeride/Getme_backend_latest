@@ -48,6 +48,8 @@ return array (
     'Description' => 'Description',
     'Update_User' => 'Update User',
     'Update_Service_Type' => 'Update Service Type',
+    'per_seat_charge' => 'Per Seat Charge',
+    'minimam_seat'=>'Minimam Rider'
   ),
   'setting' => 
   array (

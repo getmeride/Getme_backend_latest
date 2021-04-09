@@ -15,6 +15,7 @@ use App\Provider;
 use App\ProviderService;
 use App\Helpers\Helper;
 use GuzzleHttp\Client;
+use App\Services\ServiceTypes;
 
 
 class ServiceTypes{
@@ -174,6 +175,15 @@ class ServiceTypes{
                     $surge_percentage = 1+(Setting::get('surge_percentage')/100)."X";
                 }    
                 
+                $service_type_id = (int)$request['service_type'];
+                $service_type_info = ServiceType::where('id',$service_type_id)->first();
+                
+                $return_data['extra_passanger'] = (int)$request['passanger'] - $service_type_info->minimam_seat;
+
+                $return_data['extra_passanger_charge'] = $return_data['extra_passanger'] * $service_type_info->per_seat_charge;
+
+                $total = $total + $return_data['extra_passanger_charge'];
+
                 $return_data['estimated_fare']=$this->applyNumberFormat(floatval($total)); 
                 $return_data['distance']=$total_kilometer;    
                 $return_data['time']=$location['time'];
