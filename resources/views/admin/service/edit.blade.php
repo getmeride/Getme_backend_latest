@@ -104,8 +104,20 @@
                         <span class="showcal"><i><b>P{{Setting::get('distance')}} (@lang('admin.service.per') {{Setting::get('distance')}}), T{{Setting::get('distance')}} (@lang('admin.service.total') {{Setting::get('distance')}})</b></i></span>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label for="capacity" class="col-xs-2 col-form-label">@lang('admin.service.per_seat_charge')</label>
+                    <div class="col-xs-5">
+                        <input class="form-control" type="number" value="{{ $service->per_seat_charge }}" name="per_seat_charge" required id="per_seat_charge" placeholder="Per Seat Charge" min="1">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="capacity" class="col-xs-2 col-form-label">@lang('admin.service.minimam_seat')</label>
+                    <div class="col-xs-5">
+                        <input class="form-control" type="number" value="{{ $service->minimam_seat }}" name="minimam_seat" required id="minimam_seat" placeholder="Minimam Rider" min="1">
+                    </div>
+                </div>
 
-                 <div class="form-group row">
+                <div class="form-group row">
                     <label for="capacity" class="col-xs-2 col-form-label">@lang('admin.service.Seat_Capacity')</label>
                     <div class="col-xs-5">
                         <input class="form-control" type="number" value="{{ $service->capacity }}" name="capacity" required id="capacity" placeholder="Seat Capacity" min="1">
