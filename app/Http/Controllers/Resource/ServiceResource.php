@@ -69,9 +69,7 @@ class ServiceResource extends Controller
             'hour' => 'sometimes|nullable|numeric',
             'distance' => 'sometimes|nullable|numeric',
             'calculator' => 'required|in:MIN,HOUR,DISTANCE,DISTANCEMIN,DISTANCEHOUR',
-            'image' => 'mimes:ico,png',
-            'per_seat_charge'=> 'required|numeric',
-            'minimam_seat'=> 'required|numeric',
+            'image' => 'mimes:ico,png'
         ]);
 
         try {
@@ -105,17 +103,6 @@ class ServiceResource extends Controller
                 $service->distance = $request->distance;
             else
                 $service->distance = 0;
-
-            if(!empty($request->per_seat_charge))
-                $service->per_seat_charge = $request->per_seat_charge;
-            else
-                $service->per_seat_charge = 0;
-
-            if(!empty($request->minimam_seat))
-                $service->minimam_seat = $request->minimam_seat;
-            else
-                $service->minimam_seat = 0;
-
           
             $service->save();
 
@@ -175,9 +162,7 @@ class ServiceResource extends Controller
             'minute' => 'sometimes|nullable|numeric',
             'hour' => 'sometimes|nullable|numeric',
             'distance' => 'sometimes|nullable|numeric',            
-            'image' => 'mimes:ico,png',
-            'per_seat_charge'=> 'required|numeric',
-             'minimam_seat'=> 'required|numeric',
+            'image' => 'mimes:ico,png'
         ]);
 
         try {
@@ -213,18 +198,6 @@ class ServiceResource extends Controller
                 $service['distance'] = $request->distance;
             else
                 $service['distance'] = 0;
-
-
-            if(!empty($request->per_seat_charge))
-                 $service['per_seat_charge'] = $request->per_seat_charge;
-            else
-                $service['per_seat_charge'] = 0;
-
-           if(!empty($request->minimam_seat))
-                $service['minimam_seat'] = $request->minimam_seat;
-            else
-                $service['minimam_seat'] = 0;
-
 
             $service['calculator'] = $request->calculator;
             $service['capacity'] = $request->capacity;           

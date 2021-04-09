@@ -103,22 +103,6 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="capacity" class="col-xs-2 col-form-label">@lang('admin.service.per_seat_charge')</label>
-                    <div class="col-xs-5">
-                        <input class="form-control" type="number" value="{{ old('per_seat_charge') }}" name="per_seat_charge" required id="per_seat_charge" placeholder="Per Seat Charge" min="1">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="capacity" class="col-xs-2 col-form-label">@lang('admin.service.minimam_seat')</label>
-                    <div class="col-xs-5">
-                        <input class="form-control" type="number" value="{{ old('minimam_seat') }}" name="minimam_seat" required id="minimam_seat" placeholder="Minimam Rider" min="1">
-                    </div>
-                </div>
-
-
-
-                <div class="form-group row">
                     <label for="capacity" class="col-xs-12 col-form-label">@lang('admin.service.Seat_Capacity')</label>
                     <div class="col-xs-5">
                         <input class="form-control" type="number" value="{{ old('capacity') }}" name="capacity" required id="capacity" placeholder="Capacity" min="1">

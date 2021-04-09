@@ -925,7 +925,6 @@ class UserApiController extends Controller
                 'd_latitude' => 'required|numeric',
                 'd_longitude' => 'numeric',
                 'service_type' => 'required|numeric|exists:service_types,id',
-                'passanger' =>'numeric',
             ],['s_latitude.required'=>'Source address required','d_latitude.required'=>'Destination address required']);
 
         try{       
