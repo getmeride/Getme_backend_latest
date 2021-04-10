@@ -815,6 +815,9 @@ $Driver_Discount=0;
             $Total += $Commision;
             $payable_amount += $Commision;
 
+            $Total = $Total + $UserRequest->estimate_charger;
+            $payable_amount = $payable_amount +  $UserRequest->estimate_charger;
+
             $ProviderCommission = 0;
             $ProviderPay = (($Total+$Discount) - $Commision)-$Tax;
 
@@ -898,6 +901,7 @@ $Driver_Discount=0;
                 $Payment->payable = abs($payable_amount);
                 
             }
+
 
             $Payment->tax = $Tax;
             $Payment->tax_per = $tax_percentage;

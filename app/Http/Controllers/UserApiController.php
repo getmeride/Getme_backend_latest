@@ -419,6 +419,7 @@ class UserApiController extends Controller
                 //'promo_code' => 'exists:promocodes,promo_code',
                 'distance' => 'required|numeric',
                 'use_wallet' => 'numeric',
+                'passanger' =>'numeric',
                 'payment_mode' => 'required|in:CASH,CARD,PAYPAL,BRAINTREE,SQUARE',
                 'card_id' => ['required_if:payment_mode,CARD','exists:cards,card_id,user_id,'.Auth::user()->id],
             ],['s_latitude.required'=>'Source address required','d_latitude.required'=>'Destination address required']);
@@ -567,6 +568,22 @@ class UserApiController extends Controller
                 //Log::info('New Request id : '. $UserRequest->id .' Assigned to provider : '. $UserRequest->current_provider_id);
                 (new SendPushNotification)->IncomingRequest($Providers[0]->id);
             }
+
+            //$total=0;
+            $service_type_id = $request->service_type;
+            $service_type_info = ServiceType::where('id',$service_type_id)->first();
+            
+            $extra_passanger = (int)$request->passanger - $service_type_info->minimam_seat;
+            
+            //$extra_passanger_charge = $extra_passanger * $service_type_info->per_seat_charge;
+             //dd($service_type_info->per_seat_charge);
+            //$total = $total + $extra_passanger_charge;
+            //$total = floatval($total);
+
+           
+            $UserRequest->passanger = $request->passanger;
+            $UserRequest->extra_passanger = $extra_passanger;
+            $UserRequest->estimate_charger = $request->estimated_fare;
 
             $UserRequest->save();
            
