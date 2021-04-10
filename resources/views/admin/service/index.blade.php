@@ -27,7 +27,6 @@
                         <th>Hour Price</th>
                         <th>Price Calculation</th>
                         <th>Service Image</th>
-                        <th>@lang('admin.service.per_seat_charge')</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -55,7 +54,6 @@
                                 N/A
                             @endif
                         </td>
-                        <td>{{$service->per_seat_charge??''}}</td>
                         <td>
                             <form action="{{ route('admin.service.destroy', $service->id) }}" method="POST">
                                 {{ csrf_field() }}
@@ -86,7 +84,6 @@
                         <th>Hour Price</th>
                         <th>Price Calculation</th>
                         <th>Service Image</th>
-                        <th>@lang('admin.service.per_seat_charge')</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
