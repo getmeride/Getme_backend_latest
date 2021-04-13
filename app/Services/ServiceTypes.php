@@ -178,11 +178,16 @@ class ServiceTypes{
                 $service_type_id = (int)$request['service_type'];
                 $service_type_info = ServiceType::where('id',$service_type_id)->first();
                 
-                $return_data['extra_passanger'] = (int)$request['passanger'] - $service_type_info->minimam_seat;
+                if(!empty($request['passanger'])){
 
-                $return_data['extra_passanger_charge'] = $return_data['extra_passanger'] * $service_type_info->per_seat_charge;
+                    $return_data['extra_passanger'] = (int)$request['passanger'] - $service_type_info->minimam_seat;
+                    $return_data['extra_passanger_charge'] = $return_data['extra_passanger'] * $service_type_info->per_seat_charge;
+                    $total = $total + $return_data['extra_passanger_charge'];
+                }else{
+                    $total = $total;
+                }
 
-                $total = $total + $return_data['extra_passanger_charge'];
+
 
                 $return_data['estimated_fare']=$this->applyNumberFormat(floatval($total)); 
                 $return_data['distance']=$total_kilometer;    

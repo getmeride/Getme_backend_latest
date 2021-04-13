@@ -815,8 +815,10 @@ $Driver_Discount=0;
             $Total += $Commision;
             $payable_amount += $Commision;
 
-            $Total = $Total + $UserRequest->estimate_charger;
-            $payable_amount = $payable_amount +  $UserRequest->estimate_charger;
+            if(!empty($UserRequest->estimate_charger)){
+                $Total = $Total + $UserRequest->estimate_charger;
+                $payable_amount = $payable_amount +  $UserRequest->estimate_charger;
+            }
 
             $ProviderCommission = 0;
             $ProviderPay = (($Total+$Discount) - $Commision)-$Tax;

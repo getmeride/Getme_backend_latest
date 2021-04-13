@@ -570,20 +570,22 @@ class UserApiController extends Controller
             }
 
             //$total=0;
-            $service_type_id = $request->service_type;
-            $service_type_info = ServiceType::where('id',$service_type_id)->first();
-            
-            $extra_passanger = (int)$request->passanger - $service_type_info->minimam_seat;
-            
-            //$extra_passanger_charge = $extra_passanger * $service_type_info->per_seat_charge;
-             //dd($service_type_info->per_seat_charge);
-            //$total = $total + $extra_passanger_charge;
-            //$total = floatval($total);
+            if(!empty($request->passanger)){
+                $service_type_id = $request->service_type;
+                $service_type_info = ServiceType::where('id',$service_type_id)->first();
+                
+                $extra_passanger = (int)$request->passanger - $service_type_info->minimam_seat;
+                
+                //$extra_passanger_charge = $extra_passanger * $service_type_info->per_seat_charge;
+                 //dd($service_type_info->per_seat_charge);
+                //$total = $total + $extra_passanger_charge;
+                //$total = floatval($total);
 
-           
-            $UserRequest->passanger = $request->passanger;
-            $UserRequest->extra_passanger = $extra_passanger;
-            $UserRequest->estimate_charger = $request->estimated_fare;
+               
+                $UserRequest->passanger = $request->passanger;
+                $UserRequest->extra_passanger = $extra_passanger;
+                $UserRequest->estimate_charger = $request->estimated_fare;
+            }
 
             $UserRequest->save();
            
