@@ -317,9 +317,11 @@ a:hover{
 .car-radio input:checked+label .name{
   margin:0;
 }
-
+.car-radio input:checked+label .name p{
+  color: #fff;
+}
 .car-radio input:checked+label .name span{
-    background-color: #111;
+    background-color: #37b38b;
     padding: 7px 12px 2px;
     border-radius: 15px;
     color: #fff;

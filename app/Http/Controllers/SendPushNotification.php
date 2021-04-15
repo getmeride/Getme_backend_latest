@@ -12,6 +12,7 @@ use Setting;
 use App;
 
 use Edujugon\PushNotification\PushNotification;
+use Twilio\Rest\Client;
 
 class SendPushNotification extends Controller
 {
@@ -145,6 +146,20 @@ class SendPushNotification extends Controller
         $user = User::where('id',$request->user_id)->first();
         $language = $user->language;
         App::setLocale($language);
+
+
+        $receiverNumber = "+917600894699";
+        $message = 'Hi,'. "\n" .'Thanks for Riding with Getme Ride. We hope you enjoyed your trip. Your opinion is really important to us, it helps us to improve our quality of services.' . "\n" .'If you have a chance, please write a review at the following link:https://www.instagram.com/getmeride/' . "\n" .'--------------------------------------------------------------------' . "\n" .'If you have any questions or suggestion, please contact us at by email info@getmeride.org or visit us at https://getmeride.com' . "\n" .'We Got ya';
+        
+        $account_sid = getenv("TWILIO_SID");
+        $auth_token = getenv("TWILIO_TOKEN");
+        $twilio_number = getenv("TWILIO_FROM");
+
+      
+        $client = new Client($account_sid, $auth_token);
+        $client->messages->create($receiverNumber, [
+            'from' => $twilio_number, 
+            'body' => $message]);
 
         return $this->sendPushToUser($request->user_id, trans('api.push.complete'));
     }
