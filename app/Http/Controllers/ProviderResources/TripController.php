@@ -817,7 +817,7 @@ class TripController extends Controller
 
            
             if(!empty($UserRequest->estimate_charger)){
-                $passanger_charge=ServiceTypes::where('id',$UserRequest->service_type_id)->first();
+                $passanger_charge=ServiceType::where('id',$UserRequest->service_type_id)->first();
 
                 $Total = $Total + ($UserRequest->extra_passanger *$passanger_charge->per_seat_charge);
                 $payable_amount = $payable_amount +  ($UserRequest->extra_passanger *$passanger_charge->per_seat_charge);
@@ -826,7 +826,7 @@ class TripController extends Controller
 
             $ProviderCommission = 0;
             $ProviderPay = (($Total+$Discount) - $Commision)-$Tax;
-
+            //dd( $Total);
             $Payment = new UserRequestPayment;
             $Payment->request_id = $UserRequest->id;
 
@@ -912,7 +912,7 @@ class TripController extends Controller
             $Payment->tax = $Tax;
             $Payment->tax_per = $tax_percentage;
             $Payment->save();            
-
+            //dd($Payment);
             return $Payment;
 
         } catch (ModelNotFoundException $e) {
