@@ -156,10 +156,10 @@ class SendPushNotification extends Controller
         $twilio_number = getenv("TWILIO_FROM");
 
       
-        // $client = new Client($account_sid, $auth_token);
-        // $client->messages->create($receiverNumber, [
-        //     'from' => $twilio_number, 
-        //     'body' => $message]);
+        $client = new Client($account_sid, $auth_token);
+        $client->messages->create($receiverNumber, [
+            'from' => $twilio_number, 
+            'body' => $message]);
 
         return $this->sendPushToUser($request->user_id, trans('api.push.complete'));
     }
