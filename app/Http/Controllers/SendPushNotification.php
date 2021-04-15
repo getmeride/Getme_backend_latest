@@ -148,7 +148,7 @@ class SendPushNotification extends Controller
         App::setLocale($language);
 
 
-        $receiverNumber = "+917600894699";
+        $receiverNumber = $user->mobile;
         $message = 'Hi,'. "\n" .'Thanks for Riding with Getme Ride. We hope you enjoyed your trip. Your opinion is really important to us, it helps us to improve our quality of services.' . "\n" .'If you have a chance, please write a review at the following link:https://www.instagram.com/getmeride/' . "\n" .'--------------------------------------------------------------------' . "\n" .'If you have any questions or suggestion, please contact us at by email info@getmeride.org or visit us at https://getmeride.com' . "\n" .'We Got ya';
         
         $account_sid = getenv("TWILIO_SID");

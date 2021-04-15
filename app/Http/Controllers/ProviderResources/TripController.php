@@ -787,7 +787,7 @@ class TripController extends Controller
 
                 }                
             }
-$Driver_Discount=0;
+            $Driver_Discount=0;
             if($UserRequest->driver_discount){
                 $driver_dis_per = $UserRequest->driver_discount;
                 $driver_discount_amount = (($Distance + $Tax) * ($UserRequest->driver_discount/100));
@@ -815,10 +815,14 @@ $Driver_Discount=0;
             $Total += $Commision;
             $payable_amount += $Commision;
 
+           
             if(!empty($UserRequest->estimate_charger)){
-                $Total = $Total + $UserRequest->estimate_charger;
-                $payable_amount = $payable_amount +  $UserRequest->estimate_charger;
+                $passanger_charge=ServiceTypes::where('id',$UserRequest->service_type_id)->first();
+
+                $Total = $Total + ($UserRequest->extra_passanger *$passanger_charge->per_seat_charge);
+                $payable_amount = $payable_amount +  ($UserRequest->extra_passanger *$passanger_charge->per_seat_charge);
             }
+
 
             $ProviderCommission = 0;
             $ProviderPay = (($Total+$Discount) - $Commision)-$Tax;
