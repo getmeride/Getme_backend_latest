@@ -212,7 +212,7 @@ class DispatcherList extends React.Component {
     }
 
     getTripsUpdate() {
-        $.get('/admin/dispatcher/trips?type=SEARCHING', function(result) {
+        $.get('dispatcher/trips?type=SEARCHING', function(result) {
             if(result.hasOwnProperty('data')) {
                 this.setState({
                     data: result
@@ -264,7 +264,7 @@ class DispatcherCancelledList extends React.Component {
     }
 
     getTripsUpdate() {
-        $.get('/admin/dispatcher/trips?type=CANCELLED', function(result) {
+        $.get('dispatcher/trips?type=CANCELLED', function(result) {
             if(result.hasOwnProperty('data')) {
                 this.setState({
                     data: result
@@ -340,7 +340,7 @@ class DispatcherListItem extends React.Component {
         var listItem = function(trip) {
             return (
                     <div className="il-item" key={trip.id} onClick={this.handleClick.bind(this, trip)}>
-                        <a className="btn btn-danger" href={"/admin/dispatcher/cancel?request_id=" + trip.id} >Cancel Ride</a>
+                        <a className="btn btn-danger" href={"dispatcher/cancel?request_id=" + trip.id} >Cancel Ride</a>
                         <a className="text-black" href="#">
                             <div className="media">
                                 <div className="media-body">
@@ -398,7 +398,7 @@ class DispatcherRequest extends React.Component {
         });
 
         // Get Service Type List
-        $.get('/admin/service', function(result) {
+        $.get('service', function(result) {
             this.setState({
                 data: result
             });
@@ -423,7 +423,7 @@ class DispatcherRequest extends React.Component {
         event.stopPropagation();
         console.log('Hello', $("#form-create-ride").serialize());
         $.ajax({
-            url: '/admin/dispatcher',
+            url: 'dispatcher',
             dataType: 'json',
             headers: {'X-CSRF-TOKEN': window.Laravel.csrfToken },
             type: 'POST',
@@ -541,7 +541,7 @@ class DispatcherAssignList extends React.Component {
     }
 
     componentDidMount() {
-        $.get('/admin/dispatcher/providers', { 
+        $.get('dispatcher/providers', { 
             service_type: this.props.trip.service_type_id,
             latitude: this.props.trip.s_latitude,
             longitude: this.props.trip.s_longitude
