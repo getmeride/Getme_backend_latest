@@ -481,7 +481,9 @@ class UserApiController extends Controller
         $Providers = Provider::with(['service' => function($query) use ($service_type){
                         $query->where('status','active');
                         $query->where('service_type_id',$service_type);
-                    }])
+                    }])->whereHas('service', function($query) use ($service_type) {
+                         $query->where('service_type_id',$service_type);
+                    })
             ->select(DB::Raw("(6371 * acos( cos( radians('$latitude') ) * cos( radians(latitude) ) * cos( radians(longitude) - radians('$longitude') ) + sin( radians('$latitude') ) * sin( radians(latitude) ) ) ) AS distance"),'id')
             ->where('status', 'approved')
             ->where('is_subscription','=',1)
