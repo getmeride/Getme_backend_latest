@@ -47,8 +47,8 @@ class ProviderService extends Model
         return $query->where('service_type_id', $service_id)->where('status', 'active');
     }
 
-    public function scopeAllAvailableServiceProvider($query)
+    public function scopeAllAvailableServiceProvider($query, $service_id)
     {
-        return $query->whereIn('status', ['active', 'riding']);
+        return $query->where('service_type_id', $service_id)->whereIn('status', ['active', 'riding']);
     }
 }

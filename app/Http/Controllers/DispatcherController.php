@@ -278,7 +278,7 @@ class DispatcherController extends Controller
             if($request->has('provider_auto_assign')) {
                 //$ActiveProviders = ProviderService::AvailableServiceProvider($request->service_type)->get()->pluck('provider_id');
 
-                $ActiveProviders = ProviderService::AllAvailableServiceProvider()->get()->pluck('provider_id');
+                $ActiveProviders = ProviderService::AllAvailableServiceProvider($request->service_type)->get()->pluck('provider_id');
 
                 $distance = Setting::get('provider_search_radius', '10');
                 $latitude = $request->s_latitude;
