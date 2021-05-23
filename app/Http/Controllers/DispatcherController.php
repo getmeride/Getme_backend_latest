@@ -17,6 +17,9 @@ use App\Provider;
 use App\UserRequests;
 use App\RequestFilter;
 use App\ProviderService;
+use App\Services\ServiceTypes;
+use App\ServiceType;
+
 
 
 class DispatcherController extends Controller
@@ -55,7 +58,7 @@ class DispatcherController extends Controller
      */
     public function trips(Request $request)
     {
-        $Trips = UserRequests::with('user', 'provider')
+        $Trips = UserRequests::with('user', 'provider','current_provider')
                     ->orderBy('id','desc');
 
         if($request->type == "SEARCHING"){
@@ -117,6 +120,7 @@ class DispatcherController extends Controller
 
             $Providers = Provider::whereIn('id', $ActiveProviders)
                 ->where('status', 'approved')
+                ->where('is_subscription','=',1)
                 ->whereRaw("(1.609344 * 3956 * acos( cos( radians('$latitude') ) * cos( radians(latitude) ) * cos( radians(longitude) - radians('$longitude') ) + sin( radians('$latitude') ) * sin( radians(latitude) ) ) ) <= $distance")
                 ->with('service', 'service.service_type')
                 ->get();
@@ -273,6 +277,37 @@ class DispatcherController extends Controller
                 $UserRequest->schedule_at = Carbon::parse($request->schedule_time);
             }
 
+            if(!empty($request->passanger)){
+                $response = new ServiceTypes();
+                $responsedata=$response->calculateFare($request->all(), 1);
+
+                if(!empty($responsedata['errors'])){
+                    //throw new Exception($responsedata['errors']);
+                    $estimated_fare = "";
+                }else{
+                    $estimated_fare = $responsedata['data']['estimated_fare'];
+                    //return response()->json($responsedata['data']);
+                }
+                $service_type_id = $request->service_type;
+                $service_type_info = ServiceType::where('id',$service_type_id)->first();
+                $passanger= (int)$request->passange;
+                $extra_passanger=0;
+                if($passanger > $service_type_info->minimam_seat){
+                    $extra_passanger = (int)$request->passanger - $service_type_info->minimam_seat;
+                }
+                
+                //$extra_passanger_charge = $extra_passanger * $service_type_info->per_seat_charge;
+                 //dd($service_type_info->per_seat_charge);
+                //$total = $total + $extra_passanger_charge;
+                //$total = floatval($total);
+
+               
+                $UserRequest->passanger = $request->passanger;
+                $UserRequest->extra_passanger = $extra_passanger;
+
+
+                $UserRequest->estimate_charger = $estimated_fare;
+            }
             $UserRequest->save();
 
             if($request->has('provider_auto_assign')) {
@@ -318,7 +353,7 @@ class DispatcherController extends Controller
                     $Filter->save();
                 }
             }
-
+ 
             if($request->ajax()) {
                 return $UserRequest;
             } else {

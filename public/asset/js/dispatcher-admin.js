@@ -315,6 +315,10 @@ class DispatcherCancelledListItem extends React.Component {
                                     <h6 className="media-heading">From: {trip.s_address}</h6>
                                     <h6 className="media-heading">To: {trip.d_address ? trip.d_address : "Not Selected"}</h6>
                                     <h6 className="media-heading">Payment: {trip.payment_mode}</h6>
+                                    <h6 className="media-heading">Last Driver Assign: {trip.current_provider ? trip.current_provider.first_name : '-'}  {trip.current_provider ? trip.current_provider.last_name : '-'}</h6>
+                                    <h6 className="media-heading">Driver Mobile: {trip.current_provider ? trip.current_provider.mobile: '-'}  </h6>
+                                    
+
                                     <progress className="progress progress-success progress-sm" max="100"></progress>
                                     <span className="text-muted">Cancelled at : {trip.updated_at}</span>
                                 </div>
@@ -360,6 +364,9 @@ class DispatcherListItem extends React.Component {
                                     <h6 className="media-heading">From: {trip.s_address}</h6>
                                     <h6 className="media-heading">To: {trip.d_address ? trip.d_address : "Not Selected"}</h6>
                                     <h6 className="media-heading">Payment: {trip.payment_mode}</h6>
+                                    <h6 className="media-heading">Waiting Driver Assign: {trip.current_provider ? trip.current_provider.first_name : '-'}  {trip.current_provider ? trip.current_provider.last_name : '-'}</h6>
+                                    <h6 className="media-heading">Driver Mobile: {trip.current_provider ? trip.current_provider.mobile: '-'}</h6>
+
                                     <progress className="progress progress-success progress-sm" max="100"></progress>
                                     <span className="text-muted">{trip.current_provider_id == 0 ? "Manual Assignment" : "Auto Search"} : {trip.created_at}</span>
                                 </div>
@@ -447,14 +454,8 @@ class DispatcherRequest extends React.Component {
                     <div className="row">
                         <div className="col-xs-6">
                             <div className="form-group">
-                                <label htmlFor="first_name">First Name</label>
-                                <input type="text" className="form-control" name="first_name" id="first_name" placeholder="First Name" required />
-                            </div>
-                        </div>
-                        <div className="col-xs-6">
-                            <div className="form-group">
-                                <label htmlFor="last_name">Last Name</label>
-                                <input type="text" className="form-control" name="last_name" id="last_name" placeholder="Last Name" required />
+                                <label htmlFor="mobile">Phone</label>
+                                <input type="text" className="form-control" name="mobile" id="mobile" placeholder="Phone" required />
                             </div>
                         </div>
                         <div className="col-xs-6">
@@ -465,8 +466,20 @@ class DispatcherRequest extends React.Component {
                         </div>
                         <div className="col-xs-6">
                             <div className="form-group">
-                                <label htmlFor="mobile">Phone</label>
-                                <input type="text" className="form-control" name="mobile" id="mobile" placeholder="Phone" required />
+                                <label htmlFor="first_name">First Name</label>
+                                <input type="text" className="form-control" name="first_name" id="first_name" placeholder="First Name" required />
+                            </div>
+                        </div>
+                        <div className="col-xs-6">
+                            <div className="form-group">
+                                <label htmlFor="last_name">Last Name</label>
+                                <input type="text" className="form-control" name="last_name" id="last_name" placeholder="Last Name" required />
+                            </div>
+                        </div>
+                        <div className="col-xs-12">
+                            <div className="form-group">
+                                <label htmlFor="email">No Of Passanger</label>
+                                <input type="number" className="form-control" name="passanger" placeholder="No Of Passanger" required/>
                             </div>
                         </div>
                         <div className="col-xs-12">
@@ -615,7 +628,8 @@ class ServiceTypes extends React.Component {
             return <ServiceTypesOption
                     key={result.id}
                     id={result.id}
-                    name={result.name} />
+                    name={result.name}
+                    capacity={result.capacity} />
         };
         return (
                 <select 
@@ -630,7 +644,7 @@ class ServiceTypes extends React.Component {
 class ServiceTypesOption extends React.Component {
     render() {
         return (
-            <option value={this.props.id}>{this.props.name}</option>
+            <option value={this.props.id}>{this.props.name} - {this.props.capacity}  passanger capacity</option>
         );
     }
 };

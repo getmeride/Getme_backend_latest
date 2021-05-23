@@ -120,6 +120,11 @@ class UserRequests extends Model
     {
         return $this->belongsTo('App\Provider');
     }
+    public function current_provider()
+    {
+        return $this->hasOne('App\Provider', 'id','current_provider_id');
+    }
+
     public function fleets()
     {
         return $this->belongsTo('App\Fleet');

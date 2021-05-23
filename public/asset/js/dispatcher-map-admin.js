@@ -45,14 +45,14 @@ function createRideInitialize() {
         map: map,
         draggable: true,
         anchorPoint: new google.maps.Point(0, -29),
-        icon: '/asset/img/marker-start.png'
+        icon: 'asset/img/marker-start.png'
     });
 
     var markerSecond = new google.maps.Marker({
         map: map,
         draggable: true,
         anchorPoint: new google.maps.Point(0, -29),
-        icon: '/asset/img/marker-end.png'
+        icon: 'asset/img/marker-end.png'
     });
 
     var directionsService = new google.maps.DirectionsService;
@@ -227,13 +227,13 @@ function ongoingInitialize(trip) {
     var marker = new google.maps.Marker({
         map: map,
         anchorPoint: new google.maps.Point(0, -29),
-        icon: '/asset/img/marker-start.png'
+        icon: 'asset/img/marker-start.png'
     });
 
     var markerSecond = new google.maps.Marker({
         map: map,
         anchorPoint: new google.maps.Point(0, -29),
-        icon: '/asset/img/marker-end.png'
+        icon: 'asset/img/marker-end.png'
     });
 
     source = new google.maps.LatLng(trip.s_latitude, trip.s_longitude);
@@ -262,7 +262,7 @@ function ongoingInitialize(trip) {
     if(trip.provider) {
         var markerProvider = new google.maps.Marker({
             map: map,
-            icon: "/asset/img/marker-car.png",
+            icon: "asset/img/marker-car.png",
             anchorPoint: new google.maps.Point(0, -29)
         });
 
@@ -290,7 +290,7 @@ function assignProviderShow(providers, trip) {
             map: map,
             provider_id: provider.id,
             title: provider.first_name + " " + provider.last_name,
-            icon: '/asset/img/marker-car.png'
+            icon: 'asset/img/marker-car.png'
         });
 
         var content = "<p>Name : "+provider.first_name+" "+provider.last_name+"</p>"+
