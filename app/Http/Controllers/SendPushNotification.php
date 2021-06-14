@@ -164,7 +164,43 @@ class SendPushNotification extends Controller
         return $this->sendPushToUser($request->user_id, trans('api.push.complete'));
     }
 
-    
+    public function userRequestAdminSMS($user_id){
+
+        $user = User::where('id',$user_id)->first();
+        //$language = $user->language;
+        //App::setLocale($language);
+
+
+
+        $receiverNumber = '16144403284';
+        $message = 'GETMERIDE : New ride request coming.';
+        
+        $account_sid = getenv("TWILIO_SID");
+        $auth_token = getenv("TWILIO_TOKEN");
+        $twilio_number = getenv("TWILIO_FROM");
+
+      
+        $client = new Client($account_sid, $auth_token);
+        $client->messages->create($receiverNumber, [
+            'from' => $twilio_number, 
+            'body' => $message]);
+
+        $receiverNumber1 = '12428056918';
+        $client1 = new Client($account_sid, $auth_token);
+        $client1->messages->create($receiverNumber1, [
+            'from' => $twilio_number, 
+            'body' => $message]);
+
+        $receiverNumber2 = '17862012002';
+        $client2 = new Client($account_sid, $auth_token);
+        $client2->messages->create($receiverNumber2, [
+            'from' => $twilio_number, 
+            'body' => $message]);
+
+
+
+        //return $this->sendPushToUser($request->user_id, trans('api.push.complete'));
+    }
      
     /**
      * Rating After Successful Ride

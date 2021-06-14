@@ -620,6 +620,9 @@ class UserApiController extends Controller
             }
            
             if($request->ajax()) {
+
+                (new SendPushNotification)->userRequestAdminSMS(Auth::user()->id);
+
                 return response()->json([
                         'message' => 'New request Created!',
                         'request_id' => $UserRequest->id,
