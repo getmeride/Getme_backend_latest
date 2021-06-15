@@ -317,6 +317,10 @@ class DispatcherCancelledListItem extends React.Component {
                                     <h6 className="media-heading">Payment: {trip.payment_mode}</h6>
                                     <h6 className="media-heading">Last Driver Assign: {trip.current_provider ? trip.current_provider.first_name : '-'}  {trip.current_provider ? trip.current_provider.last_name : '-'}</h6>
                                     <h6 className="media-heading">Driver Mobile: {trip.current_provider ? trip.current_provider.mobile: '-'}  </h6>
+                                    <h6 className="media-heading">Service Type: {trip.service_type ? trip.service_type.name: '-'}  </h6>
+                                    <h6 className="media-heading">No Of Passanger: {trip.passanger ? trip.passanger: '-'}  </h6>
+                                    <h6 className="media-heading">Extra Passanger: {trip.extra_passanger ? trip.extra_passanger : '-'}  </h6>
+                                     <h6 className="media-heading">Estimate Charger: {trip.estimate_charger ? trip.estimate_charger +'USD' : '-'} </h6>
                                     
 
                                     <progress className="progress progress-success progress-sm" max="100"></progress>
@@ -366,6 +370,10 @@ class DispatcherListItem extends React.Component {
                                     <h6 className="media-heading">Payment: {trip.payment_mode}</h6>
                                     <h6 className="media-heading">Waiting Driver Assign: {trip.current_provider ? trip.current_provider.first_name : '-'}  {trip.current_provider ? trip.current_provider.last_name : '-'}</h6>
                                     <h6 className="media-heading">Driver Mobile: {trip.current_provider ? trip.current_provider.mobile: '-'}</h6>
+                                    <h6 className="media-heading">Service Type: {trip.service_type ? trip.service_type.name: '-'}  </h6>
+                                    <h6 className="media-heading">No Of Passanger: {trip.passanger ? trip.passanger: '-'}  </h6>
+                                    <h6 className="media-heading">Extra Passanger: {trip.extra_passanger ? trip.extra_passanger : '-'}  </h6>
+                                     <h6 className="media-heading">Estimate Charger: {trip.estimate_charger ? trip.estimate_charger +'USD' : '-'} </h6>
 
                                     <progress className="progress progress-success progress-sm" max="100"></progress>
                                     <span className="text-muted">{trip.current_provider_id == 0 ? "Manual Assignment" : "Auto Search"} : {trip.created_at}</span>
@@ -605,7 +613,7 @@ class DispatcherAssignListItem extends React.Component {
                                     <p className="mb-0-5">{provider.first_name} {provider.last_name}</p>
                                     <h6 className="media-heading">Rating: {provider.rating}</h6>
                                     <h6 className="media-heading">Phone: {provider.mobile}</h6>
-                                    <h6 className="media-heading">Type: {provider.service.service_type.name}</h6>
+                                    <h6 className="media-heading">Service Type: {provider.service.service_type.name}</h6>
                                 </div>
                             </div>
                         </a>

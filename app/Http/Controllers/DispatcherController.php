@@ -58,7 +58,7 @@ class DispatcherController extends Controller
      */
     public function trips(Request $request)
     {
-        $Trips = UserRequests::with('user', 'provider','current_provider')
+        $Trips = UserRequests::with('user', 'provider','current_provider','service_type')
                     ->orderBy('id','desc');
 
         if($request->type == "SEARCHING"){
