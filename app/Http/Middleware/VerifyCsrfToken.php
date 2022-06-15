@@ -16,6 +16,8 @@ class VerifyCsrfToken extends BaseVerifier
         '/provider/profile/available',
         '/stripe/account',
         '/contact/us',
-        '/account/kit'
+        '/account/kit',
+        '/refundMoneyToUserStripe',
+         '/refundMoneyToUserSquareup'
     ];
 }

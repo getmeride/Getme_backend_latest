@@ -9,6 +9,8 @@
 
 Auth::routes();
 
+Route::post('/refundMoneyToUserStripe', 'Controller@refundMoneyToUserStripe');
+Route::post('/refundMoneyToUserSquareup', 'Controller@refundMoneyToUserSquareup');
 
 Route::post('/contact/us', 'HomeController@contactus')->name('contact');
 
