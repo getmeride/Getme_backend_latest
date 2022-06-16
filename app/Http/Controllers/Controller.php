@@ -14,6 +14,7 @@ class Controller extends BaseController
     public function refundMoneyToUserStripe(Request $request){
         try{
            //dd($request->payment_id);
+            $curl = curl_init();
             $payment_id = $request->payment_id;
             $client_credentials = $request->client_credentials;
             curl_setopt_array($curl, array(
@@ -39,7 +40,7 @@ class Controller extends BaseController
             curl_close($curl);
             return true;
         }catch (\Exception $e) {
-            return response()->error($e->getMessage());
+            return false;
         }
     }
     public function refundMoneyToUserSquareup(Request $request){
@@ -66,14 +67,14 @@ class Controller extends BaseController
             $result = curl_exec($ch);
             //dd($result);
             if (curl_errno($ch)) {
-                echo 'Error:' . curl_error($ch);
+                return false;
             }
             curl_close($ch);
             return true;
 
 
         }catch (\Exception $e) {
-            return response()->error($e->getMessage());
+            return false;
         }
     }
 }
